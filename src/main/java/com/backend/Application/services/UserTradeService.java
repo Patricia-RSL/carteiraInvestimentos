@@ -31,5 +31,4 @@ public class UserTradeService {
     public List<UserTrade> findAllByTipoOperacao(TipoOperacao tipo){
         return userTradeRepository.findAllByTipoOperacao(tipo);
     }
-    
 }

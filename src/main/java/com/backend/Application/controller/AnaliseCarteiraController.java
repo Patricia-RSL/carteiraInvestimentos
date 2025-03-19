@@ -38,7 +38,7 @@ public class AnaliseCarteiraController {
         
         
         //return ResponseEntity.ok().body(analiseCarteiraService.findAllByTipoOperacaoAndInstrumentAndData(TipoOperacao.c, request.getInstrumentList(), request.getDataInicio(), request.getDataFim()));
-        return ResponseEntity.ok().body(analiseCarteiraService.calculaResultadoCarteira(request.getInstrumentList(), request.getDataInicio(), request.getDataFim()));
+        return ResponseEntity.ok().body(analiseCarteiraService.calculaValorInvestidoCarteira(request));
     }
 
     @GetMapping("/")

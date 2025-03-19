@@ -48,8 +48,7 @@ public class AnaliseCarteiraService {
             InstrumentQuote instrumentQuote = bySymbolAndDate.get();
             return instrumentQuote.getPrice().multiply(BigDecimal.valueOf(totaisNaCarteira));
         }
-        
-        return throw new UnsupportedOperationException("Unimplemented method 'getTotalInstrumentCompradosFilter'");;
+        throw new UnsupportedOperationException("Unimplemented method 'getTotalInstrumentCompradosFilter'");;
        
     }
 

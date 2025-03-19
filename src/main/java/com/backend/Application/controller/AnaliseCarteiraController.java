@@ -1,5 +1,6 @@
 package com.backend.Application.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class AnaliseCarteiraController {
     private final AnaliseCarteiraService analiseCarteiraService;
     
     @GetMapping("/analisar")
-    public ResponseEntity<List<UserTrade>> analisarCarteira(@RequestBody AnaliseCarteiraRequestDTO request) {
+    public ResponseEntity<Object> analisarCarteira(@RequestBody AnaliseCarteiraRequestDTO request) {
         // Simulação de cálculo baseado nos dados recebidos
         //int totalAcoes = request.getInstrumentList().size();
         //double saldoAtual = totalAcoes * 100.0; // Simulação de saldo
@@ -36,7 +37,8 @@ public class AnaliseCarteiraController {
 
         
         
-        return ResponseEntity.ok().body(analiseCarteiraService.findAllByTipoOperacaoAndInstrumentAndData(TipoOperacao.c, request.getInstrumentList(), request.getDataInicio(), request.getDataFim()));//new AnaliseCarteiraResponseDTO(totalAcoes, saldoAtual, rendimentos);
+        //return ResponseEntity.ok().body(analiseCarteiraService.findAllByTipoOperacaoAndInstrumentAndData(TipoOperacao.c, request.getInstrumentList(), request.getDataInicio(), request.getDataFim()));
+        return ResponseEntity.ok().body(analiseCarteiraService.calculaResultadoCarteira(request.getInstrumentList(), request.getDataInicio(), request.getDataFim()));
     }
 
     @GetMapping("/")

@@ -1,4 +1,5 @@
 package com.backend.Application.services;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,8 +24,20 @@ public class AnaliseCarteiraService {
         return userTradeRepository.findAllByTipoOperacaoAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(tipo, instrument, dataInicio.atStartOfDay(), dataFim.atTime(23, 59, 59));
     }
 
-    public void calculaResultadoCarteira(List<String> instrument,  LocalDate dataInicio, LocalDate dataFim){
-        return;
+    public BigDecimal calculaResultadoCarteira(List<String> instrument,  LocalDate dataInicio, LocalDate dataFim){
+        return calculaTotalComprado(instrument, dataInicio, dataFim).subtract(calculaTotalVendido(instrument, dataInicio, dataFim));
+    }
+
+    public BigDecimal calculaTotalComprado(List<String> instrument,  LocalDate dataInicio, LocalDate dataFim){
+        BigDecimal soma = userTradeRepository.getSumFromAllByTipoOperacaoAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(TipoOperacao.c, instrument, dataInicio.atStartOfDay(), dataFim.atTime(23, 59, 59));
+        if(soma!=null) return soma;
+        return BigDecimal.valueOf(0);
+    }
+
+    public BigDecimal calculaTotalVendido(List<String> instrument,  LocalDate dataInicio, LocalDate dataFim){
+        BigDecimal soma = userTradeRepository.getSumFromAllByTipoOperacaoAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(TipoOperacao.v, instrument, dataInicio.atStartOfDay(), dataFim.atTime(23, 59, 59));
+        if(soma!=null) return soma;
+        return BigDecimal.valueOf(0);
     }
     
     

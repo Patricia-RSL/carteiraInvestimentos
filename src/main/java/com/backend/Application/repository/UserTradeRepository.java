@@ -2,6 +2,7 @@ package com.backend.Application.repository;
 
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,6 +28,17 @@ public interface UserTradeRepository extends JpaRepository<UserTrade, Long>, Jpa
        "AND ut.data >= :dataInicio " +
        "AND ut.data <= :dataFim")
     List<UserTrade> findAllByTipoOperacaoAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(
+        @Param("tipo") TipoOperacao tipo, 
+        @Param("instrument") List<String> instrument, 
+        @Param("dataInicio") LocalDateTime dataInicio, 
+        @Param("dataFim") LocalDateTime dataFim
+    );
+
+    @Query("SELECT SUM(ut.valorTotal) as soma FROM UserTrade ut WHERE ut.tipoOperacao = :tipo " +
+       "AND ut.instrument IN :instrument " +
+       "AND ut.data >= :dataInicio " +
+       "AND ut.data <= :dataFim")
+    BigDecimal getSumFromAllByTipoOperacaoAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(
         @Param("tipo") TipoOperacao tipo, 
         @Param("instrument") List<String> instrument, 
         @Param("dataInicio") LocalDateTime dataInicio, 

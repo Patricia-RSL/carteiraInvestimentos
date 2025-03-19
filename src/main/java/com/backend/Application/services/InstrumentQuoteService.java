@@ -1,5 +1,6 @@
 package com.backend.Application.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,10 @@ public class InstrumentQuoteService{
 
     public Optional<InstrumentQuote> getById(Long id) {
         return instrumentQuoteRepository.findById(id);
+    }
+
+    public Optional<InstrumentQuote> findBySymbolAndDate(String symbol, LocalDateTime date) {
+        return instrumentQuoteRepository.findBySymbolAndDate(symbol, date);
     }
     
 }

@@ -2,10 +2,14 @@ package com.backend.Application.services;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.backend.Application.dto.AnaliseCarteiraRequestDTO;
+import com.backend.Application.dto.AnaliseCarteiraResponseDTO;
+import com.backend.Application.entities.InstrumentQuote;
 import com.backend.Application.entities.UserTrade;
 import com.backend.Application.enums.TipoOperacao;
 import com.backend.Application.repository.UserTradeRepository;
@@ -14,7 +18,7 @@ import com.backend.Application.repository.UserTradeRepository;
 public class AnaliseCarteiraService {
 
     @Autowired
-    private UserTradeService userTradeService;
+    private InstrumentQuoteService instrumentQuoteService;
 
     @Autowired
     private UserTradeRepository userTradeRepository;
@@ -24,8 +28,20 @@ public class AnaliseCarteiraService {
         return userTradeRepository.findAllByTipoOperacaoAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(tipo, instrument, dataInicio.atStartOfDay(), dataFim.atTime(23, 59, 59));
     }
 
-    public BigDecimal calculaResultadoCarteira(List<String> instrument,  LocalDate dataInicio, LocalDate dataFim){
-        return calculaTotalComprado(instrument, dataInicio, dataFim).subtract(calculaTotalVendido(instrument, dataInicio, dataFim));
+    public AnaliseCarteiraResponseDTO calculaRendimentoCarteira(AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO){
+        AnaliseCarteiraResponseDTO analiseCarteiraResponseDTO = new AnaliseCarteiraResponseDTO();
+        BigDecimal rendimentos = BigDecimal.valueOf(0);
+        for(String instrument: analiseCarteiraRequestDTO.getInstrumentList()){           
+                
+                rendimentos = rendimentos.add(this.calculaRendimentoInvidual(instrument, analiseCarteiraRequestDTO)); 
+            
+        }
+        return analiseCarteiraResponseDTO;
+    }               
+                    
+    
+    public BigDecimal calculaValorInvestidoCarteira(AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO){
+        return calculaTotalComprado(analiseCarteiraRequestDTO).subtract(calculaTotalVendido(analiseCarteiraRequestDTO));
     }
 
     public BigDecimal calculaTotalComprado(AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO){

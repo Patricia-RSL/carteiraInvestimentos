@@ -1,16 +1,18 @@
 package com.backend.Application.dto;
 
+import java.math.BigDecimal;
+
 public class AnaliseCarteiraResponseDTO {
     
     private AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO;
     private int totalAcoes;
-    private double saldoAtual;
-    private double rendimentos;
+    private BigDecimal saldoAtual;
+    private BigDecimal rendimentos;
 
     public AnaliseCarteiraResponseDTO() {
     }
 
-    public AnaliseCarteiraResponseDTO(int totalAcoes, double saldoAtual, double rendimentos) {
+    public AnaliseCarteiraResponseDTO(int totalAcoes, BigDecimal saldoAtual, BigDecimal rendimentos) {
         this.totalAcoes = totalAcoes;
         this.saldoAtual = saldoAtual;
         this.rendimentos = rendimentos;
@@ -24,19 +26,19 @@ public class AnaliseCarteiraResponseDTO {
         this.totalAcoes = totalAcoes;
     }
 
-    public double getSaldoAtual() {
+    public BigDecimal getSaldoAtual() {
         return saldoAtual;
     }
 
-    public void setSaldoAtual(double saldoAtual) {
+    public void setSaldoAtual(BigDecimal saldoAtual) {
         this.saldoAtual = saldoAtual;
     }
 
-    public double getRendimentos() {
+    public BigDecimal getRendimentos() {
         return rendimentos;
     }
 
-    public void setRendimentos(double rendimentos) {
+    public void setRendimentos(BigDecimal rendimentos) {
         this.rendimentos = rendimentos;
     }
 

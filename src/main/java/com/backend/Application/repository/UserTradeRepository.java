@@ -38,7 +38,7 @@ public interface UserTradeRepository extends JpaRepository<UserTrade, Long>, Jpa
        "AND ut.instrument IN :instrument " +
        "AND ut.data >= :dataInicio " +
        "AND ut.data <= :dataFim")
-    BigDecimal getSumFromAllByTipoOperacaoAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(
+    BigDecimal getSumInstrumentIFilterBy(
         @Param("tipo") TipoOperacao tipo, 
         @Param("instrument") List<String> instrument, 
         @Param("dataInicio") LocalDateTime dataInicio, 

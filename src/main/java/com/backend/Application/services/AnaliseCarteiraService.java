@@ -28,14 +28,14 @@ public class AnaliseCarteiraService {
         return calculaTotalComprado(instrument, dataInicio, dataFim).subtract(calculaTotalVendido(instrument, dataInicio, dataFim));
     }
 
-    public BigDecimal calculaTotalComprado(List<String> instrument,  LocalDate dataInicio, LocalDate dataFim){
-        BigDecimal soma = userTradeRepository.getSumFromAllByTipoOperacaoAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(TipoOperacao.c, instrument, dataInicio.atStartOfDay(), dataFim.atTime(23, 59, 59));
+    public BigDecimal calculaTotalComprado(AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO){
+        BigDecimal soma = userTradeRepository.getSumInstrumentIFilterBy(TipoOperacao.c, analiseCarteiraRequestDTO.getInstrumentList(), analiseCarteiraRequestDTO.getDataInicio().atStartOfDay(), analiseCarteiraRequestDTO.getDataFim().atTime(23, 59, 59));
         if(soma!=null) return soma;
         return BigDecimal.valueOf(0);
     }
 
-    public BigDecimal calculaTotalVendido(List<String> instrument,  LocalDate dataInicio, LocalDate dataFim){
-        BigDecimal soma = userTradeRepository.getSumFromAllByTipoOperacaoAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(TipoOperacao.v, instrument, dataInicio.atStartOfDay(), dataFim.atTime(23, 59, 59));
+    public BigDecimal calculaTotalVendido(AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO){
+        BigDecimal soma = userTradeRepository.getSumInstrumentIFilterBy(TipoOperacao.v,  analiseCarteiraRequestDTO.getInstrumentList(), analiseCarteiraRequestDTO.getDataInicio().atStartOfDay(), analiseCarteiraRequestDTO.getDataFim().atTime(23, 59, 59));
         if(soma!=null) return soma;
         return BigDecimal.valueOf(0);
     }
@@ -48,7 +48,7 @@ public class AnaliseCarteiraService {
             InstrumentQuote instrumentQuote = bySymbolAndDate.get();
             return instrumentQuote.getPrice().multiply(BigDecimal.valueOf(totaisNaCarteira));
         }
-        throw new UnsupportedOperationException("Unimplemented method 'getTotalInstrumentCompradosFilter'");;
+        throw new UnsupportedOperationException("Unimplemented method 'getTotalInstrumentCompradosFilter'");
        
     }
 

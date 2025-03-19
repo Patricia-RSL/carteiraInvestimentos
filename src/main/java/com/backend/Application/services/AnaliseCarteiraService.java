@@ -39,6 +39,29 @@ public class AnaliseCarteiraService {
         if(soma!=null) return soma;
         return BigDecimal.valueOf(0);
     }
+
+    public BigDecimal calculaRendimentoInvidual(String instrumentName, AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO) {
+        Optional<InstrumentQuote> bySymbolAndDate = this.instrumentQuoteService.findBySymbolAndDate(instrumentName, analiseCarteiraRequestDTO.getDataFim().atTime(23, 59, 59));
+        Integer totaisNaCarteira = this.getTotalInstrumentCompradosFilterBY( instrumentName, analiseCarteiraRequestDTO) - this. getTotalInstrumentVendidosFilterBY(instrumentName, analiseCarteiraRequestDTO);
+        
+        if(bySymbolAndDate.isPresent()){
+            InstrumentQuote instrumentQuote = bySymbolAndDate.get();
+            return instrumentQuote.getPrice().multiply(BigDecimal.valueOf(totaisNaCarteira));
+        }
+        
+        return throw new UnsupportedOperationException("Unimplemented method 'getTotalInstrumentCompradosFilter'");;
+       
+    }
+
+    public Integer getTotalInstrumentCompradosFilterBY(String instrumentName, AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO){
+        return this.userTradeRepository.getTotalInstrumentFilterBy(TipoOperacao.c, instrumentName, analiseCarteiraRequestDTO.getDataInicio().atStartOfDay(), analiseCarteiraRequestDTO.getDataFim().atTime(23, 59, 59));
+
+    }
+
+    public Integer getTotalInstrumentVendidosFilterBY(String instrumentName, AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO){
+        return this.userTradeRepository.getTotalInstrumentFilterBy(TipoOperacao.v, instrumentName, analiseCarteiraRequestDTO.getDataInicio().atStartOfDay(), analiseCarteiraRequestDTO.getDataFim().atTime(23, 59, 59));
+
+    }
     
     
 }

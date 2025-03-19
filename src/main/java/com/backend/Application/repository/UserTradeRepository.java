@@ -44,4 +44,18 @@ public interface UserTradeRepository extends JpaRepository<UserTrade, Long>, Jpa
         @Param("dataInicio") LocalDateTime dataInicio, 
         @Param("dataFim") LocalDateTime dataFim
     );
+
+    @Query("SELECT SUM(ut.quantidade)   " +
+            "FROM UserTrade ut " +
+            "WHERE ut.tipoOperacao = :tipo " +
+            "AND ut.instrument IN :instrument " +
+            "AND ut.data >= :dataInicio " +
+            "AND ut.data <= :dataFim " +
+            "GROUP BY ut.instrument")
+    Integer getTotalInstrumentFilterBy(
+        @Param("tipo") TipoOperacao tipo, 
+        @Param("instrument") String instrument, 
+        @Param("dataInicio") LocalDateTime dataInicio, 
+        @Param("dataFim") LocalDateTime dataFim
+    );
 }

@@ -69,16 +69,18 @@ public interface UserTradeRepository extends JpaRepository<UserTrade, Long>, Jpa
             (SELECT instrument, SUM(quantidade) AS total_quantidade, SUM(valor_total) AS valor_total_somado
             FROM user_trade 
             WHERE tipo_operacao = 'c'
+            AND (:instrumentList IS NULL OR instrument IN (:instrumentList))
             AND data BETWEEN :dataInicio AND :dataFim
             GROUP BY instrument) c
         FULL OUTER JOIN 
             (SELECT instrument, SUM(quantidade) AS total_quantidade, SUM(valor_total) AS valor_total_somado
             FROM user_trade 
             WHERE tipo_operacao = 'v'
+            AND (:instrumentList IS NULL OR instrument IN (:instrumentList))
             AND data BETWEEN :dataInicio AND :dataFim
             GROUP BY instrument) v
         ON c.instrument = v.instrument
     """, nativeQuery = true)
-    List<ItemDetalhesAnaliseCarteiraProjection> calcularTotalQuantidadeAndSaldoPorInstrument(@Param("dataInicio") LocalDateTime dataInicio, @Param("dataFim") LocalDateTime dataFim);
+    List<ItemDetalhesAnaliseCarteiraProjection> calcularTotalQuantidadeAndSaldoPorInstrument(@Param("instrumentList") List<String> instrumentList, @Param("dataInicio") LocalDateTime dataInicio, @Param("dataFim") LocalDateTime dataFim);
 
 }

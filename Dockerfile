@@ -21,7 +21,7 @@ FROM openjdk:17-jdk-alpine
 WORKDIR /app
 
 # Copia o JAR gerado pelo Gradle da imagem builder
-COPY --from=builder /app/build/libs/Application-0.0.1-SNAPSHOT.jar ./backend.jar
+COPY --from=builder /app/build/libs/application-0.0.1-SNAPSHOT.jar ./backend.jar
 
 # Expõe a porta onde a aplicação vai rodar
 EXPOSE 8080

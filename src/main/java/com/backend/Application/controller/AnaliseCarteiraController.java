@@ -30,26 +30,6 @@ public class AnaliseCarteiraController {
     
     @GetMapping("/analisar")
     public ResponseEntity<Object> analisarCarteira(@RequestBody AnaliseCarteiraRequestDTO request) {
-        // Simulação de cálculo baseado nos dados recebidos
-        //int totalAcoes = request.getInstrumentList().size();
-        //double saldoAtual = totalAcoes * 100.0; // Simulação de saldo
-        //double rendimentos = saldoAtual * 0.05; // Simulação de rendimento
-
-        
-        
-        //return ResponseEntity.ok().body(analiseCarteiraService.findAllByTipoOperacaoAndInstrumentAndData(TipoOperacao.c, request.getInstrumentList(), request.getDataInicio(), request.getDataFim()));
-        return ResponseEntity.ok().body(analiseCarteiraService.calculaValorInvestidoCarteira(request));
-    }
-
-    @GetMapping("/")
-    public ResponseEntity<AnaliseCarteiraResponseDTO> carteira(@RequestBody AnaliseCarteiraRequestDTO request) {
-        // Simulação de cálculo baseado nos dados recebidos
-        //int totalAcoes = request.getInstrumentList().size();
-        //double saldoAtual = totalAcoes * 100.0; // Simulação de saldo
-        //double rendimentos = saldoAtual * 0.05; // Simulação de rendimento
-
-        
-        
-        return ResponseEntity.ok().build();//new AnaliseCarteiraResponseDTO(totalAcoes, saldoAtual, rendimentos);
+        return ResponseEntity.ok().body(analiseCarteiraService.analiseCarteira(request));
     }
 }

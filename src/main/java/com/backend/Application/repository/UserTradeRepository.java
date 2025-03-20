@@ -13,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.backend.Application.entities.UserTrade;
 import com.backend.Application.enums.TipoOperacao;
+import com.backend.Application.interfaces.ItemDetalhesAnaliseCarteiraProjection;
 
 @Repository
 public interface UserTradeRepository extends JpaRepository<UserTrade, Long>, JpaSpecificationExecutor<UserTrade>{
@@ -38,7 +39,7 @@ public interface UserTradeRepository extends JpaRepository<UserTrade, Long>, Jpa
        "AND ut.instrument IN :instrument " +
        "AND ut.data >= :dataInicio " +
        "AND ut.data <= :dataFim")
-    BigDecimal getSumInstrumentIFilterBy(
+    BigDecimal getSumValorTotalFilterBy(
         @Param("tipo") TipoOperacao tipo, 
         @Param("instrument") List<String> instrument, 
         @Param("dataInicio") LocalDateTime dataInicio, 
@@ -52,10 +53,32 @@ public interface UserTradeRepository extends JpaRepository<UserTrade, Long>, Jpa
             "AND ut.data >= :dataInicio " +
             "AND ut.data <= :dataFim " +
             "GROUP BY ut.instrument")
-    Integer getTotalInstrumentFilterBy(
+    Integer getTotalQuantidadeFilterBy(
         @Param("tipo") TipoOperacao tipo, 
         @Param("instrument") String instrument, 
         @Param("dataInicio") LocalDateTime dataInicio, 
         @Param("dataFim") LocalDateTime dataFim
     );
+
+    @Query(value = """
+        SELECT 
+            COALESCE(c.instrument, v.instrument) AS instrument,
+            COALESCE(c.total_quantidade, 0) - COALESCE(v.total_quantidade, 0) AS total_acoes,
+            COALESCE(c.valor_total_somado, 0) - COALESCE(v.valor_total_somado, 0) AS saldo_investido
+        FROM 
+            (SELECT instrument, SUM(quantidade) AS total_quantidade, SUM(valor_total) AS valor_total_somado
+            FROM user_trade 
+            WHERE tipo_operacao = 'c'
+            AND data BETWEEN :dataInicio AND :dataFim
+            GROUP BY instrument) c
+        FULL OUTER JOIN 
+            (SELECT instrument, SUM(quantidade) AS total_quantidade, SUM(valor_total) AS valor_total_somado
+            FROM user_trade 
+            WHERE tipo_operacao = 'v'
+            AND data BETWEEN :dataInicio AND :dataFim
+            GROUP BY instrument) v
+        ON c.instrument = v.instrument
+    """, nativeQuery = true)
+    List<ItemDetalhesAnaliseCarteiraProjection> calcularTotalQuantidadeAndSaldoPorInstrument(@Param("dataInicio") LocalDateTime dataInicio, @Param("dataFim") LocalDateTime dataFim);
+
 }

@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.backend.application.entities.InstrumentQuote;
@@ -15,12 +14,11 @@ import lombok.extern.log4j.Log4j2;
 @Service
 public class InstrumentQuoteService{
 
-    @Autowired
-    private InstrumentQuoteRepository instrumentQuoteRepository;
+    private final InstrumentQuoteRepository instrumentQuoteRepository;
 
-
-    public InstrumentQuoteService(){}
-
+    public InstrumentQuoteService(InstrumentQuoteRepository instrumentQuoteRepository){
+        this.instrumentQuoteRepository = instrumentQuoteRepository;
+    }
 
     public List<InstrumentQuote> getAll() {
         return instrumentQuoteRepository.findAll();

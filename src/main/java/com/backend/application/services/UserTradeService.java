@@ -3,7 +3,6 @@ package com.backend.application.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.backend.application.entities.UserTrade;
@@ -13,8 +12,11 @@ import com.backend.application.enums.TipoOperacao;
 @Service
 public class UserTradeService {
 
-    @Autowired
-    private UserTradeRepository userTradeRepository;
+    private final UserTradeRepository userTradeRepository;
+
+    public UserTradeService(UserTradeRepository userTradeRepository) {
+        this.userTradeRepository = userTradeRepository;
+    }
 
     public List<UserTrade> getAll() {
        return userTradeRepository.findAll();

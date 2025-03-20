@@ -8,7 +8,7 @@ import lombok.Data;
 public class ItemDetalhesAnaliseCarteiraDTO {
 
     private String instrument;
-    private int totalAcoes;
+    private int qtdAcoes;
     private BigDecimal valorInvestido;
     private BigDecimal valorMercado;
     private BigDecimal rendimentosPorcentagem;

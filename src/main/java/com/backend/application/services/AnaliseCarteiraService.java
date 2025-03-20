@@ -1,7 +1,6 @@
 package com.backend.application.services;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -31,13 +30,13 @@ public class AnaliseCarteiraService {
         return userTradeRepository.findAllByTipoOperacaoAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(tipo, instrument, dataInicio.atStartOfDay(), dataFim.atTime(23, 59, 59));
     }
 
-    public List<ItemDetalhesAnaliseCarteiraDTO> obterItensDetalhesAnalise(LocalDateTime dataInicio, LocalDateTime dataFim) {
-        List<ItemDetalhesAnaliseCarteiraProjection> projections = userTradeRepository.calcularTotalQuantidadeAndSaldoPorInstrument(dataInicio, dataFim);
+    public List<ItemDetalhesAnaliseCarteiraDTO> obterItensDetalhesAnalise(AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO) {
+        List<ItemDetalhesAnaliseCarteiraProjection> projections = userTradeRepository.calcularTotalQuantidadeAndSaldoPorInstrument(analiseCarteiraRequestDTO.getInstrumentList(), analiseCarteiraRequestDTO.getDataInicio().atStartOfDay(), analiseCarteiraRequestDTO.getDataFim().atTime(23,59,59));
 
         return projections.stream().map(p -> {
             ItemDetalhesAnaliseCarteiraDTO dto = new ItemDetalhesAnaliseCarteiraDTO();
             dto.setInstrument(p.getInstrument());
-            dto.setTotalAcoes(p.getTotalAcoes());
+            dto.setQtdAcoes(p.getTotalAcoes());
             dto.setValorInvestido(p.getSaldoInvestido());
             dto.setValorMercado(BigDecimal.ZERO);  // Valores padrão
             dto.setRendimentosPorcentagem(BigDecimal.ZERO);
@@ -49,15 +48,13 @@ public class AnaliseCarteiraService {
         AnaliseCarteiraResponseDTO responseDTO = new AnaliseCarteiraResponseDTO();
 
         List<ItemDetalhesAnaliseCarteiraDTO> detalhesAnaliseCarteiraDTO = 
-            this.obterItensDetalhesAnalise(analiseCarteiraRequestDTO.getDataInicio().atStartOfDay(), analiseCarteiraRequestDTO.getDataFim().atTime(23,59,59));
+            this.obterItensDetalhesAnalise(analiseCarteiraRequestDTO);
         detalhesAnaliseCarteiraDTO = detalhesAnaliseCarteiraDTO.stream()
                                                                 .map(item->completarItemDetalheRendimento(item, analiseCarteiraRequestDTO))
                                                                 .toList();
         responseDTO.setDetalhesAnaliseCarteiraDTO(detalhesAnaliseCarteiraDTO);
 
-        responseDTO.setResumoAnaliseCarteiraDTO(null); //TODO
-
-
+        responseDTO.setResumoAnaliseCarteiraDTO(analiseCalculatorService.calcularResumo(detalhesAnaliseCarteiraDTO, analiseCarteiraRequestDTO));
         return responseDTO;
     }
 
@@ -65,32 +62,9 @@ public class AnaliseCarteiraService {
         BigDecimal saldoAtual = analiseCalculatorService.calcularSaldo(item, request);
         item.setValorMercado(saldoAtual);
 
-        BigDecimal rendimentoPorcentual = analiseCalculatorService.calcularRendimentoPorcentual(item, request);
+        BigDecimal rendimentoPorcentual = analiseCalculatorService.calcularRendimentoPorcentual(item);
         item.setRendimentosPorcentagem(rendimentoPorcentual);
         return item;
     }
 
-    /*public AnaliseCarteiraResponseDTO calculaRendimentoCarteira(AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO){
-        AnaliseCarteiraResponseDTO analiseCarteiraResponseDTO = new AnaliseCarteiraResponseDTO();
-        BigDecimal saldoAtual = BigDecimal.valueOf(0);
-        for(String instrument: analiseCarteiraRequestDTO.getInstrumentList()){        
-                
-                saldoAtual = saldoAtual.add(this.calculaRendimentoDoInstrument(instrument, analiseCarteiraRequestDTO));
-            
-            
-        }
-
-        BigDecimal totalInvestido = this.calculaValorInvestidoCarteira(analiseCarteiraRequestDTO);
-        BigDecimal rendimentoEmReais = saldoAtual.subtract(totalInvestido);
-        BigDecimal rendimentoPorcentual = utils.calcularPorcentagem(rendimentoEmReais, totalInvestido);
-
-        
-        analiseCarteiraResponseDTO.setSaldoAtual(saldoAtual);
-        analiseCarteiraResponseDTO.setRendimentos(rendimentoPorcentual);
-        return analiseCarteiraResponseDTO;
-    }               
-    
-    */      
-    
-    
 }

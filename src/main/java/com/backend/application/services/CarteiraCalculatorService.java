@@ -24,9 +24,9 @@ public class CarteiraCalculatorService implements CarteiraCalculatorInterface {
     }
 
     @Override
-    public BigDecimal calcularSaldo(ItemDetalhesAnaliseCarteiraDTO item, AnaliseCarteiraRequestDTO request) {
+    public BigDecimal calcularValorMercado(ItemDetalhesAnaliseCarteiraDTO item, AnaliseCarteiraRequestDTO request) {
         Optional<InstrumentQuote> bySymbolAndDate = instrumentQuoteService.findBySymbolAndDate(
-            item.getInstrument(), request.getDataFim().atStartOfDay());
+            item.getInstrument(), request.getDataFim());
 
         if(bySymbolAndDate.isPresent()){ 
             return bySymbolAndDate.get().getPrice().multiply(BigDecimal.valueOf(item.getQtdAcoes()));

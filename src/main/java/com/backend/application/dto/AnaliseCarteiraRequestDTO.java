@@ -1,9 +1,11 @@
 package com.backend.application.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,20 +13,28 @@ import lombok.Setter;
 @Setter
 public class AnaliseCarteiraRequestDTO {
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate dataInicio;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime dataInicio;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate dataFim;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime dataFim;
     private List<String> instrumentList;
 
     public AnaliseCarteiraRequestDTO() {
     }
 
-    public AnaliseCarteiraRequestDTO(LocalDate dataInicio, LocalDate dataFim, List<String> instrumentList) {
-        this.dataInicio = dataInicio;
-        this.dataFim = dataFim;
-        this.instrumentList = instrumentList;
+    @PostConstruct
+    public AnaliseCarteiraRequestDTO init() {
+        if (this.instrumentList == null) {
+            this.instrumentList = new ArrayList<String>();  // valor padrão, lista vazia
+        }
+        if (this.dataInicio == null) {
+            this.dataInicio = LocalDateTime.of(1900, 1, 1, 0, 0);  // valor padrão para dataInicio
+        }
+        if (this.dataFim == null) {
+            this.dataFim = LocalDateTime.of(2020,4,30, 0,0);
+        }
+        return this;
     }
 
     @Override

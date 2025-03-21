@@ -8,7 +8,7 @@ import com.backend.application.dto.ItemDetalhesAnaliseCarteiraDTO;
 import com.backend.application.dto.ResumoAnaliseCarteiraDTO;
 
 public interface CarteiraCalculatorInterface {
-    BigDecimal calcularSaldo(ItemDetalhesAnaliseCarteiraDTO item, AnaliseCarteiraRequestDTO request);
+    BigDecimal calcularValorMercado(ItemDetalhesAnaliseCarteiraDTO item, AnaliseCarteiraRequestDTO request);
     BigDecimal calcularRendimentoPorcentual(ItemDetalhesAnaliseCarteiraDTO item);
     ResumoAnaliseCarteiraDTO calcularResumo(List<ItemDetalhesAnaliseCarteiraDTO> itens, AnaliseCarteiraRequestDTO request);
 }

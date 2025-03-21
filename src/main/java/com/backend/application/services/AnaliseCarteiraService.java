@@ -31,7 +31,9 @@ public class AnaliseCarteiraService {
     }
 
     public List<ItemDetalhesAnaliseCarteiraDTO> obterItensDetalhesAnalise(AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO) {
-        List<ItemDetalhesAnaliseCarteiraProjection> projections = userTradeRepository.calcularTotalQuantidadeAndSaldoPorInstrument(analiseCarteiraRequestDTO.getInstrumentList(), analiseCarteiraRequestDTO.getDataInicio().atStartOfDay(), analiseCarteiraRequestDTO.getDataFim().atTime(23,59,59));
+        List<ItemDetalhesAnaliseCarteiraProjection> projections = userTradeRepository.calcularTotalQuantidadeAndSaldoPorInstrument(analiseCarteiraRequestDTO.getInstrumentList(),
+                analiseCarteiraRequestDTO.getDataInicio(),
+                analiseCarteiraRequestDTO.getDataFim());
 
         return projections.stream().map(p -> {
             ItemDetalhesAnaliseCarteiraDTO dto = new ItemDetalhesAnaliseCarteiraDTO();
@@ -44,7 +46,12 @@ public class AnaliseCarteiraService {
         }).toList();
     }
 
-    public AnaliseCarteiraResponseDTO analiseCarteira(AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO){ 
+    public AnaliseCarteiraResponseDTO analiseCarteira(){
+        AnaliseCarteiraRequestDTO request  = new AnaliseCarteiraRequestDTO().init();
+        return analiseCarteiraComFiltro(request);
+    }
+
+    public AnaliseCarteiraResponseDTO analiseCarteiraComFiltro(AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO){
         AnaliseCarteiraResponseDTO responseDTO = new AnaliseCarteiraResponseDTO();
 
         List<ItemDetalhesAnaliseCarteiraDTO> detalhesAnaliseCarteiraDTO = 
@@ -59,8 +66,8 @@ public class AnaliseCarteiraService {
     }
 
     public ItemDetalhesAnaliseCarteiraDTO completarItemDetalheRendimento(ItemDetalhesAnaliseCarteiraDTO item, AnaliseCarteiraRequestDTO request) {
-        BigDecimal saldoAtual = analiseCalculatorService.calcularSaldo(item, request);
-        item.setValorMercado(saldoAtual);
+        BigDecimal valorMercado = analiseCalculatorService.calcularValorMercado(item, request);
+        item.setValorMercado(valorMercado);
 
         BigDecimal rendimentoPorcentual = analiseCalculatorService.calcularRendimentoPorcentual(item);
         item.setRendimentosPorcentagem(rendimentoPorcentual);

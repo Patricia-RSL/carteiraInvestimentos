@@ -16,7 +16,7 @@ import com.backend.application.interfaces.CarteiraCalculatorInterface;
 @Service
 public class CarteiraCalculatorService implements CarteiraCalculatorInterface {
 
-    private InstrumentQuoteService instrumentQuoteService;
+    private final InstrumentQuoteService instrumentQuoteService;
 
     public CarteiraCalculatorService(InstrumentQuoteService instrumentQuoteService){
 
@@ -48,7 +48,7 @@ public class CarteiraCalculatorService implements CarteiraCalculatorInterface {
         ResumoAnaliseCarteiraDTO response = new ResumoAnaliseCarteiraDTO();
         BigDecimal valorInvestido = BigDecimal.valueOf(0);
         BigDecimal valorMercado = BigDecimal.valueOf(0);
-        Integer totalAcoes = 0;
+        int totalAcoes = 0;
 
         for(ItemDetalhesAnaliseCarteiraDTO instrument: itens){
             if(instrument.getQtdAcoes()!=0){

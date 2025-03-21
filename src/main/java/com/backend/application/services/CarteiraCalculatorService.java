@@ -51,10 +51,11 @@ public class CarteiraCalculatorService implements CarteiraCalculatorInterface {
         Integer totalAcoes = 0;
 
         for(ItemDetalhesAnaliseCarteiraDTO instrument: itens){
-
-            valorInvestido = valorInvestido.add(instrument.getValorInvestido());
-            valorMercado = valorMercado.add(instrument.getValorMercado());
-            totalAcoes += instrument.getQtdAcoes();
+            if(instrument.getQtdAcoes()!=0){
+                valorInvestido = valorInvestido.add(instrument.getValorInvestido());
+                valorMercado = valorMercado.add(instrument.getValorMercado());
+                totalAcoes += instrument.getQtdAcoes();
+            }
 
 
         }

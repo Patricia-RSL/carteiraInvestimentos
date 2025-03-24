@@ -50,19 +50,24 @@ public class AnaliseCarteiraService {
 
         List<ItemDetalhesAnaliseCarteiraDTO> detalhesAnaliseCarteiraDTO = 
             this.obterItensDetalhesAnalise(analiseCarteiraRequestDTO);
-        detalhesAnaliseCarteiraDTO = detalhesAnaliseCarteiraDTO.stream()
-                                                                .map(item-> {
-                                                                    try {
-                                                                        return calcularRendimentoItemDetalhe(item, analiseCarteiraRequestDTO);
-                                                                    } catch (BadRequestException e) {
-                                                                        throw new RuntimeException(e);
-                                                                    }
-                                                                })
-                                                                .toList();
+        detalhesAnaliseCarteiraDTO = calcularRendimentoListaItemDetalhe(analiseCarteiraRequestDTO, detalhesAnaliseCarteiraDTO);
         responseDTO.setDetalhesAnaliseCarteiraDTO(detalhesAnaliseCarteiraDTO);
 
-        responseDTO.setResumoAnaliseCarteiraDTO(analiseCalculatorService.calcularResumo(detalhesAnaliseCarteiraDTO, analiseCarteiraRequestDTO));
+        responseDTO.setResumoAnaliseCarteiraDTO(analiseCalculatorService.calcularResumo(detalhesAnaliseCarteiraDTO));
         return responseDTO;
+    }
+
+    public List<ItemDetalhesAnaliseCarteiraDTO> calcularRendimentoListaItemDetalhe(AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO, List<ItemDetalhesAnaliseCarteiraDTO> detalhesAnaliseCarteiraDTO) {
+        return detalhesAnaliseCarteiraDTO.stream()
+                .map(item -> {
+                    try {
+                        return calcularRendimentoItemDetalhe(item, analiseCarteiraRequestDTO);
+                    } catch (BadRequestException e) {
+                        e.printStackTrace();
+                        return item;
+                    }
+                })
+                .toList();
     }
 
     public ItemDetalhesAnaliseCarteiraDTO calcularRendimentoItemDetalhe(ItemDetalhesAnaliseCarteiraDTO item, AnaliseCarteiraRequestDTO request) throws BadRequestException {

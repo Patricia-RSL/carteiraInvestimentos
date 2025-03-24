@@ -11,5 +11,5 @@ import org.apache.coyote.BadRequestException;
 public interface CarteiraCalculatorInterface {
     BigDecimal calcularValorMercado(ItemDetalhesAnaliseCarteiraDTO item, AnaliseCarteiraRequestDTO request);
     BigDecimal calcularRendimentoPorcentual(ItemDetalhesAnaliseCarteiraDTO item) throws BadRequestException;
-    ResumoAnaliseCarteiraDTO calcularResumo(List<ItemDetalhesAnaliseCarteiraDTO> itens, AnaliseCarteiraRequestDTO request);
+    ResumoAnaliseCarteiraDTO calcularResumo(List<ItemDetalhesAnaliseCarteiraDTO> itens) throws BadRequestException;
 }

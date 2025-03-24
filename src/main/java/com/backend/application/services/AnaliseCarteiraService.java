@@ -3,6 +3,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.backend.application.converter.ItemDetalhesAnaliseCarteiraDTOConverter;
 import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
@@ -36,23 +37,15 @@ public class AnaliseCarteiraService {
                 analiseCarteiraRequestDTO.getDataInicio(),
                 analiseCarteiraRequestDTO.getDataFim());
 
-        return projections.stream().map(p -> {
-            ItemDetalhesAnaliseCarteiraDTO dto = new ItemDetalhesAnaliseCarteiraDTO();
-            dto.setInstrument(p.getInstrument());
-            dto.setQtdAcoes(p.getTotalAcoes());
-            dto.setValorInvestido(p.getSaldoInvestido());
-            dto.setValorMercado(BigDecimal.ZERO);  // Valores padrão
-            dto.setRendimentosPorcentagem(BigDecimal.ZERO);
-            return dto;
-        }).toList();
+        return ItemDetalhesAnaliseCarteiraDTOConverter.toDTOList(projections);
     }
 
-    public AnaliseCarteiraResponseDTO analisarCarteira(){
+    public AnaliseCarteiraResponseDTO analisarCarteira() throws BadRequestException {
         AnaliseCarteiraRequestDTO request  = new AnaliseCarteiraRequestDTO().init();
         return analisarCarteiraComFiltro(request);
     }
 
-    public AnaliseCarteiraResponseDTO analisarCarteiraComFiltro(AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO){
+    public AnaliseCarteiraResponseDTO analisarCarteiraComFiltro(AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO) throws BadRequestException {
         AnaliseCarteiraResponseDTO responseDTO = new AnaliseCarteiraResponseDTO();
 
         List<ItemDetalhesAnaliseCarteiraDTO> detalhesAnaliseCarteiraDTO = 

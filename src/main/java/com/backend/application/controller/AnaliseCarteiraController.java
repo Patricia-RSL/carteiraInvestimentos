@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ public class AnaliseCarteiraController {
             content = { @Content(mediaType = "application/json",
             schema = @Schema(implementation = AnaliseCarteiraResponseDTO.class)) })
     @GetMapping("/analisar")
-    public ResponseEntity<AnaliseCarteiraResponseDTO> analisarCarteira() {
+    public ResponseEntity<AnaliseCarteiraResponseDTO> analisarCarteira() throws BadRequestException {
         return ResponseEntity.ok().body(analiseCarteiraService.analisarCarteira());
     }
 
@@ -39,7 +40,7 @@ public class AnaliseCarteiraController {
             content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = AnaliseCarteiraResponseDTO.class)) })
     @PostMapping("/analisar")
-    public ResponseEntity<AnaliseCarteiraResponseDTO> analisarCarteiraComFiltro(@Parameter(description = "filtros") @RequestBody AnaliseCarteiraRequestDTO request) {
+    public ResponseEntity<AnaliseCarteiraResponseDTO> analisarCarteiraComFiltro(@Parameter(description = "filtros") @RequestBody AnaliseCarteiraRequestDTO request) throws BadRequestException {
         return ResponseEntity.ok().body(analiseCarteiraService.analisarCarteiraComFiltro(request.init()));
     }
 }

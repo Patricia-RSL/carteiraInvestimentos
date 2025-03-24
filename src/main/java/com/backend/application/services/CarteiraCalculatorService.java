@@ -39,13 +39,14 @@ public class CarteiraCalculatorService implements CarteiraCalculatorInterface {
     @Override
     public BigDecimal calcularRendimentoPorcentual(ItemDetalhesAnaliseCarteiraDTO item) throws BadRequestException {
         if(item.getValorMercado()==null) throw new BadRequestException("Valor de mercado não pode ser nulo");
+        if(item.getQtdAcoes()==0) return BigDecimal.valueOf(0);
 
         BigDecimal rendimentoEmReais = item.getValorMercado().subtract(item.getValorInvestido());
         return rendimentoEmReais.multiply(BigDecimal.valueOf(100)).divide(item.getValorInvestido(), 2, RoundingMode.HALF_UP);
     }
 
     @Override
-    public ResumoAnaliseCarteiraDTO calcularResumo(List<ItemDetalhesAnaliseCarteiraDTO> itens, AnaliseCarteiraRequestDTO request) {
+    public ResumoAnaliseCarteiraDTO calcularResumo(List<ItemDetalhesAnaliseCarteiraDTO> itens) throws BadRequestException {
         ResumoAnaliseCarteiraDTO response = new ResumoAnaliseCarteiraDTO();
         BigDecimal valorInvestido = BigDecimal.valueOf(0);
         BigDecimal valorMercado = BigDecimal.valueOf(0);
@@ -61,8 +62,7 @@ public class CarteiraCalculatorService implements CarteiraCalculatorInterface {
 
         }
 
-        BigDecimal rendimentoEmReais = valorMercado.subtract(valorInvestido);
-        BigDecimal rendimentoPorcentual = rendimentoEmReais.multiply(BigDecimal.valueOf(100)).divide(valorInvestido, 2, RoundingMode.HALF_UP);
+        BigDecimal rendimentoPorcentual = calcularRendimentoPorcentual(new ItemDetalhesAnaliseCarteiraDTO().init("", totalAcoes, valorInvestido, valorMercado,  null));
 
         response.setTotalAcoes(totalAcoes);
         response.setValorMercado(valorMercado);

@@ -1,6 +1,6 @@
 package com.backend.application.services;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -16,8 +16,8 @@ import com.backend.application.repository.UserTradeRepository;
 @Service
 public class AnaliseCarteiraService {
 
-    private UserTradeRepository userTradeRepository;
-    private CarteiraCalculatorService analiseCalculatorService;
+    private final UserTradeRepository userTradeRepository;
+    private final CarteiraCalculatorService analiseCalculatorService;
 
     public AnaliseCarteiraService(UserTradeRepository userTradeRepository,
                                   CarteiraCalculatorService analiseCalculatorService){
@@ -31,7 +31,7 @@ public class AnaliseCarteiraService {
     }
 
     public List<ItemDetalhesAnaliseCarteiraDTO> obterItensDetalhesAnalise(AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO) {
-        List<ItemDetalhesAnaliseCarteiraProjection> projections = userTradeRepository.calcularTotalQuantidadeAndSaldoPorInstrument(analiseCarteiraRequestDTO.getInstrumentList(),
+        List<ItemDetalhesAnaliseCarteiraProjection> projections = userTradeRepository.getQuantidadeAndSaldoPorInstrument(analiseCarteiraRequestDTO.getInstrumentList(),
                 analiseCarteiraRequestDTO.getDataInicio(),
                 analiseCarteiraRequestDTO.getDataFim());
 
@@ -46,12 +46,12 @@ public class AnaliseCarteiraService {
         }).toList();
     }
 
-    public AnaliseCarteiraResponseDTO analiseCarteira(){
+    public AnaliseCarteiraResponseDTO analisarCarteira(){
         AnaliseCarteiraRequestDTO request  = new AnaliseCarteiraRequestDTO().init();
-        return analiseCarteiraComFiltro(request);
+        return analisarCarteiraComFiltro(request);
     }
 
-    public AnaliseCarteiraResponseDTO analiseCarteiraComFiltro(AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO){
+    public AnaliseCarteiraResponseDTO analisarCarteiraComFiltro(AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO){
         AnaliseCarteiraResponseDTO responseDTO = new AnaliseCarteiraResponseDTO();
 
         List<ItemDetalhesAnaliseCarteiraDTO> detalhesAnaliseCarteiraDTO = 
@@ -65,7 +65,7 @@ public class AnaliseCarteiraService {
         return responseDTO;
     }
 
-    public ItemDetalhesAnaliseCarteiraDTO completarItemDetalheRendimento(ItemDetalhesAnaliseCarteiraDTO item, AnaliseCarteiraRequestDTO request) {
+    public ItemDetalhesAnaliseCarteiraDTO calcularRendimentoItemDetalhe(ItemDetalhesAnaliseCarteiraDTO item, AnaliseCarteiraRequestDTO request) throws BadRequestException {
         BigDecimal valorMercado = analiseCalculatorService.calcularValorMercado(item, request);
         item.setValorMercado(valorMercado);
 

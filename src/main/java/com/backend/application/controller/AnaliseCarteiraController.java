@@ -31,7 +31,7 @@ public class AnaliseCarteiraController {
             schema = @Schema(implementation = AnaliseCarteiraResponseDTO.class)) })
     @GetMapping("/analisar")
     public ResponseEntity<AnaliseCarteiraResponseDTO> analisarCarteira() {
-        return ResponseEntity.ok().body(analiseCarteiraService.analiseCarteira());
+        return ResponseEntity.ok().body(analiseCarteiraService.analisarCarteira());
     }
 
     @Operation(summary = "Analisar carteira de ativos com filtro", description = "Retorna análises da carteira de ativos de acordo com filtros fornecidos")
@@ -40,6 +40,6 @@ public class AnaliseCarteiraController {
                     schema = @Schema(implementation = AnaliseCarteiraResponseDTO.class)) })
     @PostMapping("/analisar")
     public ResponseEntity<AnaliseCarteiraResponseDTO> analisarCarteiraComFiltro(@Parameter(description = "filtros") @RequestBody AnaliseCarteiraRequestDTO request) {
-        return ResponseEntity.ok().body(analiseCarteiraService.analiseCarteiraComFiltro(request.init()));
+        return ResponseEntity.ok().body(analiseCarteiraService.analisarCarteiraComFiltro(request.init()));
     }
 }

@@ -81,6 +81,6 @@ public interface UserTradeRepository extends JpaRepository<UserTrade, Long>, Jpa
             GROUP BY instrument) v
         ON c.instrument = v.instrument
     """, nativeQuery = true)
-    List<ItemDetalhesAnaliseCarteiraProjection> calcularTotalQuantidadeAndSaldoPorInstrument(@Param("instrumentList") List<String> instrumentList, @Param("dataInicio") LocalDateTime dataInicio, @Param("dataFim") LocalDateTime dataFim);
+    List<ItemDetalhesAnaliseCarteiraProjection> getQuantidadeAndSaldoPorInstrument(@Param("instrumentList") List<String> instrumentList, @Param("dataInicio") LocalDateTime dataInicio, @Param("dataFim") LocalDateTime dataFim);
 
 }

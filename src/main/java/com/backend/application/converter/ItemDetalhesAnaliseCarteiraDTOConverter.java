@@ -13,8 +13,6 @@ public class ItemDetalhesAnaliseCarteiraDTOConverter {
         dto.setInstrument(projection.getInstrument());
         dto.setQtdAcoes(projection.getTotalAcoes());
         dto.setValorInvestido(projection.getSaldoInvestido());
-        dto.setValorMercado(BigDecimal.ZERO);
-        dto.setRendimentosPorcentagem(BigDecimal.ZERO);
         return dto;
     }
 

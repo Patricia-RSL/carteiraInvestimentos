@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.backend.application.dto.ResumoAnaliseCarteiraDTO;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import com.backend.application.dto.AnaliseCarteiraRequestDTO;
@@ -36,8 +37,8 @@ public class CarteiraCalculatorService implements CarteiraCalculatorInterface {
     }
 
     @Override
-    public BigDecimal calcularRendimentoPorcentual(ItemDetalhesAnaliseCarteiraDTO item){
-        if(item.getValorMercado()==null) return null;
+    public BigDecimal calcularRendimentoPorcentual(ItemDetalhesAnaliseCarteiraDTO item) throws BadRequestException {
+        if(item.getValorMercado()==null) throw new BadRequestException("Valor de mercado não pode ser nulo");
 
         BigDecimal rendimentoEmReais = item.getValorMercado().subtract(item.getValorInvestido());
         return rendimentoEmReais.multiply(BigDecimal.valueOf(100)).divide(item.getValorInvestido(), 2, RoundingMode.HALF_UP);

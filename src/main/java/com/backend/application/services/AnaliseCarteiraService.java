@@ -3,6 +3,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import com.backend.application.dto.AnaliseCarteiraRequestDTO;
@@ -57,7 +58,13 @@ public class AnaliseCarteiraService {
         List<ItemDetalhesAnaliseCarteiraDTO> detalhesAnaliseCarteiraDTO = 
             this.obterItensDetalhesAnalise(analiseCarteiraRequestDTO);
         detalhesAnaliseCarteiraDTO = detalhesAnaliseCarteiraDTO.stream()
-                                                                .map(item->completarItemDetalheRendimento(item, analiseCarteiraRequestDTO))
+                                                                .map(item-> {
+                                                                    try {
+                                                                        return calcularRendimentoItemDetalhe(item, analiseCarteiraRequestDTO);
+                                                                    } catch (BadRequestException e) {
+                                                                        throw new RuntimeException(e);
+                                                                    }
+                                                                })
                                                                 .toList();
         responseDTO.setDetalhesAnaliseCarteiraDTO(detalhesAnaliseCarteiraDTO);
 

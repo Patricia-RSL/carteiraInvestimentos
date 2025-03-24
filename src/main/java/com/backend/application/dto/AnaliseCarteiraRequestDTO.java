@@ -23,7 +23,7 @@ public class AnaliseCarteiraRequestDTO {
     @PostConstruct
     public AnaliseCarteiraRequestDTO init() {
         if (this.instrumentList == null) {
-            this.instrumentList = new ArrayList<>();  // valor padrão, lista vazia
+            this.instrumentList = new ArrayList<>();
         }
         if (this.dataInicio == null) {
             this.dataInicio = LocalDateTime.of(1900, 1, 1, 0, 0);  // valor padrão para dataInicio

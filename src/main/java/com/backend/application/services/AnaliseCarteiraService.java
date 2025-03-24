@@ -26,8 +26,8 @@ public class AnaliseCarteiraService {
     }
 
     public List<UserTrade> findAllByTipoOperacaoAndInstrumentAndData(
-                TipoOperacao tipo, List<String> instrument,  LocalDate dataInicio, LocalDate dataFim ){ 
-        return userTradeRepository.findAllByTipoOperacaoAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(tipo, instrument, dataInicio.atStartOfDay(), dataFim.atTime(23, 59, 59));
+                TipoOperacao tipo, List<String> instrument,  LocalDateTime dataInicio, LocalDateTime dataFim ){
+        return userTradeRepository.findAllByTipoOperacaoAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(tipo, instrument, dataInicio, dataFim);
     }
 
     public List<ItemDetalhesAnaliseCarteiraDTO> obterItensDetalhesAnalise(AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO) {

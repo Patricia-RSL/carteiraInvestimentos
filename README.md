@@ -1,6 +1,6 @@
 **Carteira de Investimentos**
 
-Esta aplicação tem o simples objetivo de realizar analises em um portfólio de ativos, a partir do histórico de transaçõe (compra e venda de ativos) de um usuário e as cotações dos ativos presentes nela.
+Esta aplicação continua em desenvolvimento. A aplicação tem o simples objetivo de realizar analises em um portfólio de ativos, a partir do histórico de transaçõe (compra e venda de ativos) de um usuário e as cotações dos ativos presentes nela.
 
 A documentação da API pode ser acessada em http://localhost:8080/swagger-ui/index.html#/
 

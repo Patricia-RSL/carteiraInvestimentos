@@ -11,34 +11,34 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AnaliseCarteiraRequestDTO {
+public class PortfolioAnalysisRequestDTO {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dataInicio;
+    private LocalDateTime beginDate;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dataFim;
+    private LocalDateTime endDate;
     private List<String> instrumentList;
 
     @PostConstruct
-    public AnaliseCarteiraRequestDTO init() {
+    public PortfolioAnalysisRequestDTO init() {
         if (this.instrumentList == null) {
             this.instrumentList = new ArrayList<>();
         }
-        if (this.dataInicio == null) {
-            this.dataInicio = LocalDateTime.of(1900, 1, 1, 0, 0);  // valor padrão para dataInicio
+        if (this.beginDate == null) {
+            this.beginDate = LocalDateTime.of(1900, 1, 1, 0, 0);  // valor padrão para dataInicio
         }
-        if (this.dataFim == null) {
-            this.dataFim = LocalDateTime.of(2020,4,30, 0,0);
+        if (this.endDate == null) {
+            this.endDate = LocalDateTime.of(2020,4,30, 0,0);
         }
         return this;
     }
 
     @Override
     public String toString() {
-        return "AnaliseCarteiraRequestDTO{" +
-                "dataInicio=" + dataInicio +
-                ", dataFim=" + dataFim +
+        return "PortfolioAnalysisRequestDTO{" +
+                "beginDate=" + beginDate +
+                ", endDate=" + endDate +
                 ", instrumentList=" + instrumentList +
                 '}';
     }

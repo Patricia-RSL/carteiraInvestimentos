@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.backend.application.entities.UserTrade;
 import com.backend.application.repository.UserTradeRepository;
-import com.backend.application.enums.TipoOperacao;
+import com.backend.application.enums.OperationType;
 
 @Service
 public class UserTradeService {
@@ -30,7 +30,7 @@ public class UserTradeService {
         return userTradeRepository.findAllByInstrument(instrument);
     }
 
-    public List<UserTrade> findAllByTipoOperacao(TipoOperacao tipo){
-        return userTradeRepository.findAllByTipoOperacao(tipo);
+    public List<UserTrade> findAllByOperationType(OperationType tipo){
+        return userTradeRepository.findAllByOperationType(tipo);
     }
 }

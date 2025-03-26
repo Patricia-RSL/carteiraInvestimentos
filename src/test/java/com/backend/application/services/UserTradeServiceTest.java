@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import com.backend.application.enums.OperationType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.backend.application.entities.UserTrade;
-import com.backend.application.enums.TipoOperacao;
 import com.backend.application.repository.UserTradeRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,12 +35,12 @@ class UserTradeServiceTest {
         trade1 = new UserTrade();
         trade1.setId(1L);
         trade1.setInstrument("AAPL");
-        trade1.setTipoOperacao(TipoOperacao.c);
+        trade1.setOperationType(OperationType.c);
 
         trade2 = new UserTrade();
         trade2.setId(2L);
         trade2.setInstrument("GOOGL");
-        trade2.setTipoOperacao(TipoOperacao.v);
+        trade2.setOperationType(OperationType.v);
     }
 
     @Test
@@ -81,11 +81,11 @@ class UserTradeServiceTest {
     }
 
     @Test
-    void testFindAllByTipoOperacao() {
-        when(userTradeRepository.findAllByTipoOperacao(TipoOperacao.c)).thenReturn(Arrays.asList(trade1));
-        List<UserTrade> result = userTradeService.findAllByTipoOperacao(TipoOperacao.c);
+    void testFindAllByOperationType() {
+        when(userTradeRepository.findAllByOperationType(OperationType.c)).thenReturn(Arrays.asList(trade1));
+        List<UserTrade> result = userTradeService.findAllByOperationType(OperationType.c);
         assertEquals(1, result.size());
-        assertEquals(TipoOperacao.c, result.get(0).getTipoOperacao());
-        verify(userTradeRepository, times(1)).findAllByTipoOperacao(TipoOperacao.c);
+        assertEquals(OperationType.c, result.get(0).getOperationType());
+        verify(userTradeRepository, times(1)).findAllByOperationType(OperationType.c);
     }
 }

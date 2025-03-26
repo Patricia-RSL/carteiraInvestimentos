@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.backend.application.entities.UserTrade;
-import com.backend.application.enums.TipoOperacao;
+import com.backend.application.enums.OperationType;
 
 /**
  * Classe utilitária para criar objetos UserTrade mockados para testes
@@ -24,7 +24,7 @@ public class UserTradeMockFactory {
                 createUserTrade(
                         122084L,
                         LocalDateTime.of(2019, 1, 17, 0, 0, 0),
-                        TipoOperacao.c,
+                        OperationType.c,
                         "Merc. Fracionário",
                         "",
                         "ITUB4F",
@@ -38,7 +38,7 @@ public class UserTradeMockFactory {
                 createUserTrade(
                         122085L,
                         LocalDateTime.of(2019, 2, 10, 0, 0, 0),
-                        TipoOperacao.c,
+                        OperationType.c,
                         "Merc. Fracionário",
                         "",
                         "PETR4F",
@@ -52,7 +52,7 @@ public class UserTradeMockFactory {
                 createUserTrade(
                         122086L,
                         LocalDateTime.of(2019, 3, 5, 0, 0, 0),
-                        TipoOperacao.c,
+                        OperationType.c,
                         "Merc. Fracionário",
                         "",
                         "VALE3F",
@@ -66,7 +66,7 @@ public class UserTradeMockFactory {
                 createUserTrade(
                         122087L,
                         LocalDateTime.of(2019, 4, 12, 0, 0, 0),
-                        TipoOperacao.c,
+                        OperationType.c,
                         "BOVESPA",
                         "",
                         "BBDC4",
@@ -80,7 +80,7 @@ public class UserTradeMockFactory {
                 createUserTrade(
                         122088L,
                         LocalDateTime.of(2019, 5, 20, 0, 0, 0),
-                        TipoOperacao.c,
+                        OperationType.c,
                         "BOVESPA",
                         "",
                         "MGLU3",
@@ -94,7 +94,7 @@ public class UserTradeMockFactory {
                 createUserTrade(
                         122089L,
                         LocalDateTime.of(2019, 6, 15, 0, 0, 0),
-                        TipoOperacao.v,
+                        OperationType.v,
                         "Merc. Fracionário",
                         "",
                         "ITUB4F",
@@ -108,7 +108,7 @@ public class UserTradeMockFactory {
                 createUserTrade(
                         122090L,
                         LocalDateTime.of(2019, 7, 8, 0, 0, 0),
-                        TipoOperacao.c,
+                        OperationType.c,
                         "BOVESPA",
                         "",
                         "WEGE3",
@@ -122,7 +122,7 @@ public class UserTradeMockFactory {
                 createUserTrade(
                         122091L,
                         LocalDateTime.of(2019, 8, 14, 0, 0, 0),
-                        TipoOperacao.v,
+                        OperationType.v,
                         "Merc. Fracionário",
                         "",
                         "PETR4F",
@@ -136,7 +136,7 @@ public class UserTradeMockFactory {
                 createUserTrade(
                         122092L,
                         LocalDateTime.of(2019, 9, 10, 0, 0, 0),
-                        TipoOperacao.c,
+                        OperationType.c,
                         "BOVESPA",
                         "",
                         "ABEV3",
@@ -150,7 +150,7 @@ public class UserTradeMockFactory {
                 createUserTrade(
                         122093L,
                         LocalDateTime.of(2019, 10, 2, 0, 0, 0),
-                        TipoOperacao.c,
+                        OperationType.c,
                         "BOVESPA",
                         "",
                         "BBAS3",
@@ -163,7 +163,7 @@ public class UserTradeMockFactory {
                 createUserTrade(
                         122089L,
                         LocalDateTime.of(2020, 1, 15, 0, 0, 0),
-                        TipoOperacao.v,
+                        OperationType.v,
                         "Merc. Fracionário",
                         "",
                         "ITUB4F",
@@ -182,7 +182,7 @@ public class UserTradeMockFactory {
     private static UserTrade createUserTrade(
             Long id,
             LocalDateTime data,
-            TipoOperacao tipoOperacao,
+            OperationType operationType,
             String mercado,
             String prazo,
             String instrument,
@@ -195,7 +195,7 @@ public class UserTradeMockFactory {
         trade.setId(id);
         trade.setData(data);
         // No banco aparentemente o tipo de operação é armazenado como "c" para compra
-        trade.setTipoOperacao(tipoOperacao);
+        trade.setOperationType(operationType);
         trade.setMercado(mercado);
         trade.setPrazo(prazo);
         trade.setInstrument(instrument);

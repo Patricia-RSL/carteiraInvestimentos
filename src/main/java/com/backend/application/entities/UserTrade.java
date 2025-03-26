@@ -1,12 +1,11 @@
 package com.backend.application.entities;
 
+import com.backend.application.enums.OperationType;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
-import com.backend.application.enums.TipoOperacao;
 
 @Entity
 @Table(name = "user_trade")
@@ -22,7 +21,7 @@ public class UserTrade {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_operacao", nullable = false)
-    private TipoOperacao tipoOperacao;
+    private OperationType operationType;
 
     @Column(name = "mercado", nullable = false, length = 50)
     private String mercado;

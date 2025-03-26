@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.application.entities.UserTrade;
-import com.backend.application.enums.TipoOperacao;
+import com.backend.application.enums.OperationType;
 import com.backend.application.services.UserTradeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -68,8 +68,8 @@ public class UserTradeController {
     @ApiResponse(responseCode = "200", description = "Lista de transações obtida com sucesso",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = UserTrade.class))})
-    @GetMapping("/tipo-operacao/{tipoOperacao}")
-    public ResponseEntity<List<UserTrade>> getByTipoOpeacao(@Parameter(description = "Tipo de operação") @PathVariable TipoOperacao tipoOperacao) {
-        return ResponseEntity.ok().body(userTradeService.findAllByTipoOperacao(tipoOperacao));
+    @GetMapping("/tipo-operacao/{operationType}")
+    public ResponseEntity<List<UserTrade>> getByTipoOpeacao(@Parameter(description = "Tipo de operação") @PathVariable OperationType operationType) {
+        return ResponseEntity.ok().body(userTradeService.findAllByOperationType(operationType));
     }
 }

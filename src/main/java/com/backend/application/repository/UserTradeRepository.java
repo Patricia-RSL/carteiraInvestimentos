@@ -1,5 +1,6 @@
 package com.backend.application.repository;
 
+import com.backend.application.enums.OperationType;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -12,35 +13,34 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.backend.application.entities.UserTrade;
-import com.backend.application.enums.TipoOperacao;
-import com.backend.application.interfaces.ItemDetalhesAnaliseCarteiraProjection;
+import com.backend.application.interfaces.PortfolioAnalysisDetailItemProjection;
 
 @Repository
 public interface UserTradeRepository extends JpaRepository<UserTrade, Long>, JpaSpecificationExecutor<UserTrade>{
 
     public List<UserTrade> findAllByInstrument(String instrument);
 
-    public List<UserTrade> findAllByTipoOperacao(TipoOperacao tipo);
+    public List<UserTrade> findAllByOperationType(OperationType tipo);
 
-    public List<UserTrade> findAllByTipoOperacaoAndInstrumentAndData(TipoOperacao tipo, String instrument, LocalDateTime dataInicio);
+    public List<UserTrade> findAllByOperationTypeAndInstrumentAndData(OperationType tipo, String instrument, LocalDateTime dataInicio);
 
-    @Query("SELECT ut FROM UserTrade ut WHERE ut.tipoOperacao = :tipo " +
+    @Query("SELECT ut FROM UserTrade ut WHERE ut.operationType = :tipo " +
        "AND ut.instrument IN :instrument " +
        "AND ut.data >= :dataInicio " +
        "AND ut.data <= :dataFim")
-    List<UserTrade> findAllByTipoOperacaoAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(
-        @Param("tipo") TipoOperacao tipo, 
+    List<UserTrade> findAllByOperationTypeAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(
+        @Param("tipo") OperationType tipo,
         @Param("instrument") List<String> instrument, 
         @Param("dataInicio") LocalDateTime dataInicio, 
         @Param("dataFim") LocalDateTime dataFim
     );
 
-    @Query("SELECT SUM(ut.valorTotal) as soma FROM UserTrade ut WHERE ut.tipoOperacao = :tipo " +
+    @Query("SELECT SUM(ut.valorTotal) as soma FROM UserTrade ut WHERE ut.operationType = :tipo " +
        "AND ut.instrument IN :instrument " +
        "AND ut.data >= :dataInicio " +
        "AND ut.data <= :dataFim")
-    BigDecimal getSumValorTotalFilterBy(
-        @Param("tipo") TipoOperacao tipo, 
+    BigDecimal getSumTotalValueFilterBy(
+        @Param("tipo") OperationType tipo,
         @Param("instrument") List<String> instrument, 
         @Param("dataInicio") LocalDateTime dataInicio, 
         @Param("dataFim") LocalDateTime dataFim
@@ -48,13 +48,13 @@ public interface UserTradeRepository extends JpaRepository<UserTrade, Long>, Jpa
 
     @Query("SELECT SUM(ut.quantidade)   " +
             "FROM UserTrade ut " +
-            "WHERE ut.tipoOperacao = :tipo " +
+            "WHERE ut.operationType = :tipo " +
             "AND ut.instrument IN :instrument " +
             "AND ut.data >= :dataInicio " +
             "AND ut.data <= :dataFim " +
             "GROUP BY ut.instrument")
-    Integer getTotalQuantidadeFilterBy(
-        @Param("tipo") TipoOperacao tipo, 
+    Integer getTotalAmountFilterBy(
+        @Param("tipo") OperationType tipo,
         @Param("instrument") String instrument, 
         @Param("dataInicio") LocalDateTime dataInicio, 
         @Param("dataFim") LocalDateTime dataFim
@@ -63,24 +63,24 @@ public interface UserTradeRepository extends JpaRepository<UserTrade, Long>, Jpa
     @Query(value = """
         SELECT 
             COALESCE(c.instrument, v.instrument) AS instrument,
-            COALESCE(c.total_quantidade, 0) - COALESCE(v.total_quantidade, 0) AS total_acoes,
-            COALESCE(c.valor_total_somado, 0) - COALESCE(v.valor_total_somado, 0) AS saldo_investido
+            COALESCE(c.total_quantidade, 0) - COALESCE(v.total_quantidade, 0) AS instrument_amount,
+            COALESCE(c.valor_total_somado, 0) - COALESCE(v.valor_total_somado, 0) AS invested_value
         FROM 
             (SELECT instrument, SUM(quantidade) AS total_quantidade, SUM(valor_total) AS valor_total_somado
             FROM user_trade 
             WHERE tipo_operacao = 'c'
             AND (:instrumentList IS NULL OR instrument IN (:instrumentList))
-            AND data BETWEEN :dataInicio AND :dataFim
+            AND data BETWEEN :beginDate AND :endDate
             GROUP BY instrument) c
         FULL OUTER JOIN 
             (SELECT instrument, SUM(quantidade) AS total_quantidade, SUM(valor_total) AS valor_total_somado
             FROM user_trade 
             WHERE tipo_operacao = 'v'
             AND (:instrumentList IS NULL OR instrument IN (:instrumentList))
-            AND data BETWEEN :dataInicio AND :dataFim
+            AND data BETWEEN :beginDate AND :endDate
             GROUP BY instrument) v
         ON c.instrument = v.instrument
     """, nativeQuery = true)
-    List<ItemDetalhesAnaliseCarteiraProjection> getQuantidadeAndSaldoPorInstrument(@Param("instrumentList") List<String> instrumentList, @Param("dataInicio") LocalDateTime dataInicio, @Param("dataFim") LocalDateTime dataFim);
+    List<PortfolioAnalysisDetailItemProjection> getAmountAndValueByInstrument(@Param("instrumentList") List<String> instrumentList, @Param("beginDate") LocalDateTime beginDate, @Param("endDate") LocalDateTime endDate);
 
 }

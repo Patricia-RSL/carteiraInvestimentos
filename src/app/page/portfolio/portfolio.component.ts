@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AnaliseCarteiraResponseDTO, ResumoAnaliseCarteiraDTO } from "../../@core/BackendModel";
+import { PortfolioAnalysisResponseDTO, PortfolioAnalysisSummaryDTO } from "../../@core/BackendModel";
 import { PortfolioService } from 'src/app/@core/services/portfolio.service';
 
 
@@ -11,8 +11,8 @@ import { PortfolioService } from 'src/app/@core/services/portfolio.service';
 export class PortfolioComponent implements OnInit{
 
   displayedColumns: String[] = ['instrument', 'qtdAcoes', 'valorInvestido', 'valorMercado', 'rendimento'];
-  portfolio: AnaliseCarteiraResponseDTO = {} as AnaliseCarteiraResponseDTO;
-  resumoPortfolio: ResumoAnaliseCarteiraDTO = {} as ResumoAnaliseCarteiraDTO;
+  portfolio: PortfolioAnalysisResponseDTO = {} as PortfolioAnalysisResponseDTO;
+  resumoPortfolio: PortfolioAnalysisSummaryDTO = {} as PortfolioAnalysisSummaryDTO;
 
   constructor( private portfolioService: PortfolioService){
 
@@ -21,7 +21,7 @@ export class PortfolioComponent implements OnInit{
     console.log('oi')
     this.portfolioService.getAnalisePortfolio().subscribe((result)=>{
       this.portfolio = result;
-      this.resumoPortfolio = result.resumoAnaliseCarteiraDTO;
+      this.resumoPortfolio = result.portfolioAnalysisSummaryDTO;
     })
   }
 }

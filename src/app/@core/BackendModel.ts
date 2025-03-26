@@ -1,20 +1,20 @@
-export interface AnaliseCarteiraResponseDTO {
-    resumoAnaliseCarteiraDTO: ResumoAnaliseCarteiraDTO;
-    detalhesAnaliseCarteiraDTO: ItemDetalhesAnaliseCarteiraDTO[];
+export interface PortfolioAnalysisResponseDTO {
+    portfolioAnalysisSummaryDTO: PortfolioAnalysisSummaryDTO;
+    portfolioAnalysisDetail: PortfolioAnalysisDetailItemDTO[];
   }
   
-  export interface ItemDetalhesAnaliseCarteiraDTO {
+  export interface PortfolioAnalysisDetailItemDTO {
     instrument: string;
-    qtdAcoes: number;
-    valorInvestido: number;
-    valorMercado: number;
+    instrumentAmount: number;
+    investedValue: number;
+    marketValue: number;
     gain: number;
-    rendimentosPorcentagem: number;
+    percentageYield: number;
   }
   
-  export interface ResumoAnaliseCarteiraDTO {
-    totalAcoes: number;
-    valorInvestido: number; 
-    valorMercado: number;
-    rendimentosPorcentagem: number;
+  export interface PortfolioAnalysisSummaryDTO {
+    instrumentAmount: number;
+    investedValue: number; 
+    marketValue: number;
+    percentageYield: number;
   }

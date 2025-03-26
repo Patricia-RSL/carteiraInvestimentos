@@ -13,6 +13,9 @@ import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
@@ -23,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -67,20 +71,11 @@ class AnaliseCarteiraServiceTest {
         requestDTOComFiltro.setDataFim(dataFim);
     }
 
-    @Test
-    void findAllByTipoOperacaoAndInstrumentAndData() {
-        TipoOperacao tipo = TipoOperacao.v;
-
-        List<UserTrade> expectedTrades = mockUserTrades.stream()
-                .filter(trade -> trade.getTipoOperacao() == tipo && trade.getData().isAfter(dataInicio) && trade.getData().isBefore(dataFim))
-                .toList();
-
+    @ParameterizedTest
+    @MethodSource("provideTestCasesForFindAllByTipoOperacaoAndInstrumentAndData")
+    void findAllByTipoOperacaoAndInstrumentAndData_ok(TipoOperacao tipo, List<UserTrade> expectedTrades) {
         when(userTradeRepository.findAllByTipoOperacaoAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(
-                tipo,
-                instruments,
-                dataInicio,
-                dataFim))
-                .thenReturn(expectedTrades);
+                tipo, instruments, dataInicio, dataFim)).thenReturn(expectedTrades);
 
         List<UserTrade> result = analiseCarteiraService.findAllByTipoOperacaoAndInstrumentAndData(
                 tipo, instruments, dataInicio, dataFim);
@@ -88,10 +83,25 @@ class AnaliseCarteiraServiceTest {
         assertEquals(expectedTrades, result);
         verify(userTradeRepository).findAllByTipoOperacaoAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(
                 tipo, instruments, dataInicio, dataFim);
+
+    }
+
+    private static Stream<Arguments> provideTestCasesForFindAllByTipoOperacaoAndInstrumentAndData() {
+        LocalDateTime dataInicio = LocalDateTime.of(2019, 1, 1, 0, 0);
+        LocalDateTime dataFim = LocalDateTime.of(2019, 12, 31, 0, 0);
+
+        return Stream.of(
+                Arguments.of(TipoOperacao.v, UserTradeMockFactory.createMockUserTrades().stream()
+                        .filter(trade -> trade.getTipoOperacao() == TipoOperacao.v && trade.getData().isAfter(dataInicio) && trade.getData().isBefore(dataFim))
+                        .toList()),
+                Arguments.of(TipoOperacao.c, UserTradeMockFactory.createMockUserTrades().stream()
+                        .filter(trade -> trade.getTipoOperacao() == TipoOperacao.c && trade.getData().isAfter(dataInicio) && trade.getData().isBefore(dataFim))
+                        .toList())
+        );
     }
 
     @Test
-    void obterItensDetalhesAnalise() {
+    void obterItensDetalhesAnalise_ok() {
 
         List<ItemDetalhesAnaliseCarteiraProjection> projections = Arrays.asList(
                 createMockProjection("ITUB4F", 2, new BigDecimal("72.00")),
@@ -101,12 +111,9 @@ class AnaliseCarteiraServiceTest {
         instruments = new ArrayList<>();
         instruments.add(0,"ITUB4F");
         instruments.add(1,"PETR4F");
+        requestDTOComFiltro.setInstrumentList(instruments);
 
-        when(userTradeRepository.getQuantidadeAndSaldoPorInstrument(
-                instruments,
-                dataInicio,
-                dataFim))
-                .thenReturn(projections);
+        setupMockProjections(projections, requestDTOComFiltro);
 
         requestDTOComFiltro.setInstrumentList(instruments);
         List<ItemDetalhesAnaliseCarteiraDTO> result = analiseCarteiraService.obterItensDetalhesAnalise(requestDTOComFiltro);
@@ -116,8 +123,8 @@ class AnaliseCarteiraServiceTest {
         assertEquals("ITUB4F", result.get(0).getInstrument());
         assertEquals(2, result.get(0).getQtdAcoes());
         assertEquals(new BigDecimal("72.00"), result.get(0).getValorInvestido());
-        assertEquals(null, result.get(0).getValorMercado());
-        assertEquals(null, result.get(0).getRendimentosPorcentagem());
+        assertNull(result.get(0).getValorMercado());
+        assertNull(result.get(0).getRendimentosPorcentagem());
 
         assertEquals("PETR4F", result.get(1).getInstrument());
         assertEquals(6, result.get(1).getQtdAcoes());
@@ -125,16 +132,14 @@ class AnaliseCarteiraServiceTest {
     }
 
     @Test
-    void analisarCarteiraOk() throws BadRequestException {
+    void analisarCarteira_ok() throws BadRequestException {
         AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO = new AnaliseCarteiraRequestDTO().init();
         AnaliseCarteiraResponseDTO expectedResponse = new AnaliseCarteiraResponseDTO();
 
         List<ItemDetalhesAnaliseCarteiraProjection> projections = criarProjectionParaAnaliseCarteira();
         List<ItemDetalhesAnaliseCarteiraDTO> detalhesCompletos = criarDetalhesCompletosParaAnaliseCarteira();
 
-        when(userTradeRepository.getQuantidadeAndSaldoPorInstrument(analiseCarteiraRequestDTO.getInstrumentList(),
-                analiseCarteiraRequestDTO.getDataInicio(), analiseCarteiraRequestDTO.getDataFim())).thenReturn(projections);
-
+        setupMockProjections(projections, analiseCarteiraRequestDTO);
 
         when(analiseCalculatorService.calcularValorMercado(any(ItemDetalhesAnaliseCarteiraDTO.class),
                 any(AnaliseCarteiraRequestDTO.class)))
@@ -180,18 +185,136 @@ class AnaliseCarteiraServiceTest {
         assertEquals(expectedResponse.getResumoAnaliseCarteiraDTO(), result.getResumoAnaliseCarteiraDTO());
     }
 
+    private ItemDetalhesAnaliseCarteiraProjection createMockProjection(String instrument, Integer qtdAcoes, BigDecimal valorInvestido) {
+        return new ItemDetalhesAnaliseCarteiraProjection() {
+            @Override
+            public String getInstrument() {
+                return instrument;
+            }
+
+            @Override
+            public Integer getTotalAcoes() {
+                return qtdAcoes;
+            }
+
+            @Override
+            public BigDecimal getSaldoInvestido() {
+                return valorInvestido;
+            }
+        };
+    }
+
+
+    @Test
+    void analisarCarteiraComFiltro_ok() throws BadRequestException {
+        AnaliseCarteiraResponseDTO expectedResponse = new AnaliseCarteiraResponseDTO();
+
+        List<ItemDetalhesAnaliseCarteiraProjection> projections = criarProjectionParaAnaliseCarteiraComFiltro();
+        List<ItemDetalhesAnaliseCarteiraDTO> detalhesCompletos = criarDetalhesCompletosParaAnaliseCarteiraComFiltro();
+
+        setupMockProjections(projections, requestDTOComFiltro);
+
+        when(analiseCalculatorService.calcularValorMercado(any(ItemDetalhesAnaliseCarteiraDTO.class), any(AnaliseCarteiraRequestDTO.class)))
+                .thenAnswer(invocation -> {
+                    ItemDetalhesAnaliseCarteiraDTO item = invocation.getArgument(0);
+
+                    return detalhesCompletos.stream()
+                            .filter(itemCompleto -> itemCompleto.getInstrument().equals(item.getInstrument()))
+                            .findFirst()
+                            .map(ItemDetalhesAnaliseCarteiraDTO::getValorMercado)
+                            .orElse(BigDecimal.ZERO);
+                });
+
+        when(analiseCalculatorService.calcularRendimentoPorcentual(any(ItemDetalhesAnaliseCarteiraDTO.class)))
+                .thenAnswer(invocation -> {
+                    ItemDetalhesAnaliseCarteiraDTO item = invocation.getArgument(0);
+
+                    return detalhesCompletos.stream()
+                            .filter(itemCompleto -> itemCompleto.getInstrument().equals(item.getInstrument()))
+                            .findFirst()
+                            .map(ItemDetalhesAnaliseCarteiraDTO::getRendimentosPorcentagem)
+                            .orElse(BigDecimal.ZERO);
+                });
+
+        ResumoAnaliseCarteiraDTO resumoAnaliseCarteiraDTO = new ResumoAnaliseCarteiraDTO();
+        resumoAnaliseCarteiraDTO.setTotalAcoes(71);
+        resumoAnaliseCarteiraDTO.setValorMercado(new BigDecimal("2325.05"));
+        resumoAnaliseCarteiraDTO.setValorInvestido(new BigDecimal("2052.07"));
+        resumoAnaliseCarteiraDTO.setRendimentosPorcentagem(new BigDecimal("13.30"));
+
+        when(analiseCalculatorService.calcularResumo(any(List.class)))
+                .thenReturn(resumoAnaliseCarteiraDTO);
+
+        expectedResponse.setDetalhesAnaliseCarteiraDTO(detalhesCompletos);
+        expectedResponse.setResumoAnaliseCarteiraDTO(resumoAnaliseCarteiraDTO);
+
+        AnaliseCarteiraResponseDTO result = analiseCarteiraService.analisarCarteiraComFiltro(requestDTOComFiltro);
+
+        assertIterableEquals(expectedResponse.getDetalhesAnaliseCarteiraDTO(), result.getDetalhesAnaliseCarteiraDTO());
+        assertEquals(expectedResponse.getResumoAnaliseCarteiraDTO(), result.getResumoAnaliseCarteiraDTO());
+
+    }
+
+
+
+    @Test
+    void calcularRendimentoItemDetalhe_ok() throws BadRequestException {
+
+        UserTrade firstTrade = mockUserTrades.get(0);
+        ItemDetalhesAnaliseCarteiraDTO item = createItemDetalheFromTrade(firstTrade);
+        BigDecimal valorMercado = new BigDecimal("200.00");
+        BigDecimal rendimentoPorcentual = new BigDecimal("8.40");
+
+        when(analiseCalculatorService.calcularValorMercado(item, requestDTOComFiltro))
+                .thenReturn(valorMercado);
+        when(analiseCalculatorService.calcularRendimentoPorcentual(item))
+                .thenReturn(rendimentoPorcentual);
+
+        ItemDetalhesAnaliseCarteiraDTO result = analiseCarteiraService.calcularRendimentoItemDetalhe(item, requestDTOComFiltro);
+
+        assertSame(item, result);
+        assertEquals(valorMercado, result.getValorMercado());
+        assertEquals(rendimentoPorcentual, result.getRendimentosPorcentagem());
+
+        verify(analiseCalculatorService).calcularValorMercado(item, requestDTOComFiltro);
+        verify(analiseCalculatorService).calcularRendimentoPorcentual(item);
+    }
+
+    //Métodos auxiliares
+    private ItemDetalhesAnaliseCarteiraDTO createItemDetalhe(String instrument, Integer qtdAcoes, BigDecimal valorInvestido) {
+        ItemDetalhesAnaliseCarteiraDTO item = new ItemDetalhesAnaliseCarteiraDTO();
+        item.setInstrument(instrument);
+        item.setQtdAcoes(qtdAcoes);
+        item.setValorInvestido(valorInvestido);
+        return item;
+    }
+
+    private ItemDetalhesAnaliseCarteiraDTO createItemDetalheFromTrade(UserTrade trade) {
+        return createItemDetalhe(
+                trade.getInstrument(),
+                trade.getQuantidade(),
+                trade.getValorTotal()
+        );
+    }
+
+    private void setupMockProjections(List<ItemDetalhesAnaliseCarteiraProjection> projections, AnaliseCarteiraRequestDTO analiseCarteiraRequestDTO) {
+        when(userTradeRepository.getQuantidadeAndSaldoPorInstrument(
+                analiseCarteiraRequestDTO.getInstrumentList(),
+                analiseCarteiraRequestDTO.getDataInicio(),
+                analiseCarteiraRequestDTO.getDataFim())).thenReturn(projections);
+    }
 
     private List<ItemDetalhesAnaliseCarteiraProjection> criarProjectionParaAnaliseCarteira() {
         List<ItemDetalhesAnaliseCarteiraProjection> mockItemDetalheList = new ArrayList<>();
 
-            mockItemDetalheList.add(createMockProjection("ITUB4F", 0, new BigDecimal("-3.20")));
-            mockItemDetalheList.add(createMockProjection("PETR4F", 6, new BigDecimal("142.26")));
-            mockItemDetalheList.add(createMockProjection("VALE3F", 4, new BigDecimal("204.56")));
-            mockItemDetalheList.add(createMockProjection("BBDC4", 10, new BigDecimal("317.40")));
-            mockItemDetalheList.add(createMockProjection("MGLU3", 15, new BigDecimal("291.75")));
-            mockItemDetalheList.add(createMockProjection("WEGE3", 12, new BigDecimal("244.20")));
-            mockItemDetalheList.add(createMockProjection("ABEV3", 20, new BigDecimal("357.60")));
-            mockItemDetalheList.add(createMockProjection("BBAS3", 10, new BigDecimal("422.30")));
+        mockItemDetalheList.add(createMockProjection("ITUB4F", 0, new BigDecimal("-3.20")));
+        mockItemDetalheList.add(createMockProjection("PETR4F", 6, new BigDecimal("142.26")));
+        mockItemDetalheList.add(createMockProjection("VALE3F", 4, new BigDecimal("204.56")));
+        mockItemDetalheList.add(createMockProjection("BBDC4", 10, new BigDecimal("317.40")));
+        mockItemDetalheList.add(createMockProjection("MGLU3", 15, new BigDecimal("291.75")));
+        mockItemDetalheList.add(createMockProjection("WEGE3", 12, new BigDecimal("244.20")));
+        mockItemDetalheList.add(createMockProjection("ABEV3", 20, new BigDecimal("357.60")));
+        mockItemDetalheList.add(createMockProjection("BBAS3", 10, new BigDecimal("422.30")));
 
 
 
@@ -274,78 +397,6 @@ class AnaliseCarteiraServiceTest {
         detalhesCompletos.add(mockBbas3);
 
         return detalhesCompletos;
-    }
-
-    private ItemDetalhesAnaliseCarteiraProjection createMockProjection(String instrument, Integer qtdAcoes, BigDecimal valorInvestido) {
-        return new ItemDetalhesAnaliseCarteiraProjection() {
-            @Override
-            public String getInstrument() {
-                return instrument;
-            }
-
-            @Override
-            public Integer getTotalAcoes() {
-                return qtdAcoes;
-            }
-
-            @Override
-            public BigDecimal getSaldoInvestido() {
-                return valorInvestido;
-            }
-        };
-    }
-
-
-    @Test
-    void analisarCarteiraComFiltroOk() throws BadRequestException {
-        AnaliseCarteiraResponseDTO expectedResponse = new AnaliseCarteiraResponseDTO();
-
-        List<ItemDetalhesAnaliseCarteiraProjection> projections = criarProjectionParaAnaliseCarteiraComFiltro();
-        List<ItemDetalhesAnaliseCarteiraDTO> detalhesCompletos = criarDetalhesCompletosParaAnaliseCarteiraComFiltro();
-
-        when(userTradeRepository.getQuantidadeAndSaldoPorInstrument(requestDTOComFiltro.getInstrumentList(),
-                requestDTOComFiltro.getDataInicio(), requestDTOComFiltro.getDataFim())).thenReturn(projections);
-
-
-        when(analiseCalculatorService.calcularValorMercado(any(ItemDetalhesAnaliseCarteiraDTO.class), any(AnaliseCarteiraRequestDTO.class)))
-                .thenAnswer(invocation -> {
-                    ItemDetalhesAnaliseCarteiraDTO item = invocation.getArgument(0);
-
-                    return detalhesCompletos.stream()
-                            .filter(itemCompleto -> itemCompleto.getInstrument().equals(item.getInstrument()))
-                            .findFirst()
-                            .map(ItemDetalhesAnaliseCarteiraDTO::getValorMercado)
-                            .orElse(BigDecimal.ZERO);
-                });
-
-        when(analiseCalculatorService.calcularRendimentoPorcentual(any(ItemDetalhesAnaliseCarteiraDTO.class)))
-                .thenAnswer(invocation -> {
-                    ItemDetalhesAnaliseCarteiraDTO item = invocation.getArgument(0);
-
-                    return detalhesCompletos.stream()
-                            .filter(itemCompleto -> itemCompleto.getInstrument().equals(item.getInstrument()))
-                            .findFirst()
-                            .map(ItemDetalhesAnaliseCarteiraDTO::getRendimentosPorcentagem)
-                            .orElse(BigDecimal.ZERO);
-                });
-
-        ResumoAnaliseCarteiraDTO resumoAnaliseCarteiraDTO = new ResumoAnaliseCarteiraDTO();
-        resumoAnaliseCarteiraDTO.setTotalAcoes(71);
-        resumoAnaliseCarteiraDTO.setValorMercado(new BigDecimal("2325.05"));
-        resumoAnaliseCarteiraDTO.setValorInvestido(new BigDecimal("2052.07"));
-        resumoAnaliseCarteiraDTO.setRendimentosPorcentagem(new BigDecimal("13.30"));
-
-        when(analiseCalculatorService.calcularResumo(any(List.class)))
-                .thenReturn(resumoAnaliseCarteiraDTO);
-
-        expectedResponse.setDetalhesAnaliseCarteiraDTO(detalhesCompletos);
-        expectedResponse.setResumoAnaliseCarteiraDTO(resumoAnaliseCarteiraDTO);
-
-        AnaliseCarteiraResponseDTO result = analiseCarteiraService.analisarCarteiraComFiltro(requestDTOComFiltro);
-
-        assertIterableEquals(expectedResponse.getDetalhesAnaliseCarteiraDTO(), result.getDetalhesAnaliseCarteiraDTO());
-        assertEquals(expectedResponse.getResumoAnaliseCarteiraDTO(), result.getResumoAnaliseCarteiraDTO());
-
     }
 
     private List<ItemDetalhesAnaliseCarteiraDTO> criarDetalhesCompletosParaAnaliseCarteiraComFiltro() {
@@ -443,128 +494,4 @@ class AnaliseCarteiraServiceTest {
         return mockItemDetalheList;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*@Test
-    void analisarCarteiraComFiltro() throws BadRequestException {
-
-        List<ItemDetalhesAnaliseCarteiraProjection> projections = Arrays.asList(
-                createMockProjectionFromTrade(mockUserTrades.get(0)),
-                createMockProjectionFromTrade(mockUserTrades.get(1))
-        );
-
-        ResumoAnaliseCarteiraDTO resumo = new ResumoAnaliseCarteiraDTO();
-        BigDecimal totalInvestido = new BigDecimal("379.06"); // Soma dos valores dos dois primeiros trades
-        BigDecimal totalMercado = new BigDecimal("410.00");   // Valor hipotético para teste
-        resumo.setValorInvestido(totalInvestido);
-        resumo.setValorMercado(totalMercado);
-
-        when(userTradeRepository.getQuantidadeAndSaldoPorInstrument(
-                anyList(), any(LocalDateTime.class), any(LocalDateTime.class)))
-                .thenReturn(projections);
-
-        when(analiseCalculatorService.calcularValorMercado(any(ItemDetalhesAnaliseCarteiraDTO.class),
-                any(AnaliseCarteiraRequestDTO.class)))
-                .thenAnswer(invocation -> {
-                    ItemDetalhesAnaliseCarteiraDTO item = invocation.getArgument(0);
-                    // Valores hipotéticos para o teste
-                    if ("ITUB4F".equals(item.getInstrument())) {
-                        return new BigDecimal("200.00");
-                    } else {
-                        return new BigDecimal("210.00");
-                    }
-                });
-
-        when(analiseCalculatorService.calcularRendimentoPorcentual(any(ItemDetalhesAnaliseCarteiraDTO.class)))
-                .thenAnswer(invocation -> {
-                    ItemDetalhesAnaliseCarteiraDTO item = invocation.getArgument(0);
-                    // Valores hipotéticos para o teste
-                    if ("ITUB4F".equals(item.getInstrument())) {
-                        return new BigDecimal("8.40");
-                    } else {
-                        return new BigDecimal("7.94");
-                    }
-                });
-
-        when(analiseCalculatorService.calcularResumo(anyList(), any(AnaliseCarteiraRequestDTO.class)))
-                .thenReturn(resumo);
-
-        // Act
-        AnaliseCarteiraResponseDTO result = analiseCarteiraService.analisarCarteiraComFiltro(requestDTO);
-
-        // Assert
-        assertNotNull(result);
-        assertNotNull(result.getDetalhesAnaliseCarteiraDTO());
-        assertNotNull(result.getResumoAnaliseCarteiraDTO());
-        assertEquals(2, result.getDetalhesAnaliseCarteiraDTO().size());
-        assertEquals(resumo, result.getResumoAnaliseCarteiraDTO());
-
-        verify(analiseCalculatorService, times(2)).calcularValorMercado(
-                any(ItemDetalhesAnaliseCarteiraDTO.class), requestDTO);
-        verify(analiseCalculatorService, times(2)).calcularRendimentoPorcentual(
-                any(ItemDetalhesAnaliseCarteiraDTO.class));
-        verify(analiseCalculatorService).calcularResumo(anyList(), requestDTO);
-    }
-
-    @Test
-    void completarItemDetalheRendimento_DeveCalcularEAtualizarValores() throws BadRequestException {
-        // Arrange - usando dados do primeiro trade mockado
-        UserTrade firstTrade = mockUserTrades.get(0);
-        ItemDetalhesAnaliseCarteiraDTO item = createItemDetalheFromTrade(firstTrade);
-        BigDecimal valorMercado = new BigDecimal("200.00");
-        BigDecimal rendimentoPorcentual = new BigDecimal("8.40");
-
-        when(analiseCalculatorService.calcularValorMercado(item, requestDTO))
-                .thenReturn(valorMercado);
-        when(analiseCalculatorService.calcularRendimentoPorcentual(item))
-                .thenReturn(rendimentoPorcentual);
-
-        // Act
-        ItemDetalhesAnaliseCarteiraDTO result = analiseCarteiraService.calcularRendimentoItemDetalhe(item, requestDTO);
-
-        // Assert
-        assertSame(item, result);
-        assertEquals(valorMercado, result.getValorMercado());
-        assertEquals(rendimentoPorcentual, result.getRendimentosPorcentagem());
-
-        verify(analiseCalculatorService).calcularValorMercado(item, requestDTO);
-        verify(analiseCalculatorService).calcularRendimentoPorcentual(item);
-    }
-
-    // Métodos auxiliares para criar objetos mock a partir dos trades
-
-
-
-
-    private ItemDetalhesAnaliseCarteiraDTO createItemDetalhe(String instrument, Integer qtdAcoes, BigDecimal valorInvestido) {
-        ItemDetalhesAnaliseCarteiraDTO item = new ItemDetalhesAnaliseCarteiraDTO();
-        item.setInstrument(instrument);
-        item.setQtdAcoes(qtdAcoes);
-        item.setValorInvestido(valorInvestido);
-        item.setValorMercado(BigDecimal.ZERO);
-        item.setRendimentosPorcentagem(BigDecimal.ZERO);
-        return item;
-    }
-
-    private ItemDetalhesAnaliseCarteiraDTO createItemDetalheFromTrade(UserTrade trade) {
-        return createItemDetalhe(
-                trade.getInstrument(),
-                trade.getQuantidade(),
-                trade.getValorTotal()
-        );
-    }*/
 }

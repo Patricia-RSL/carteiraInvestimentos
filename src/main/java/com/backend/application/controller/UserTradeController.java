@@ -10,10 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.backend.application.entities.UserTrade;
 import com.backend.application.enums.OperationType;
@@ -71,5 +68,46 @@ public class UserTradeController {
     @GetMapping("/tipo-operacao/{operationType}")
     public ResponseEntity<List<UserTrade>> getByTipoOpeacao(@Parameter(description = "Tipo de operação") @PathVariable OperationType operationType) {
         return ResponseEntity.ok().body(userTradeService.findAllByOperationType(operationType));
+    }
+
+    @Operation(summary = "Criar uma nova transação", description = "Cria uma nova transação de usuário")
+    @ApiResponse(responseCode = "201", description = "Transação criada com sucesso",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = UserTrade.class))})
+    @PostMapping("/")
+    public ResponseEntity<UserTrade> create(@RequestBody UserTrade userTrade) {
+        UserTrade createdTrade = userTradeService.save(userTrade);
+        return ResponseEntity.status(201).body(createdTrade);
+    }
+
+    @Operation(summary = "Atualizar uma transação", description = "Atualiza uma transação de usuário existente")
+    @ApiResponse(responseCode = "200", description = "Transação atualizada com sucesso",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = UserTrade.class))})
+    @PutMapping("/{id}")
+    public ResponseEntity<UserTrade> update(@PathVariable Long id, @RequestBody UserTrade userTrade) {
+        Optional<UserTrade> optTrade = userTradeService.getById(id);
+
+        if (optTrade.isPresent()) {
+            userTrade.setId(id);
+            UserTrade updatedTrade = userTradeService.save(userTrade);
+            return ResponseEntity.ok().body(updatedTrade);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Deletar uma transação", description = "Deleta uma transação de usuário existente")
+    @ApiResponse(responseCode = "204", description = "Transação deletada com sucesso")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        Optional<UserTrade> optTrade = userTradeService.getById(id);
+
+        if (optTrade.isPresent()) {
+            userTradeService.delete(id);
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }

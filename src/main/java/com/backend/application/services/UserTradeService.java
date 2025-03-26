@@ -33,4 +33,12 @@ public class UserTradeService {
     public List<UserTrade> findAllByOperationType(OperationType tipo){
         return userTradeRepository.findAllByOperationType(tipo);
     }
+
+    public void delete(Long id) {
+        this.userTradeRepository.deleteById(id);
+    }
+
+    public UserTrade save(UserTrade userTrade) {
+        return this.userTradeRepository.save(userTrade);
+    }
 }

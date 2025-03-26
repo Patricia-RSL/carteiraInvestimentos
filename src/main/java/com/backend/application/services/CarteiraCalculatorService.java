@@ -1,18 +1,17 @@
 package com.backend.application.services;
 
+import com.backend.application.dto.AnaliseCarteiraRequestDTO;
+import com.backend.application.dto.ItemDetalhesAnaliseCarteiraDTO;
+import com.backend.application.dto.ResumoAnaliseCarteiraDTO;
+import com.backend.application.entities.InstrumentQuote;
+import com.backend.application.interfaces.CarteiraCalculatorInterface;
+import org.apache.coyote.BadRequestException;
+import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
-
-import com.backend.application.dto.ResumoAnaliseCarteiraDTO;
-import org.apache.coyote.BadRequestException;
-import org.springframework.stereotype.Service;
-
-import com.backend.application.dto.AnaliseCarteiraRequestDTO;
-import com.backend.application.dto.ItemDetalhesAnaliseCarteiraDTO;
-import com.backend.application.entities.InstrumentQuote;
-import com.backend.application.interfaces.CarteiraCalculatorInterface;
 
 @Service
 public class CarteiraCalculatorService implements CarteiraCalculatorInterface {

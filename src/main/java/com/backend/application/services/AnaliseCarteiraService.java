@@ -1,19 +1,17 @@
 package com.backend.application.services;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
 
 import com.backend.application.converter.ItemDetalhesAnaliseCarteiraDTOConverter;
-import org.apache.coyote.BadRequestException;
-import org.springframework.stereotype.Service;
-
-import com.backend.application.dto.AnaliseCarteiraRequestDTO;
-import com.backend.application.dto.AnaliseCarteiraResponseDTO;
-import com.backend.application.dto.ItemDetalhesAnaliseCarteiraDTO;
+import com.backend.application.dto.*;
 import com.backend.application.entities.UserTrade;
 import com.backend.application.enums.TipoOperacao;
 import com.backend.application.interfaces.ItemDetalhesAnaliseCarteiraProjection;
 import com.backend.application.repository.UserTradeRepository;
+import org.apache.coyote.BadRequestException;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class AnaliseCarteiraService {

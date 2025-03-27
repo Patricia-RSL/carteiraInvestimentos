@@ -12,12 +12,16 @@ import {MatTableModule} from '@angular/material/table';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { LucideAngularModule, ArrowDown, ArrowUp } from 'lucide-angular';
+import { HistoricoTransacoesComponent } from './page/historico-transacoes/historico-transacoes.component';
+import { HeaderComponent } from './header/header.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    PortfolioComponent
+    PortfolioComponent,
+    HistoricoTransacoesComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

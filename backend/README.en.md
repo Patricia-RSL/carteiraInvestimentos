@@ -42,20 +42,29 @@ psql -U postgres -d bolsa -f <your path>/banco.bkp
 This project already has a Dockerfile configured to run the application in a container.
 
 ```sh
-docker build -t investment-portfolio-tracker .
-
-docker run -p 8080:8080 investment-portfolio-tracker
+docker-compose down
+docker-compose build backend
+docker-compose up -d
 ```
 
 In this case, before importing the PostgreSQL database backup, you should copy the bolsa.bkp file to your container.
 
 ```sh
-docker cp <your_path>/bolsa.bkp application_db_1:/tmp/banco.bkp
+docker cp bolsa.bkp backend_db_1:/tmp/banco.bkp
 
-docker exec -it application_db_1 bash
+docker exec -it backend_db_1 bash
+
+psql -U postgres -d bolsa -f tmp/banco.bkp
 ```
-You will also need to update your application.properties to point to the database in the container:
+
+You will also need to update your .env:
 
 ```sh
-spring.datasource.url=jdbc:postgresql://db:5432/bolsa
+
+DB_HOST=db
+DB_PORT=5431
+DB_NAME=bolsa
+DB_USER=postgres
+DB_PASSWORD=password
+
 ```

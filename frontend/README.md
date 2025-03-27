@@ -32,6 +32,10 @@ O projeto possui as seguintes funcionalidades esperadas:
    - Exibe gráficos que facilitam a visualização do rendimento acumulado, tanto por ação quanto pelo total da carteira.
    - **Status**: Será implementada futuramente ⏳
 
+## Pré-requisitos
+- npm
+- yarn
+- 
 ## Preparando o Ambiente
 
 Antes de rodar a aplicação, é necessário instalar as dependências do projeto. Para isso, execute o seguinte comando:

@@ -7,6 +7,12 @@
 
 -- Started on 2020-11-11 16:21:29 -03
 
+DROP TABLE IF EXISTS public.instrument_quote CASCADE;
+DROP TABLE IF EXISTS public.user_trade CASCADE;
+DROP SEQUENCE IF EXISTS public.hibernate_sequence;
+DROP SEQUENCE IF EXISTS public.instrument_quote_id_seq;
+DROP SEQUENCE IF EXISTS public.user_trade_id_seq;
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -20,7 +26,7 @@ SET row_security = off;
 
 --
 -- TOC entry 206 (class 1259 OID 21838783)
--- Name: hibernate_sequence; Type: SEQUENCE; Schema: public; Owner: seqwdhpiixscbv
+-- Name: hibernate_sequence; Type: SEQUENCE; Schema: public;
 --
 
 CREATE SEQUENCE public.hibernate_sequence
@@ -31,15 +37,13 @@ CREATE SEQUENCE public.hibernate_sequence
     CACHE 1;
 
 
-ALTER TABLE public.hibernate_sequence OWNER TO seqwdhpiixscbv;
-
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
 --
 -- TOC entry 205 (class 1259 OID 15114875)
--- Name: instrument_quote; Type: TABLE; Schema: public; Owner: seqwdhpiixscbv
+-- Name: instrument_quote; Type: TABLE; Schema: public;
 --
 
 CREATE TABLE public.instrument_quote (
@@ -50,11 +54,10 @@ CREATE TABLE public.instrument_quote (
 );
 
 
-ALTER TABLE public.instrument_quote OWNER TO seqwdhpiixscbv;
 
 --
 -- TOC entry 204 (class 1259 OID 15114873)
--- Name: instrument_quote_id_seq; Type: SEQUENCE; Schema: public; Owner: seqwdhpiixscbv
+-- Name: instrument_quote_id_seq; Type: SEQUENCE; Schema: public;
 --
 
 CREATE SEQUENCE public.instrument_quote_id_seq
@@ -65,12 +68,11 @@ CREATE SEQUENCE public.instrument_quote_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.instrument_quote_id_seq OWNER TO seqwdhpiixscbv;
 
 --
 -- TOC entry 3858 (class 0 OID 0)
 -- Dependencies: 204
--- Name: instrument_quote_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: seqwdhpiixscbv
+-- Name: instrument_quote_id_seq; Type: SEQUENCE OWNED BY; Schema: public;
 --
 
 ALTER SEQUENCE public.instrument_quote_id_seq OWNED BY public.instrument_quote.id;
@@ -78,7 +80,7 @@ ALTER SEQUENCE public.instrument_quote_id_seq OWNED BY public.instrument_quote.i
 
 --
 -- TOC entry 203 (class 1259 OID 15114864)
--- Name: user_trade; Type: TABLE; Schema: public; Owner: seqwdhpiixscbv
+-- Name: user_trade; Type: TABLE; Schema: public;
 --
 
 CREATE TABLE public.user_trade (
@@ -95,11 +97,11 @@ CREATE TABLE public.user_trade (
 );
 
 
-ALTER TABLE public.user_trade OWNER TO seqwdhpiixscbv;
+
 
 --
 -- TOC entry 202 (class 1259 OID 15114862)
--- Name: user_trade_id_seq; Type: SEQUENCE; Schema: public; Owner: seqwdhpiixscbv
+-- Name: user_trade_id_seq; Type: SEQUENCE; Schema: public;
 --
 
 CREATE SEQUENCE public.user_trade_id_seq
@@ -110,12 +112,11 @@ CREATE SEQUENCE public.user_trade_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.user_trade_id_seq OWNER TO seqwdhpiixscbv;
 
 --
 -- TOC entry 3859 (class 0 OID 0)
 -- Dependencies: 202
--- Name: user_trade_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: seqwdhpiixscbv
+-- Name: user_trade_id_seq; Type: SEQUENCE OWNED BY; Schema: public;
 --
 
 ALTER SEQUENCE public.user_trade_id_seq OWNED BY public.user_trade.id;
@@ -123,7 +124,7 @@ ALTER SEQUENCE public.user_trade_id_seq OWNED BY public.user_trade.id;
 
 --
 -- TOC entry 3714 (class 2604 OID 15114878)
--- Name: instrument_quote id; Type: DEFAULT; Schema: public; Owner: seqwdhpiixscbv
+-- Name: instrument_quote id; Type: DEFAULT; Schema: public;
 --
 
 ALTER TABLE ONLY public.instrument_quote ALTER COLUMN id SET DEFAULT nextval('public.instrument_quote_id_seq'::regclass);
@@ -131,7 +132,7 @@ ALTER TABLE ONLY public.instrument_quote ALTER COLUMN id SET DEFAULT nextval('pu
 
 --
 -- TOC entry 3713 (class 2604 OID 15114867)
--- Name: user_trade id; Type: DEFAULT; Schema: public; Owner: seqwdhpiixscbv
+-- Name: user_trade id; Type: DEFAULT; Schema: public;
 --
 
 ALTER TABLE ONLY public.user_trade ALTER COLUMN id SET DEFAULT nextval('public.user_trade_id_seq'::regclass);
@@ -140,7 +141,7 @@ ALTER TABLE ONLY public.user_trade ALTER COLUMN id SET DEFAULT nextval('public.u
 --
 -- TOC entry 3849 (class 0 OID 15114875)
 -- Dependencies: 205
--- Data for Name: instrument_quote; Type: TABLE DATA; Schema: public; Owner: seqwdhpiixscbv
+-- Data for Name: instrument_quote; Type: TABLE DATA; Schema: public;
 --
 
 COPY public.instrument_quote (id, simbol, price, date) FROM stdin;
@@ -3347,71 +3348,71 @@ COPY public.instrument_quote (id, simbol, price, date) FROM stdin;
 --
 -- TOC entry 3847 (class 0 OID 15114864)
 -- Dependencies: 203
--- Data for Name: user_trade; Type: TABLE DATA; Schema: public; Owner: seqwdhpiixscbv
+-- Data for Name: user_trade; Type: TABLE DATA; Schema: public;
 --
 
 COPY public.user_trade (id, data, tipo_operacao, mercado, prazo, instrument, especificacao, quantidade, preco, valor_total) FROM stdin;
-122084	2019-01-17	C	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	5.0000	36.9000	184.5000
-122085	2019-01-17	C	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	1.0000	36.9000	36.9000
-122093	2019-02-13	C	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	1.0000	37.8400	37.8400
-122113	2019-06-21	C	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	2.0000	35.7500	71.5000
-122162	2019-12-17	C	Merc. Fracionário		MGLU3F	MAGAZ LUIZA  ON      NM	10.0000	48.0800	480.8000
-122163	2019-12-17	C	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	30.0000	11.1100	333.3000
-122169	2020-01-22	V	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	9.0000	33.6700	303.0300
-122179	2020-01-24	C	Merc. Fracionário		BPAN4F	BANCO PAN    PN      N1	20.0000	10.4000	208.0000
-122220	2020-01-30	C	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	7.0000	13.8500	96.9500
-122224	2020-02-06	C	Merc. Fracionário		BPAN4F	BANCO PAN    PN      N1	10.0000	10.4500	104.5000
-122229	2020-02-06	C	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	10.0000	14.8900	148.9000
-122232	2020-03-06	C	Merc. Fracionário		BPAN4F	BANCO PAN    PN      N1	20.0000	7.7900	155.8000
-122241	2020-03-06	C	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	20.0000	12.4800	249.6000
-122242	2020-03-06	C	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	1.0000	12.3100	12.3100
-122247	2020-03-11	C	Merc. Fracionário		MGLU3F	MAGAZ LUIZA  ON      NM	5.0000	45.3500	226.7500
-122248	2020-03-11	C	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	10.0000	11.3400	113.4000
-122251	2020-03-18	C	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	20.0000	24.1500	483.0000
-122256	2020-03-18	V	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	10.0000	5.9500	59.5000
-122257	2020-03-18	V	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	15.0000	5.9300	88.9500
-122258	2020-03-18	V	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	23.0000	5.9300	136.3900
-122331	2020-04-09	V	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	10.0000	5.4700	54.7000
-122346	2020-04-14	V	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	5.0000	5.8900	29.4500
-122364	2020-04-16	V	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	3.0000	6.5400	19.6200
-122373	2020-04-17	V	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	5.0000	6.6100	33.0500
-122399	2020-04-22	V	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	2.0000	6.9200	13.8400
-122418	2020-04-24	V	Mercado a Vista		BOVA11	ISHARES BOVA CI	10.0000	72.4400	724.4000
-122456	2020-04-28	V	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	5.0000	9.1400	45.7000
-5559449	2019-01-17	C	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	5.0000	36.9000	184.5000
-5559450	2019-01-17	C	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	1.0000	36.9000	36.9000
-5559458	2019-02-13	C	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	1.0000	37.8400	37.8400
-5559478	2019-06-21	C	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	2.0000	35.7500	71.5000
-5559527	2019-12-17	C	Merc. Fracionário		MGLU3F	MAGAZ LUIZA  ON      NM	10.0000	48.0800	480.8000
-5559528	2019-12-17	C	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	30.0000	11.1100	333.3000
-5559534	2020-01-22	V	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	9.0000	33.6700	303.0300
-5559544	2020-01-24	C	Merc. Fracionário		BPAN4F	BANCO PAN    PN      N1	20.0000	10.4000	208.0000
-5559585	2020-01-30	C	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	7.0000	13.8500	96.9500
-5559589	2020-02-06	C	Merc. Fracionário		BPAN4F	BANCO PAN    PN      N1	10.0000	10.4500	104.5000
-5559594	2020-02-06	C	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	10.0000	14.8900	148.9000
-5559597	2020-03-06	C	Merc. Fracionário		BPAN4F	BANCO PAN    PN      N1	20.0000	7.7900	155.8000
-5559606	2020-03-06	C	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	20.0000	12.4800	249.6000
-5559607	2020-03-06	C	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	1.0000	12.3100	12.3100
-5559612	2020-03-11	C	Merc. Fracionário		MGLU3F	MAGAZ LUIZA  ON      NM	5.0000	45.3500	226.7500
-5559613	2020-03-11	C	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	10.0000	11.3400	113.4000
-5559616	2020-03-18	C	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	20.0000	24.1500	483.0000
-5559621	2020-03-18	V	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	10.0000	5.9500	59.5000
-5559622	2020-03-18	V	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	15.0000	5.9300	88.9500
-5559623	2020-03-18	V	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	23.0000	5.9300	136.3900
-5559696	2020-04-09	V	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	10.0000	5.4700	54.7000
-5559711	2020-04-14	V	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	5.0000	5.8900	29.4500
-5559729	2020-04-16	V	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	3.0000	6.5400	19.6200
-5559738	2020-04-17	V	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	5.0000	6.6100	33.0500
-5559764	2020-04-22	V	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	2.0000	6.9200	13.8400
-5559783	2020-04-24	V	Mercado a Vista		BOVA11	ISHARES BOVA CI	10.0000	72.4400	724.4000
-5559821	2020-04-28	V	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	5.0000	9.1400	45.7000
+122084	2019-01-17	c	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	5.0000	36.9000	184.5000
+122085	2019-01-17	c	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	1.0000	36.9000	36.9000
+122093	2019-02-13	c	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	1.0000	37.8400	37.8400
+122113	2019-06-21	c	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	2.0000	35.7500	71.5000
+122162	2019-12-17	c	Merc. Fracionário		MGLU3F	MAGAZ LUIZA  ON      NM	10.0000	48.0800	480.8000
+122163	2019-12-17	c	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	30.0000	11.1100	333.3000
+122169	2020-01-22	v	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	9.0000	33.6700	303.0300
+122179	2020-01-24	c	Merc. Fracionário		BPAN4F	BANCO PAN    PN      N1	20.0000	10.4000	208.0000
+122220	2020-01-30	c	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	7.0000	13.8500	96.9500
+122224	2020-02-06	c	Merc. Fracionário		BPAN4F	BANCO PAN    PN      N1	10.0000	10.4500	104.5000
+122229	2020-02-06	c	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	10.0000	14.8900	148.9000
+122232	2020-03-06	c	Merc. Fracionário		BPAN4F	BANCO PAN    PN      N1	20.0000	7.7900	155.8000
+122241	2020-03-06	c	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	20.0000	12.4800	249.6000
+122242	2020-03-06	c	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	1.0000	12.3100	12.3100
+122247	2020-03-11	c	Merc. Fracionário		MGLU3F	MAGAZ LUIZA  ON      NM	5.0000	45.3500	226.7500
+122248	2020-03-11	c	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	10.0000	11.3400	113.4000
+122251	2020-03-18	c	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	20.0000	24.1500	483.0000
+122256	2020-03-18	v	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	10.0000	5.9500	59.5000
+122257	2020-03-18	v	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	15.0000	5.9300	88.9500
+122258	2020-03-18	v	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	23.0000	5.9300	136.3900
+122331	2020-04-09	v	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	10.0000	5.4700	54.7000
+122346	2020-04-14	v	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	5.0000	5.8900	29.4500
+122364	2020-04-16	v	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	3.0000	6.5400	19.6200
+122373	2020-04-17	v	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	5.0000	6.6100	33.0500
+122399	2020-04-22	v	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	2.0000	6.9200	13.8400
+122418	2020-04-24	v	Mercado a Vista		BOVA11	ISHARES BOVA CI	10.0000	72.4400	724.4000
+122456	2020-04-28	v	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	5.0000	9.1400	45.7000
+5559449	2019-01-17	c	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	5.0000	36.9000	184.5000
+5559450	2019-01-17	c	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	1.0000	36.9000	36.9000
+5559458	2019-02-13	c	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	1.0000	37.8400	37.8400
+5559478	2019-06-21	c	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	2.0000	35.7500	71.5000
+5559527	2019-12-17	c	Merc. Fracionário		MGLU3F	MAGAZ LUIZA  ON      NM	10.0000	48.0800	480.8000
+5559528	2019-12-17	c	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	30.0000	11.1100	333.3000
+5559534	2020-01-22	v	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	9.0000	33.6700	303.0300
+5559544	2020-01-24	c	Merc. Fracionário		BPAN4F	BANCO PAN    PN      N1	20.0000	10.4000	208.0000
+5559585	2020-01-30	c	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	7.0000	13.8500	96.9500
+5559589	2020-02-06	c	Merc. Fracionário		BPAN4F	BANCO PAN    PN      N1	10.0000	10.4500	104.5000
+5559594	2020-02-06	c	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	10.0000	14.8900	148.9000
+5559597	2020-03-06	c	Merc. Fracionário		BPAN4F	BANCO PAN    PN      N1	20.0000	7.7900	155.8000
+5559606	2020-03-06	c	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	20.0000	12.4800	249.6000
+5559607	2020-03-06	c	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	1.0000	12.3100	12.3100
+5559612	2020-03-11	c	Merc. Fracionário		MGLU3F	MAGAZ LUIZA  ON      NM	5.0000	45.3500	226.7500
+5559613	2020-03-11	c	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	10.0000	11.3400	113.4000
+5559616	2020-03-18	c	Merc. Fracionário		ITUB4F	ITAUUNIBANCO PN      N1	20.0000	24.1500	483.0000
+5559621	2020-03-18	v	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	10.0000	5.9500	59.5000
+5559622	2020-03-18	v	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	15.0000	5.9300	88.9500
+5559623	2020-03-18	v	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	23.0000	5.9300	136.3900
+5559696	2020-04-09	v	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	10.0000	5.4700	54.7000
+5559711	2020-04-14	v	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	5.0000	5.8900	29.4500
+5559729	2020-04-16	v	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	3.0000	6.5400	19.6200
+5559738	2020-04-17	v	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	5.0000	6.6100	33.0500
+5559764	2020-04-22	v	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	2.0000	6.9200	13.8400
+5559783	2020-04-24	v	Mercado a Vista		BOVA11	ISHARES BOVA CI	10.0000	72.4400	724.4000
+5559821	2020-04-28	v	Merc. Fracionário		VVAR3F	VIAVAREJO    ON      NM	5.0000	9.1400	45.7000
 \.
 
 
 --
 -- TOC entry 3860 (class 0 OID 0)
 -- Dependencies: 206
--- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: seqwdhpiixscbv
+-- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public;
 --
 
 SELECT pg_catalog.setval('public.hibernate_sequence', 1, false);
@@ -3420,7 +3421,7 @@ SELECT pg_catalog.setval('public.hibernate_sequence', 1, false);
 --
 -- TOC entry 3861 (class 0 OID 0)
 -- Dependencies: 204
--- Name: instrument_quote_id_seq; Type: SEQUENCE SET; Schema: public; Owner: seqwdhpiixscbv
+-- Name: instrument_quote_id_seq; Type: SEQUENCE SET; Schema: public;
 --
 
 SELECT pg_catalog.setval('public.instrument_quote_id_seq', 1, false);
@@ -3429,7 +3430,7 @@ SELECT pg_catalog.setval('public.instrument_quote_id_seq', 1, false);
 --
 -- TOC entry 3862 (class 0 OID 0)
 -- Dependencies: 202
--- Name: user_trade_id_seq; Type: SEQUENCE SET; Schema: public; Owner: seqwdhpiixscbv
+-- Name: user_trade_id_seq; Type: SEQUENCE SET; Schema: public;
 --
 
 SELECT pg_catalog.setval('public.user_trade_id_seq', 1, false);
@@ -3437,7 +3438,7 @@ SELECT pg_catalog.setval('public.user_trade_id_seq', 1, false);
 
 --
 -- TOC entry 3719 (class 2606 OID 15114883)
--- Name: instrument_quote instrument_quote_id_pk; Type: CONSTRAINT; Schema: public; Owner: seqwdhpiixscbv
+-- Name: instrument_quote instrument_quote_id_pk; Type: CONSTRAINT; Schema: public;
 --
 
 ALTER TABLE ONLY public.instrument_quote
@@ -3446,7 +3447,7 @@ ALTER TABLE ONLY public.instrument_quote
 
 --
 -- TOC entry 3716 (class 2606 OID 15114872)
--- Name: user_trade user_trade_pkey; Type: CONSTRAINT; Schema: public; Owner: seqwdhpiixscbv
+-- Name: user_trade user_trade_pkey; Type: CONSTRAINT; Schema: public;
 --
 
 ALTER TABLE ONLY public.user_trade
@@ -3455,7 +3456,7 @@ ALTER TABLE ONLY public.user_trade
 
 --
 -- TOC entry 3717 (class 1259 OID 15117045)
--- Name: instru_quote_date_idx; Type: INDEX; Schema: public; Owner: seqwdhpiixscbv
+-- Name: instru_quote_date_idx; Type: INDEX; Schema: public;
 --
 
 CREATE INDEX instru_quote_date_idx ON public.instrument_quote USING btree (simbol, date);
@@ -3464,12 +3465,11 @@ CREATE INDEX instru_quote_date_idx ON public.instrument_quote USING btree (simbo
 --
 -- TOC entry 3856 (class 0 OID 0)
 -- Dependencies: 3
--- Name: SCHEMA public; Type: ACL; Schema: -; Owner: seqwdhpiixscbv
+-- Name: SCHEMA public; Type: ACL; Schema: -;
 --
 
 REVOKE ALL ON SCHEMA public FROM postgres;
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
-GRANT ALL ON SCHEMA public TO seqwdhpiixscbv;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
@@ -3479,7 +3479,6 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 -- Name: LANGUAGE plpgsql; Type: ACL; Schema: -; Owner: postgres
 --
 
-GRANT ALL ON LANGUAGE plpgsql TO seqwdhpiixscbv;
 
 
 -- Completed on 2020-11-11 16:22:00 -03

@@ -35,7 +35,8 @@ O projeto possui as seguintes funcionalidades esperadas:
 ## Pré-requisitos
 - npm
 - yarn
-- 
+
+
 ## Preparando o Ambiente
 
 Antes de rodar a aplicação, é necessário instalar as dependências do projeto. Para isso, execute o seguinte comando:
@@ -54,7 +55,7 @@ yarn start
 
 ## Code scaffolding
 
-Execute `yarn generate component component-name` para gerar um novo componente. Você também pode usar `yarn generate directive|pipe|service|class|guard|interface|enum|module`.
+Execute `ng generate component component-name` para gerar um novo componente. Você também pode usar `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Build
 

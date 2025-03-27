@@ -54,7 +54,7 @@ yarn start
 
 ## Code scaffolding
 
-Run `yarn generate component component-name` to generate a new component. You can also use `yarn generate directive|pipe|service|class|guard|interface|enum|module`.
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Code scaffolding
 

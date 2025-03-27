@@ -43,11 +43,6 @@ Before running the application, you need to install the project dependencies. To
 ```sh
 yarn install
 ```
-or
-
-```sh
-yarn i
-```
 
 ## Development Server
 

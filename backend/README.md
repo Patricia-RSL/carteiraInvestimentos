@@ -6,7 +6,7 @@ A documentação da API pode ser acessada em http://localhost:8080/swagger-ui/in
 
 ## Pré-requisitos
 
-- Java 11 ou superior
+- Java 17
 - PostgreSQL
   
 ## Funcionalidades

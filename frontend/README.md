@@ -43,10 +43,6 @@ Antes de rodar a aplicação, é necessário instalar as dependências do projet
 ```sh
 yarn install
 ```
-ou 
-```sh
-yarn i
-```
 
 ## Servidor de Desenvolvimento
 

@@ -18,3 +18,9 @@ export interface PortfolioAnalysisResponseDTO {
     marketValue: number;
     percentageYield: number;
   }
+
+  export interface PortfolioAnalysisRequestDTO{
+    beginDate: Date;
+    endDate: Date;
+    instrumentList: string[];
+  }

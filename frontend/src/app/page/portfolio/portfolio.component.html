@@ -3,6 +3,48 @@
   <h3>Acompanhe o desempenho dos seus investimentos </h3>
 
 </div>
+<div class="container filter-container mt-4">
+  <div class="filter-row">    
+    <!-- Filtro de Ativo -->
+    <div class="custom-dropdown">    
+      <mat-select [formControl]="instrumentsControl" multiple (selectionChange)="updateSelectedInstruments()" placeholder="Todas as Ações">
+        <mat-option *ngFor="let instrument of instrumentsOptions" [value]="instrument">{{instrument}}</mat-option>
+      </mat-select>
+    </div>
+
+    <!-- Seletor de Data Inicio-->
+    <mat-form-field class="hidden-datepicker">
+      <input matInput [matDatepicker]="pickerDataInicio" [(ngModel)]="filtro.beginDate">
+      <mat-datepicker #pickerDataInicio></mat-datepicker>
+    </mat-form-field>
+    <button class="date-range-button" (click)="pickerDataInicio.open()">
+      <mat-icon>calendar_today</mat-icon> {{ filtro.beginDate ? (filtro.beginDate | date:'dd/MM/yyyy') : 'Data Início' }}
+    </button>
+
+    <!-- Seletor de Data Fim-->
+    <mat-form-field class="hidden-datepicker">
+      <input matInput [matDatepicker]="pickerDataFim" [(ngModel)]="filtro.endDate">
+      <mat-datepicker #pickerDataFim></mat-datepicker>
+    </mat-form-field>
+    <button class="date-range-button" (click)="pickerDataFim.open()">
+      <mat-icon>calendar_today</mat-icon> {{ filtro.endDate ? (filtro.endDate | date:'dd/MM/yyyy') : 'Data Fim' }}
+    </button>
+
+    <!-- Botão de Limpar Filtro -->
+    <button class="clear-filter-button" (click)="clearFilter()">
+      <span class="default-text">x</span>
+      <span class="small-screen-text">Limpar</span>
+    </button>
+
+    <!-- Botão Aplicar Filtros -->
+    <button class="filter-button" (click)="applyFilter()">
+      <mat-icon>filter_alt</mat-icon> Aplicar Filtros
+    </button>
+
+  </div>
+</div>
+
+
 <div class="container mt-4">
   <mat-card appearance="outlined" class="custom-card">
     <div class="summary-header">Resumo do Portfólio </div>
@@ -39,39 +81,40 @@
 <div class="container mt-4">
   <mat-card appearance="outlined" class="custom-card">
     <mat-card-title> Posições </mat-card-title>
+    <mat-card-content [style.overflow]="'auto'" >
+      <table mat-table [dataSource]="portfolio.portfolioAnalysisDetail">
       
-    <table mat-table [dataSource]="portfolio.portfolioAnalysisDetail">
+        <ng-container matColumnDef="instrument">
+          <th mat-header-cell  class="label" *matHeaderCellDef> Ativo </th>
+          <td mat-cell *matCellDef="let element"> {{element.instrument}} </td>
+        </ng-container>
       
-      <ng-container matColumnDef="instrument">
-        <th mat-header-cell  class="label" *matHeaderCellDef> Ativo </th>
-        <td mat-cell *matCellDef="let element"> {{element.instrument}} </td>
-      </ng-container>
-    
-      <ng-container matColumnDef="qtdAcoes">
-        <th mat-header-cell  class="label" *matHeaderCellDef> Quantidade </th>
-        <td mat-cell *matCellDef="let element"> {{element.instrumentAmount}} </td>
-      </ng-container>
-    
-      <ng-container matColumnDef="valorInvestido">
-        <th mat-header-cell  class="label" *matHeaderCellDef> Valor Investido </th>
-        <td mat-cell *matCellDef="let element"> {{element.investedValue | currency:'BRL'}} </td>
-      </ng-container>
-    
-      <ng-container matColumnDef="valorMercado">
-        <th mat-header-cell  class="label" *matHeaderCellDef> Valor de Mercado </th>
-        <td mat-cell *matCellDef="let element"> {{element.marketValue | currency:'BRL'}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="rendimento">
-        <th mat-header-cell  class="label" *matHeaderCellDef> Rendimento </th>
-        <td mat-cell *matCellDef="let element" 
-          [ngClass]="{'positive': element.percentageYield > 0, 'negative': element.percentageYield < 0}">
-          <lucide-icon size="15px" [name]="resumoPortfolio.percentageYield>0 ? 'arrow-up' : 'arrow-down'"></lucide-icon>{{element.percentageYield}}%
-        </td>
-      </ng-container>
-    
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
+        <ng-container matColumnDef="qtdAcoes">
+          <th mat-header-cell  class="label" *matHeaderCellDef> Quantidade </th>
+          <td mat-cell *matCellDef="let element"> {{element.instrumentAmount}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="valorInvestido">
+          <th mat-header-cell  class="label" *matHeaderCellDef> Valor Investido </th>
+          <td mat-cell *matCellDef="let element"> {{element.investedValue | currency:'BRL'}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="valorMercado">
+          <th mat-header-cell  class="label" *matHeaderCellDef> Valor de Mercado </th>
+          <td mat-cell *matCellDef="let element"> {{element.marketValue | currency:'BRL'}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="rendimento">
+          <th mat-header-cell  class="label" *matHeaderCellDef> Rendimento </th>
+          <td mat-cell *matCellDef="let element" 
+            [ngClass]="{'positive': element.percentageYield > 0, 'negative': element.percentageYield < 0}">
+            <lucide-icon size="15px" [name]="resumoPortfolio.percentageYield>0 ? 'arrow-up' : 'arrow-down'"></lucide-icon>{{element.percentageYield}}%
+          </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </mat-card-content>    
   </mat-card>
 </div>

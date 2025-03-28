@@ -14,7 +14,13 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { LucideAngularModule, ArrowDown, ArrowUp } from 'lucide-angular';
 import { HistoricoTransacoesComponent } from './page/historico-transacoes/historico-transacoes.component';
 import { HeaderComponent } from './header/header.component';
-
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -33,6 +39,13 @@ import { HeaderComponent } from './header/header.component';
     MatTableModule,
     MatInputModule,
     MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
     LucideAngularModule.pick({ArrowDown, ArrowUp})
   ],
   providers: [],

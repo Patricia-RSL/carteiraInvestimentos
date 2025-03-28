@@ -9,16 +9,16 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 O projeto possui as seguintes funcionalidades esperadas:
 
 1. **Visualização das ações no dia**:
-   - Permite a obter de todas as ações e seus respectivos rendimentos acumulados em R$ e % em um dia específico.
-   - **Status**: Parcialmente implementada (Falta o filtro por data)
+   - Permite a obter de todas as ações e seus respectivos rendimentos acumulados em R$ e % para um período determinado (data inicial e data final).
+   - **Status**: Implementada ✅
 
 2. **Visualização de resumo da carteira**:
    - Mostra o rendimento acumulado em R$ e % da carteira de investimentos para um período determinado (data inicial e data final).
-   - **Status**: Parcialmente implementada (Falta o filtro por data)
+   - **Status**: Implementada ✅
 
 3. **Visualização do rendimento de uma ação individual**:
-   - É possível filtrar, de forma a exibir o rendimento acumulado em R$ e % de uma ação em um dia específico, independente de ter ocorrido uma operação nesse dia.
-   - **Status**: Parcialmente implementada (Falta o filtro por ação)
+   - É possível filtrar, de forma a exibir o rendimento acumulado em R$ e % de uma lista específica de ações em um período específico.
+   - **Status**: Implementada ✅
   
 4. **Visualização do histórico de transações**:
    - É possível ver todas as operações de compra e venda presentes no banco.

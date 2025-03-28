@@ -14,7 +14,7 @@ A documentação da API pode ser acessada em http://localhost:8080/swagger-ui/in
 O projeto possui as seguintes funcionalidades esperadas:
 
 1. **Visualização das ações no dia**:
-   - Permite a obter de todas as ações e seus respectivos rendimentos acumulados em R$ e % em um dia específico.
+   - Permite a obter de todas as ações e seus respectivos rendimentos acumulados em R$ e % em um período específico.
    - **Status**: Implementada ✅
 
 2. **Rendimento total da carteira**:

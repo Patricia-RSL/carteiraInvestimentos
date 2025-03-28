@@ -8,17 +8,17 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 The project has the following expected features:
 
-1. **View of stocks on a specific day**:
-   - Allows retrieving all stocks and their respective accumulated returns in R$ and % on a specific day.
-   - **Status**: Partially implemented (Missing date filter)
+1. **Daily stock visualization**:
+   - Allows obtaining all stocks and their respective accumulated returns in R$ and % for a given period (start date and end date).
+   - **Status**: Implemented ✅
 
-2. **Portfolio summary view**:
+2. **Portfolio summary visualization**:
    - Displays the accumulated return in R$ and % of the investment portfolio for a given period (start date and end date).
-   - **Status**: Partially implemented (Missing date filter)
+   - **Status**: Implemented ✅
 
-3. **View of an individual stock's return**:
-   - Allows filtering to display the accumulated return in R$ and % of a stock on a specific day, regardless of whether a transaction occurred that day.
-   - **Status**: Partially implemented (Missing action filter)
+3. **Individual stock return visualization**:
+   - It is possible to filter to display the accumulated return in R$ and % of a specific list of stocks for a specific period.
+   - **Status**: Implemented ✅
   
 4. **Transaction history view**:
    - Allows viewing all the purchase and sale operations present in the database.

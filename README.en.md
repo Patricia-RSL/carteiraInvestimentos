@@ -15,18 +15,18 @@ Both components can be run independently, but they are part of the same reposito
 
 The project has the following expected features:
 
-1. **View of stocks on a specific day**:
-   - Allows viewing all stocks and their respective accumulated returns in R$ and % on a specific day.
-   - **Status**: Partially implemented 🛠️ (Missing the field to select the day in the Front-end)
+1. **Daily stock visualization**:  
+   - Allows the visualization of all stocks and their respective accumulated returns in R$ and % for a given period (start date and end date).  
+   - **Status**: Implemented ✅  
 
-2. **Total portfolio return**:
-   - Calculates the accumulated return in R$ and % of the investment portfolio for a given period (start date and end date).
-   - **Status**: Partially implemented 🛠️ (Missing the field to select the days in the Front-end)
+2. **Total portfolio return**:  
+   - Calculates the accumulated return in R$ and % of the investment portfolio for a given period (start date and end date).  
+   - **Status**: Implemented ✅  
 
-3. **Return of an individual stock**:
-   - Allows filtering to display the accumulated return in R$ and % of a stock on a specific day, regardless of whether a transaction occurred that day.
-   - **Status**: Partially implemented 🛠️ (Missing the field to select the stock in the Front-end)
-
+3. **Individual stock return**:  
+   - It is possible to filter to display the accumulated return in R$ and % of a list of stocks for a specific date range, regardless of whether an operation occurred during that period.  
+   - **Status**: Implemented ✅  
+   
 4. **Determining gains and losses**:
    - Presents the detailed accumulated return, distinguishing stocks with gains and stocks with losses over the period.
    - **Status**: Implemented ✅

@@ -14,7 +14,7 @@ The API documentation can be accessed at http://localhost:8080/swagger-ui/index.
 The project has the following expected features:
 
 1. **View of stocks on a specific day**:
-   - Allows retrieving all stocks and their respective accumulated returns in R$ and % on a specific day.
+   - Allows retrieving all stocks and their respective accumulated returns in R$ and % for a given period (start date and end date).
    - **Status**: Implemented ✅
 
 2. **Total portfolio return**:
@@ -22,7 +22,7 @@ The project has the following expected features:
    - **Status**: Implemented ✅
 
 3. **Return of an individual stock**:
-   - Allows filtering to display the accumulated return in R$ and % of a stock on a specific day, regardless of whether a transaction occurred that day.
+   - Allows filtering to display the accumulated return in R$ and % of a stock on a specific day, regardless of whether a transaction occurred that period.
    - **Status**: Implemented ✅
 
 4. **Return Graphs**:

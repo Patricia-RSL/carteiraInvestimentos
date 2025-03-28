@@ -16,16 +16,16 @@ Ambos os componentes podem ser executados de forma independente, mas aqui fazem 
 O projeto possui as seguintes funcionalidades esperadas:
 
 1. **Visualização das ações no dia**:
-   - Permite a visualização de todas as ações e seus respectivos rendimentos acumulados em R$ e % em um dia específico.
-   - **Status**: Partcialmente implementada 🛠️ (Falta o campo para escolher o dia no Front-end)
+   - Permite a visualização de todas as ações e seus respectivos rendimentos acumulados em R$ e % para um período determinado (data inicial e data final).
+   - **Status**: Implementada ✅
 
 2. **Rendimento total da carteira**:
    - Calcula o rendimento acumulado em R$ e % da carteira de investimentos para um período determinado (data inicial e data final).
-   - **Status**: Partcialmente implementada 🛠️ (Falta o campo para escolher os dias no Front-end)
+   - **Status**: Implementada ✅
 
 3. **Rendimento de uma ação individual**:
-   - É possível filtrar, de forma a exibir o rendimento acumulado em R$ e % de uma ação em um dia específico, independente de ter ocorrido uma operação nesse dia.
-   - **Status**: Parcialmente implementada 🛠️ (Falta o campo para escolher a ação no front-end )
+   - É possível filtrar, de forma a exibir o rendimento acumulado em R$ e % de uma lista de ações em um período de datas específico, independente de ter ocorrido uma operação nesse período.
+   - **Status**: Implementada ✅
 
 4. **Determinando os ganhos e perdas**:
    - Apresenta o detalhamento do rendimento acumulado, diferenciando ações com ganhos e ações com prejuízo no período.

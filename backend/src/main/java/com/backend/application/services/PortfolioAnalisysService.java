@@ -77,4 +77,7 @@ public class PortfolioAnalisysService {
         return item;
     }
 
+    public List<String> getInstruments() {
+      return userTradeRepository.findDistinctInstrument();
+    }
 }

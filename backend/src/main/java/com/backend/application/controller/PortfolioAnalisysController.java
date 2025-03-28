@@ -17,6 +17,8 @@ import com.backend.application.services.PortfolioAnalisysService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @Log4j2
@@ -43,4 +45,13 @@ public class PortfolioAnalisysController {
     public ResponseEntity<PortfolioAnalysisResponseDTO> analyzePortfolioWithFilter(@Parameter(description = "filtros") @RequestBody PortfolioAnalysisRequestDTO request) throws BadRequestException {
         return ResponseEntity.ok().body(portfolioAnalisysService.analyzePortfolio(request.init()));
     }
+
+  @Operation(summary = "Obter ações", description = "Retorna uma lista de todas as ações presentes na carteira")
+  @ApiResponse(responseCode = "200", description = "Lista de ações obtida com sucesso",
+    content = {@Content(mediaType = "application/json",
+      schema = @Schema(implementation = String.class))})
+  @GetMapping("/instruments")
+  public ResponseEntity<List<String>> getInstrumentList(){
+    return ResponseEntity.ok().body(portfolioAnalisysService.getInstruments());
+  }
 }

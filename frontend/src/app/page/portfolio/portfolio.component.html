@@ -107,7 +107,12 @@
 
         <ng-container matColumnDef="valorMercado">
           <th mat-header-cell  class="label" *matHeaderCellDef> Valor de Mercado </th>
-          <td mat-cell *matCellDef="let element"> {{element.marketValue | currency:'BRL'}} </td>
+          <td mat-cell *matCellDef="let element">
+						<span *ngIf="element.marketValue !== null && element.marketValue !== undefined; else noData">
+							{{ element.marketValue | currency:'BRL' }}
+						</span>
+						<ng-template #noData>Não há dados no Brapi para essa data</ng-template>
+					</td>
         </ng-container>
 
         <ng-container matColumnDef="rendimento">

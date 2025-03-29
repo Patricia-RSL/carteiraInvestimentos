@@ -12,18 +12,15 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Service
 public class AnalysisCalculatorService implements PortfolioCalculatorInterface {
 
   private final InstrumentQuoteService instrumentQuoteService;
-  private final BrapiApiService brapiApiService;
 
-  public AnalysisCalculatorService(InstrumentQuoteService instrumentQuoteService, BrapiApiService brapiApiService) {
+  public AnalysisCalculatorService(InstrumentQuoteService instrumentQuoteService) {
 
     this.instrumentQuoteService = instrumentQuoteService;
-    this.brapiApiService = brapiApiService;
   }
 
   @Override
@@ -34,7 +31,7 @@ public class AnalysisCalculatorService implements PortfolioCalculatorInterface {
 
 		if (bySymbolAndDate.isEmpty()) {
 			List<InstrumentQuote> novosInstrumentsQuotes = this.instrumentQuoteService.createByExternalRequest(item.getInstrument());
-			if(novosInstrumentsQuotes.isEmpty()) return null;
+			if(novosInstrumentsQuotes.isEmpty()) return  null;
 
 			bySymbolAndDate = novosInstrumentsQuotes.stream().filter(instrumentQuote -> instrumentQuote.getDate().equals(request.getEndDate())).findFirst();
 		}
@@ -43,7 +40,7 @@ public class AnalysisCalculatorService implements PortfolioCalculatorInterface {
   }
 
   @Override
-  public BigDecimal calculatePercentageYield(PortfolioAnalysisDetailItemDTO item) throws BadRequestException {
+  public BigDecimal calculatePercentageYield(PortfolioAnalysisDetailItemDTO item) {
     if (item.getMarketValue() == null || item.getInstrumentAmount() == 0) return null;
 
     if (item.getInstrumentAmount() > 0) {
@@ -66,7 +63,7 @@ public class AnalysisCalculatorService implements PortfolioCalculatorInterface {
     int totalAcoes = 0;
 
     for (PortfolioAnalysisDetailItemDTO instrument : itens) {
-      if (instrument.getInstrumentAmount() != 0) {
+      if (instrument.getInstrumentAmount() != 0 && instrument.getMarketValue()!=null) {
         valorInvestido = valorInvestido.add(instrument.getInvestedValue());
         valorMercado = valorMercado.add(instrument.getMarketValue());
         totalAcoes += instrument.getInstrumentAmount();

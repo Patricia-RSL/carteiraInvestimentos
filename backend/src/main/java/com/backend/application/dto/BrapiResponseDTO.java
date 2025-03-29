@@ -1,10 +1,12 @@
 package com.backend.application.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 @Getter
+@Setter
 public class BrapiResponseDTO {
 
   private List<BrapiResposeResult> results;
@@ -14,6 +16,7 @@ public class BrapiResponseDTO {
 
 
   @Getter
+  @Setter
   public static class BrapiResposeResult {
     private String currency;
     private String marketCap;
@@ -43,8 +46,8 @@ public class BrapiResponseDTO {
     private String logourl;
   }
 
-  // HistoricalData nested class
   @Getter
+  @Setter
   public static class BrapiHistoricalData {
     private Long date;
     private Double open;

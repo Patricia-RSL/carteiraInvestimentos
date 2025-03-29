@@ -1,6 +1,7 @@
 # Investment Portfolio Tracker
 
-Este projeto tem como objetivo ajudar investidores a monitorar a rentabilidade de suas carteiras de investimentos, focando especialmente nas operações de compra. Este projeto não considera a rentabilidade quando o investidor está vendido em um ativo, ou seja, quando ele vendeu ativos que ainda não possui para depois comprá-los. O sistema cruza dados sobre o histórico de compra e venda da carteira do investidor com os valores de fechamento das ações para calcular o rendimento acumulado.
+
+Este projeto tem como objetivo ajudar investidores a monitorar a rentabilidade de suas carteiras de investimentos, atualizando as informações do banco através de uma API externa. O sistema cruza dados sobre o histórico de compra e venda da carteira do investidor com os valores de fechamento das ações para calcular o rendimento acumulado.
 
 A documentação da API pode ser acessada em http://localhost:8080/swagger-ui/index.html#/
 
@@ -25,7 +26,11 @@ O projeto possui as seguintes funcionalidades esperadas:
    - É possível filtrar, de forma a exibir o rendimento acumulado em R$ e % de uma ação em um dia específico, independente de ter ocorrido uma operação nesse dia.
    - **Status**: Implementada ✅
 
-4. **Gráficos de Rendimento**:
+4. **Atualização da cotação da ação**:
+   - Ao analizar rendimentos até uma data fim específica, se a cotação da ação não estiver no banco, busca-se essa informação na API do Brapi. Ações que não tiverem a informação na Brapi API são desconsideradas do resumo da carteira.
+   - **Status**: Parcialmente implementada (Atualmente esta atualizando os ultimos três meses para evitar requisições, melhorias irão ser feitas ao verificar qual a ultima data de cotação salva no banco para determinada ação).
+
+5. **Gráficos de Rendimento**:
    - Exibe gráficos que facilitam a visualização do rendimento acumulado, tanto por ação quanto pelo total da carteira.
    - **Status**: Será implementada futuramente ⏳
 

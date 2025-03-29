@@ -1,6 +1,7 @@
 # Investment Portfolio Tracker
 
-This project aims to help investors track the profitability of their investment portfolios, focusing especially on purchase operations. This project does not consider profitability when the investor is short on a stock, meaning when they have sold stocks they do not yet own and then repurchased them. The system cross-references data on the investor's purchase and sale history with stock closing prices to calculate the accumulated return. <!-- and display performance graphs. -->
+This project aims to help investors monitor the profitability of their investment portfolios by updating the database information through an external API.
+The system cross-references data on the investor's purchase and sale history with stock closing prices to calculate the accumulated return. <!-- and display performance graphs. -->
 
 ## Repository Structure
 

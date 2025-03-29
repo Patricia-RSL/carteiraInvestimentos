@@ -1,6 +1,6 @@
 # Investment Portfolio Tracker
 
-This project aims to help investors track the profitability of their investment portfolios, focusing especially on purchase operations. This project does not consider profitability when the investor is short on an asset, meaning when they have sold assets they do not yet own and then repurchased them. The system cross-references data on the investor's purchase and sale history with stock closing prices to calculate the accumulated return.
+This project aims to help investors monitor the profitability of their investment portfolios by updating the database information through an external API. The system cross-references data on the investor's purchase and sale history with stock closing prices to calculate the accumulated return.
 
 The API documentation can be accessed at http://localhost:8080/swagger-ui/index.html#/
 
@@ -25,7 +25,11 @@ The project has the following expected features:
    - Allows filtering to display the accumulated return in R$ and % of a stock on a specific day, regardless of whether a transaction occurred that period.
    - **Status**: Implemented ✅
 
-4. **Return Graphs**:
+4. **Stock Price Update**:
+   - When analyzing returns up to a specific end date, if the stock price is not in the database, the information is fetched from the Brapi API. Stocks that do not have information in the Brapi API are disregarded from the portfolio summary.
+   - **Status**: Partially implemented (Currently updating the last three months to avoid requests; improvements will be made by checking the last saved intrument quote date in the database for a given stock).
+
+5. **Return Graphs**:
    - Displays graphs that facilitate the visualization of accumulated returns, both by stock and by the total portfolio.
    - **Status**: Will be implemented in the future ⏳
 

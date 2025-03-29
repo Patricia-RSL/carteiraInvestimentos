@@ -1,6 +1,6 @@
 # Investment Portfolio Tracker
 
-Este projeto tem como objetivo ajudar investidores a monitorar a rentabilidade de suas carteiras de investimentos, focando especialmente nas operações de compra. Este projeto não considera a rentabilidade quando o investidor esta vendido em uma ação, ou seja, quando ele vendeu ações que ainda não possui para depois comprá-los.  O sistema cruza dados sobre o histórico de compra e venda da carteira do investidor com os valores de fechamento das ações para calcular o rendimento acumulado. <!-- e apresentar gráficos de desempenho.o -->
+Este projeto tem como objetivo ajudar investidores a monitorar a rentabilidade de suas carteiras de investimentos, atualizando as informações do banco através de uma API externa.  O sistema cruza dados sobre o histórico de compra e venda da carteira do investidor com os valores de fechamento das ações para calcular o rendimento acumulado. <!-- e apresentar gráficos de desempenho.o -->
 
 ## Estrutura do Repositório
 

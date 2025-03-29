@@ -56,7 +56,15 @@ docker exec -it backend_db_1 bash
 
 psql -U postgres -d bolsa -f tmp/banco.bkp
 ```
+or
 
+```sh
+docker cp bolsa.bkp backend-db-1:/tmp/banco.bkp
+
+docker exec -it backend-db-1 bash
+
+psql -U postgres -d bolsa -f tmp/banco.bkp
+```
 You will also need to update your .env:
 
 ```sh

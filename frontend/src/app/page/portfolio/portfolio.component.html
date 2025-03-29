@@ -14,20 +14,20 @@
 
     <!-- Seletor de Data Inicio-->
     <mat-form-field class="hidden-datepicker">
-      <input matInput [matDatepicker]="pickerDataInicio" [(ngModel)]="filtro.beginDate">
+      <input matInput [matDatepicker]="pickerDataInicio" [(ngModel)]="beginDate">
       <mat-datepicker #pickerDataInicio></mat-datepicker>
     </mat-form-field>
     <button class="date-range-button" (click)="pickerDataInicio.open()">
-      <mat-icon>calendar_today</mat-icon> {{ filtro.beginDate ? (filtro.beginDate | date:'dd/MM/yyyy') : 'Data Início' }}
+      <mat-icon>calendar_today</mat-icon> {{ beginDate ? (beginDate | date:'dd/MM/yyyy') : 'Data Início' }}
     </button>
 
     <!-- Seletor de Data Fim-->
     <mat-form-field class="hidden-datepicker">
-      <input matInput [matDatepicker]="pickerDataFim" [(ngModel)]="filtro.endDate">
+      <input matInput [matDatepicker]="pickerDataFim" [(ngModel)]="endDate" [max]="maxDate" [min]="minDate">
       <mat-datepicker #pickerDataFim></mat-datepicker>
     </mat-form-field>
     <button class="date-range-button" (click)="pickerDataFim.open()">
-      <mat-icon>calendar_today</mat-icon> {{ filtro.endDate ? (filtro.endDate | date:'dd/MM/yyyy') : 'Data Fim' }}
+      <mat-icon>calendar_today</mat-icon> {{ endDate ? (endDate | date:'dd/MM/yyyy') : 'Data Fim' }}
     </button>
 
     <!-- Botão de Limpar Filtro -->

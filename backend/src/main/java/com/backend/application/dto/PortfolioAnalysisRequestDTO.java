@@ -1,5 +1,6 @@
 package com.backend.application.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +14,11 @@ import lombok.Setter;
 @Setter
 public class PortfolioAnalysisRequestDTO {
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
-    private LocalDateTime beginDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate beginDate;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
-    private LocalDateTime endDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate endDate;
     private List<String> instrumentList;
 
     @PostConstruct
@@ -26,16 +27,13 @@ public class PortfolioAnalysisRequestDTO {
             this.instrumentList = new ArrayList<>();
         }
         if (this.beginDate == null) {
-            this.beginDate = LocalDateTime.of(1900, 1, 1, 0, 0);  // valor padrão para dataInicio
-        }else{
-          this.beginDate = this.beginDate.withHour(0).withMinute(0).withSecond(0);
+            this.beginDate = LocalDate.of(1900, 1, 1);  // valor padrão para dataInicio
         }
-        if (this.endDate == null) {
-            this.endDate = LocalDateTime.of(2020,4,30, 0,0);
-        }else{
-          this.endDate = this.endDate.withHour(0).withMinute(0).withSecond(0);
+
+        if (this.endDate == null || this.endDate.isAfter(LocalDate.now())) {
+            this.endDate = LocalDate.now();
         }
-        
+
         return this;
     }
 

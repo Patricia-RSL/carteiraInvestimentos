@@ -21,7 +21,7 @@ export interface PortfolioAnalysisResponseDTO {
   }
 
   export interface PortfolioAnalysisRequestDTO{
-    beginDate: Date;
-    endDate: Date;
-    instrumentList: string[];
+    beginDate: String;
+    endDate: String;
+    instrumentList: String[];
   }

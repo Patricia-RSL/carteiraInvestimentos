@@ -3,41 +3,39 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "instrument_quote")
+@IdClass(InstrumentQuoteId.class)
 @Data
 public class InstrumentQuote {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "simbol", nullable = false, length = 50)
+		@Id
+		@Column(name = "simbol", nullable = false, length = 50)
     private String symbol;
 
+		@Id
+		@Column(name = "date", nullable = false)
+		private LocalDate date;
+
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
-    private BigDecimal price;
+    private BigDecimal closePrice;
 
-    @Column(name = "date", nullable = false)
-    private LocalDateTime date;
 
-    // Construtores
     public InstrumentQuote() {}
 
-    public InstrumentQuote(String symbol, BigDecimal price, LocalDateTime date) {
+    public InstrumentQuote(String symbol, BigDecimal closePrice, LocalDate date) {
         this.symbol = symbol;
-        this.price = price;
+        this.closePrice = closePrice;
         this.date = date;
     }
 
     @Override
     public String toString() {
         return "InstrumentQuote{" +
-                "id=" + id +
                 ", symbol='" + symbol + '\'' +
-                ", price=" + price +
+                ", price=" + closePrice +
                 ", date=" + date +
                 '}';
     }

@@ -52,6 +52,6 @@ public class PortfolioAnalisysController {
       schema = @Schema(implementation = String.class))})
   @GetMapping("/instruments")
   public ResponseEntity<List<String>> getInstrumentList(){
-    return ResponseEntity.ok().body(portfolioAnalisysService.getInstruments());
+    return ResponseEntity.ok().body(portfolioAnalisysService.getInstrumentsFromPortfolio());
   }
 }

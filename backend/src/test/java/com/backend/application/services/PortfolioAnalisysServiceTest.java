@@ -9,6 +9,7 @@ import com.backend.application.enums.OperationType;
 import com.backend.application.factory.UserTradeMockFactory;
 import com.backend.application.interfaces.PortfolioAnalysisDetailItemProjection;
 import com.backend.application.repository.UserTradeRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -132,7 +133,7 @@ class PortfolioAnalisysServiceTest {
     }
 
     @Test
-    void analyzePortfolio_ok() throws BadRequestException {
+    void analyzePortfolio_ok() throws BadRequestException, JsonProcessingException {
         PortfolioAnalysisRequestDTO portfolioAnalysisRequestDTO = new PortfolioAnalysisRequestDTO().init();
         PortfolioAnalysisResponseDTO expectedResponse = new PortfolioAnalysisResponseDTO();
 
@@ -206,7 +207,7 @@ class PortfolioAnalisysServiceTest {
 
 
     @Test
-    void analyzePortfolioComFiltro_ok() throws BadRequestException {
+    void analyzePortfolioComFiltro_ok() throws BadRequestException, JsonProcessingException {
         PortfolioAnalysisResponseDTO expectedResponse = new PortfolioAnalysisResponseDTO();
 
         List<PortfolioAnalysisDetailItemProjection> projections = criarProjectionParaAnaliseCarteiraComFiltro();
@@ -258,7 +259,7 @@ class PortfolioAnalisysServiceTest {
 
 
     @Test
-    void calculateYield_ok() throws BadRequestException {
+    void setYield_ok() throws BadRequestException, JsonProcessingException {
 
         UserTrade firstTrade = mockUserTrades.get(0);
         PortfolioAnalysisDetailItemDTO item = createItemDetalheFromTrade(firstTrade);
@@ -270,7 +271,7 @@ class PortfolioAnalisysServiceTest {
         when(analiseCalculatorService.calculatePercentageYield(item))
                 .thenReturn(rendimentoPorcentual);
 
-        PortfolioAnalysisDetailItemDTO result = portfolioAnalisysService.calculateYield(item, requestDTOComFiltro);
+        PortfolioAnalysisDetailItemDTO result = portfolioAnalisysService.setYield(item, requestDTOComFiltro);
 
         assertSame(item, result);
         assertEquals(valorMercado, result.getMarketValue());

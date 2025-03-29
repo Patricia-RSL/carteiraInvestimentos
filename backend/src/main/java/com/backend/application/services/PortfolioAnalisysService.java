@@ -6,6 +6,7 @@ import com.backend.application.entities.UserTrade;
 import com.backend.application.enums.OperationType;
 import com.backend.application.interfaces.PortfolioAnalysisDetailItemProjection;
 import com.backend.application.repository.UserTradeRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
@@ -48,27 +49,29 @@ public class PortfolioAnalisysService {
 
         List<PortfolioAnalysisDetailItemDTO> portfolioAnalysisDetailItems =
             this.findPortfolioAnalysisDetailItems(portfolioAnalysisRequestDTO);
-        portfolioAnalysisDetailItems = calculateYield(portfolioAnalysisRequestDTO, portfolioAnalysisDetailItems);
+        portfolioAnalysisDetailItems = setYield(portfolioAnalysisRequestDTO, portfolioAnalysisDetailItems);
         responseDTO.setPortfolioAnalysisDetail(portfolioAnalysisDetailItems);
 
         responseDTO.setPortfolioAnalysisSummaryDTO(analysisCalculatorService.calculateSummary(portfolioAnalysisDetailItems));
         return responseDTO;
     }
 
-    public List<PortfolioAnalysisDetailItemDTO> calculateYield(PortfolioAnalysisRequestDTO portfolioAnalysisRequestDTO, List<PortfolioAnalysisDetailItemDTO> portfolioAnalysisDetailItem) {
-        return portfolioAnalysisDetailItem.stream()
+    public List<PortfolioAnalysisDetailItemDTO> setYield(PortfolioAnalysisRequestDTO portfolioAnalysisRequestDTO, List<PortfolioAnalysisDetailItemDTO> portfolioAnalysisDetailItem) {
+    return portfolioAnalysisDetailItem.stream()
                 .map(item -> {
                     try {
-                        return calculateYield(item, portfolioAnalysisRequestDTO);
+                        return setYield(item, portfolioAnalysisRequestDTO);
                     } catch (BadRequestException e) {
                         e.printStackTrace();
                         return item;
+                    } catch (JsonProcessingException e) {
+                      throw new RuntimeException(e);
                     }
                 })
                 .toList();
     }
 
-    public PortfolioAnalysisDetailItemDTO calculateYield(PortfolioAnalysisDetailItemDTO item, PortfolioAnalysisRequestDTO request) throws BadRequestException {
+    public PortfolioAnalysisDetailItemDTO setYield(PortfolioAnalysisDetailItemDTO item, PortfolioAnalysisRequestDTO request) throws BadRequestException, JsonProcessingException {
         BigDecimal marketValue = analysisCalculatorService.calculateMarketPrice(item, request);
         item.setMarketValue(marketValue);
 
@@ -77,7 +80,7 @@ public class PortfolioAnalisysService {
         return item;
     }
 
-    public List<String> getInstruments() {
+    public List<String> getInstrumentsFromPortfolio() {
       return userTradeRepository.findDistinctInstrument();
     }
 }

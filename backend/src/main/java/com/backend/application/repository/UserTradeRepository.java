@@ -4,6 +4,7 @@ import com.backend.application.enums.OperationType;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -81,7 +82,7 @@ public interface UserTradeRepository extends JpaRepository<UserTrade, Long>, Jpa
             GROUP BY instrument) v
         ON c.instrument = v.instrument
     """, nativeQuery = true)
-    List<PortfolioAnalysisDetailItemProjection> getAmountAndValueByInstrument(@Param("instrumentList") List<String> instrumentList, @Param("beginDate") LocalDateTime beginDate, @Param("endDate") LocalDateTime endDate);
+    List<PortfolioAnalysisDetailItemProjection> getAmountAndValueByInstrument(@Param("instrumentList") List<String> instrumentList, @Param("beginDate") LocalDate beginDate, @Param("endDate") LocalDate endDate);
 
   @Query("SELECT DISTINCT ut.instrument   " +
     "FROM UserTrade ut " )

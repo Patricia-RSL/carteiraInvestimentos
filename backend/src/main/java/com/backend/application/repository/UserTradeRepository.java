@@ -32,8 +32,8 @@ public interface UserTradeRepository extends JpaRepository<UserTrade, Long>, Jpa
     List<UserTrade> findAllByOperationTypeAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(
         @Param("tipo") OperationType tipo,
         @Param("instrument") List<String> instrument,
-        @Param("dataInicio") LocalDateTime dataInicio,
-        @Param("dataFim") LocalDateTime dataFim
+        @Param("dataInicio") LocalDate dataInicio,
+        @Param("dataFim") LocalDate dataFim
     );
 
     @Query("SELECT SUM(ut.valorTotal) as soma FROM UserTrade ut WHERE ut.operationType = :tipo " +

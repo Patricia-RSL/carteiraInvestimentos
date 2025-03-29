@@ -11,7 +11,7 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -27,7 +27,7 @@ public class PortfolioAnalisysService {
     }
 
     public List<UserTrade> findAllByTipoOperacaoAndInstrumentAndData(
-            OperationType type, List<String> instrument, LocalDateTime beginDate, LocalDateTime endDate ){
+			OperationType type, List<String> instrument, LocalDate beginDate, LocalDate endDate ){
         return userTradeRepository.findAllByOperationTypeAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(type, instrument, beginDate, endDate);
     }
 

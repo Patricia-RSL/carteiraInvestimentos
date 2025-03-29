@@ -14,7 +14,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +41,7 @@ class AnalysisCalculatorServiceTest {
         item.setInstrument("AAPL");
         item.setInstrumentAmount(10);
         PortfolioAnalysisRequestDTO request = new PortfolioAnalysisRequestDTO();
-        request.setEndDate(LocalDateTime.of(2023, 10, 10, 0, 0));
+        request.setEndDate(LocalDate.of(2023, 10, 10));
 
         InstrumentQuote quote = new InstrumentQuote();
         quote.setClosePrice(BigDecimal.valueOf(150));
@@ -51,21 +51,6 @@ class AnalysisCalculatorServiceTest {
 
         assertEquals(BigDecimal.valueOf(1500), result);
     }
-
-   /* @Test
-    void calculateMarketPrice_noInstrumentQuote_returnsNull() throws JsonProcessingException {
-        PortfolioAnalysisDetailItemDTO item = new PortfolioAnalysisDetailItemDTO();
-        item.setInstrument("AAPL");
-        item.setInstrumentAmount(10);
-        PortfolioAnalysisRequestDTO request = new PortfolioAnalysisRequestDTO();
-        request.setEndDate(LocalDateTime.of(2023, 10, 10, 0, 0));
-
-        when(instrumentQuoteService.findBySymbolAndDate("AAPL", request.getEndDate())).thenReturn(Optional.empty());
-
-        BigDecimal result = analisysCalculatorService.calculateMarketPrice(item, request);
-
-        assertNull(result);
-    }*/
 
     @Test
     void calculatePercentageYield_validInputs_returnsCorrectPercentage() throws BadRequestException {
@@ -80,17 +65,19 @@ class AnalysisCalculatorServiceTest {
     }
 
     @Test
-    void calculatePercentageYield_nullValorMercado_throwsBadRequestException() {
+    void calculatePercentageYield_nullMarketValue_ReturnNull() {
         PortfolioAnalysisDetailItemDTO item = new PortfolioAnalysisDetailItemDTO();
         item.setMarketValue(null);
         item.setInvestedValue(BigDecimal.valueOf(1000));
         item.setInstrumentAmount(10);
 
-        assertThrows(BadRequestException.class, () -> analisysCalculatorService.calculatePercentageYield(item));
+				BigDecimal result = analisysCalculatorService.calculatePercentageYield(item);
+
+				assertNull(result);
     }
 
     @Test
-    void calculatePercentageYield_zeroQtdAcoes_returnsZero() throws BadRequestException {
+    void calculatePercentageYield_zeroQtdAcoes_returnsNull() throws BadRequestException {
         PortfolioAnalysisDetailItemDTO item = new PortfolioAnalysisDetailItemDTO();
         item.setMarketValue(BigDecimal.valueOf(1500));
         item.setInvestedValue(BigDecimal.valueOf(-500));
@@ -98,7 +85,7 @@ class AnalysisCalculatorServiceTest {
 
         BigDecimal result = analisysCalculatorService.calculatePercentageYield(item);
 
-        assertEquals(BigDecimal.valueOf(0), result);
+        assertNull(result);
     }
 
     @Test
@@ -128,6 +115,6 @@ class AnalysisCalculatorServiceTest {
         assertEquals(0, result.getInstrumentAmount());
         assertEquals(BigDecimal.valueOf(0), result.getMarketValue());
         assertEquals(BigDecimal.valueOf(0), result.getInvestedValue());
-        assertEquals(BigDecimal.valueOf(0), result.getPercentageYield());
+        assertNull(result.getPercentageYield());
     }
 }

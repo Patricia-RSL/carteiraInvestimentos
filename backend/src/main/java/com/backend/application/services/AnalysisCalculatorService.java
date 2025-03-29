@@ -30,6 +30,7 @@ public class AnalysisCalculatorService implements PortfolioCalculatorInterface {
       item.getInstrument(), request.getEndDate());
 
 		if (bySymbolAndDate.isEmpty()) {
+			//TODO criar teste para quando acessa api externa
 			List<InstrumentQuote> novosInstrumentsQuotes = this.instrumentQuoteService.createByExternalRequest(item.getInstrument());
 			if(novosInstrumentsQuotes.isEmpty()) return  null;
 

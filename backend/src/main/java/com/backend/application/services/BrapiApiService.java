@@ -4,12 +4,11 @@ import com.backend.application.dto.BrapiResponseDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.List;
-
 
 @Service
 public class BrapiApiService {
   private final WebClient webClient;
+  //TODO criar teste
 
   public BrapiApiService(WebClient.Builder webClientBuilder) {
     this.webClient = webClientBuilder.baseUrl("https://brapi.dev/api/").build();

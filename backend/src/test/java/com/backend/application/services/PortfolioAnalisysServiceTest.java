@@ -23,6 +23,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,8 +51,8 @@ class PortfolioAnalisysServiceTest {
 
     private PortfolioAnalysisRequestDTO requestDTOComFiltro;
     private List<String> instruments;
-    private LocalDateTime dataInicio;
-    private LocalDateTime dataFim;
+    private LocalDate dataInicio;
+    private LocalDate dataFim;
     private List<UserTrade> mockUserTrades;
 
     @BeforeEach
@@ -63,8 +64,8 @@ class PortfolioAnalisysServiceTest {
                 .distinct()
                 .toList();
 
-        dataInicio = LocalDateTime.of(2019, 1, 1, 0, 0);
-        dataFim = LocalDateTime.of(2019, 12, 31, 0, 0);
+        dataInicio = LocalDate.of(2019, 1, 1);
+        dataFim = LocalDate.of(2019, 12, 31);
 
         requestDTOComFiltro = new PortfolioAnalysisRequestDTO();
         requestDTOComFiltro.setInstrumentList(instruments);

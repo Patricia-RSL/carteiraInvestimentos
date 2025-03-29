@@ -33,15 +33,11 @@ public class InstrumentQuoteService{
         return instrumentQuoteRepository.findAll();
     }
 
-
-    public Optional<InstrumentQuote> getById(Long id) {
-        return instrumentQuoteRepository.findById(id);
-    }
-
     public Optional<InstrumentQuote> findBySymbolAndDate(String symbol, LocalDate date) {
         return instrumentQuoteRepository.findBySymbolAndDate(symbol, date);
     }
 
+		//TODO criar teste
 	public List<InstrumentQuote> createByExternalRequest(String symbol) {
 		List<InstrumentQuote> response = new ArrayList<>();
 
@@ -80,7 +76,7 @@ public class InstrumentQuoteService{
 
 			}
 		}catch (WebClientException e){
-			System.out.println(e);
+			log.error("e: ", e);
 			return response;
 		}
 

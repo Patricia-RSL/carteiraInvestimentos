@@ -3,6 +3,7 @@ package com.backend.application.services;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -31,11 +32,14 @@ class InstrumentQuoteServiceTest {
 
     @BeforeEach
     void setUp() {
+
         quote1 = new InstrumentQuote();
-        quote1.setId(1L);
-        
+        quote1.setSymbol("BOVA11");
+				quote1.setDate(LocalDate.now());
+
         quote2 = new InstrumentQuote();
-        quote2.setId(2L);
+				quote2.setSymbol("ITUB4F");
+				quote2.setDate(LocalDate.now());
     }
 
     @Test
@@ -47,19 +51,23 @@ class InstrumentQuoteServiceTest {
     }
 
     @Test
-    void testGetById() {
-        when(instrumentQuoteRepository.findById(1L)).thenReturn(Optional.of(quote1));
-        Optional<InstrumentQuote> result = instrumentQuoteService.getById(1L);
+    void testGetBySymbolAndDate_Ok() {
+				LocalDate hoje =  LocalDate.now();
+        when(instrumentQuoteRepository.findBySymbolAndDate("BOVA11",hoje)).thenReturn(Optional.of(quote1));
+        Optional<InstrumentQuote> result = instrumentQuoteService.findBySymbolAndDate("BOVA11", hoje);
         assertTrue(result.isPresent());
-        assertEquals(1L, result.get().getId());
-        verify(instrumentQuoteRepository, times(1)).findById(1L);
+        assertEquals("BOVA11", result.get().getSymbol());
+				assertEquals(hoje, result.get().getDate());
+        verify(instrumentQuoteRepository, times(1)).findBySymbolAndDate("BOVA11", hoje);
     }
 
     @Test
-    void testGetById_NotFound() {
-        when(instrumentQuoteRepository.findById(99L)).thenReturn(Optional.empty());
-        Optional<InstrumentQuote> result = instrumentQuoteService.getById(99L);
-        assertFalse(result.isPresent());
-        verify(instrumentQuoteRepository, times(1)).findById(99L);
+    void testGetBySymbolAndDate_NotFound() {
+			LocalDate hoje =  LocalDate.now();
+
+			when(instrumentQuoteRepository.findBySymbolAndDate("MGLU3F",hoje)).thenReturn(Optional.empty());
+			Optional<InstrumentQuote> result = instrumentQuoteService.findBySymbolAndDate("MGLU3F", hoje);
+			assertFalse(result.isPresent());
+			verify(instrumentQuoteRepository, times(1)).findBySymbolAndDate("MGLU3F", hoje);
     }
 }

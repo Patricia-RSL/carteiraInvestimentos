@@ -111,7 +111,7 @@
 						<span *ngIf="element.marketValue !== null && element.marketValue !== undefined; else noData">
 							{{ element.marketValue | currency:'BRL' }}
 						</span>
-						<ng-template #noData>Não há dados no Brapi para essa data</ng-template>
+            <ng-template #noData>Não há dados desta ação em {{endDate ? (endDate | date:'dd-MM-yyyy') : (maxDate | date:'dd-MM-yyyy')}} no Brapi </ng-template>
 					</td>
         </ng-container>
 
@@ -128,4 +128,7 @@
       </table>
     </mat-card-content>
   </mat-card>
+</div>
+<div *ngIf="spinnerShow" class="spinner-overlay">
+  <mat-spinner ></mat-spinner>
 </div>

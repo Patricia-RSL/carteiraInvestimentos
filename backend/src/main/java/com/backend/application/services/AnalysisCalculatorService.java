@@ -28,26 +28,36 @@ public class AnalysisCalculatorService implements PortfolioCalculatorInterface {
         Optional<InstrumentQuote> bySymbolAndDate = instrumentQuoteService.findBySymbolAndDate(
             item.getInstrument(), request.getEndDate());
 
-        if(bySymbolAndDate.isPresent()){ 
+        if(bySymbolAndDate.isPresent()){
             return bySymbolAndDate.get().getPrice().multiply(BigDecimal.valueOf(item.getInstrumentAmount()));
         }
-        
+
         return null; //TODO achar no brapi
     }
 
     @Override
     public BigDecimal calculatePercentageYield(PortfolioAnalysisDetailItemDTO item) throws BadRequestException {
         if (item.getMarketValue() == null) throw new BadRequestException("Market value cannot be null");
-        if (item.getInstrumentAmount() == 0) return BigDecimal.valueOf(0);
+      if (item.getInstrumentAmount() == 0) return null;
 
+
+
+      if(item.getInstrumentAmount()>0) {
         BigDecimal yieldInReais = item.getMarketValue().subtract(item.getInvestedValue());
         return yieldInReais.multiply(BigDecimal.valueOf(100)).divide(item.getInvestedValue(), 2, RoundingMode.HALF_UP);
+
+      }else {
+        BigDecimal yieldInReais = item.getInvestedValue().subtract(item.getMarketValue());
+        return yieldInReais.multiply(BigDecimal.valueOf(100)).divide(item.getInvestedValue(), 2, RoundingMode.HALF_UP);
+
+      }
     }
 
     @Override
     public PortfolioAnalysisSummaryDTO calculateSummary(List<PortfolioAnalysisDetailItemDTO> itens) throws BadRequestException {
         PortfolioAnalysisSummaryDTO response = new PortfolioAnalysisSummaryDTO();
         BigDecimal valorInvestido = BigDecimal.valueOf(0);
+        BigDecimal totalGainLoss = BigDecimal.valueOf(0);
         BigDecimal valorMercado = BigDecimal.valueOf(0);
         int totalAcoes = 0;
 
@@ -56,6 +66,8 @@ public class AnalysisCalculatorService implements PortfolioCalculatorInterface {
                 valorInvestido = valorInvestido.add(instrument.getInvestedValue());
                 valorMercado = valorMercado.add(instrument.getMarketValue());
                 totalAcoes += instrument.getInstrumentAmount();
+            }else{
+              totalGainLoss = totalGainLoss.subtract(instrument.getInvestedValue());
             }
 
 
@@ -66,6 +78,7 @@ public class AnalysisCalculatorService implements PortfolioCalculatorInterface {
         response.setInstrumentAmount(totalAcoes);
         response.setMarketValue(valorMercado);
         response.setInvestedValue(valorInvestido);
+        response.setTotalGainLoss(totalGainLoss);
         response.setPercentageYield(rendimentoPorcentual);
         return response;
     }

@@ -9,6 +9,7 @@ public class PortfolioAnalysisSummaryDTO {
 
     private int instrumentAmount;
     private BigDecimal investedValue;
+    private BigDecimal totalGainLoss;
     private BigDecimal marketValue;
     private BigDecimal percentageYield;
 }

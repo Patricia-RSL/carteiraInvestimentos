@@ -9,6 +9,7 @@ A documentação da API pode ser acessada em http://localhost:8080/swagger-ui/in
 
 - Java 17
 - PostgreSQL
+- Chave para Brapi API (https://brapi.dev/dashboard) (Caso queira acessar dados de cotação atualizados, uma ve que os dados de bkp só vão ate 2020-04-30)
   
 ## Funcionalidades
 

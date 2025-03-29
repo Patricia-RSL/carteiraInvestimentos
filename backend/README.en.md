@@ -8,6 +8,7 @@ The API documentation can be accessed at http://localhost:8080/swagger-ui/index.
 
 - Java 17
 - PostgreSQL
+- Key for Brapi API (https://brapi.dev/dashboard) (If you want to access updated quote data, as the backup data only goes until 2020-04-30).
   
 ## Features
 

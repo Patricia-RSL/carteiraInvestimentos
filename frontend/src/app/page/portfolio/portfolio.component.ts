@@ -21,6 +21,7 @@ export class PortfolioComponent implements OnInit{
   minDate: Date = new Date();
 	beginDate: Date | null = null;
 	endDate: Date | null = null;
+  spinnerShow: boolean = true;
 
 
   constructor( private portfolioService: PortfolioService){
@@ -33,10 +34,7 @@ export class PortfolioComponent implements OnInit{
       this.instrumentsOptions = result;
     });
 
-    this.portfolioService.getAnalisePortfolio(this.filtro).subscribe((result)=>{
-      this.portfolio = result;
-      this.resumoPortfolio = result.portfolioAnalysisSummaryDTO;
-    });
+    this.analyze();
   }
 
   updateSelectedInstruments() {
@@ -59,9 +57,18 @@ export class PortfolioComponent implements OnInit{
 
 		}
 
+    this.analyze();
+    
+  }
+
+  analyze(){
+    this.spinnerShow = true;
     this.portfolioService.getAnalisePortfolio(this.filtro).subscribe((result)=>{
       this.portfolio = result;
       this.resumoPortfolio = result.portfolioAnalysisSummaryDTO;
+      setTimeout(() => {
+        this.spinnerShow=false;
+      }, 3000);
     });
   }
 }

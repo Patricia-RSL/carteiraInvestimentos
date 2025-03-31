@@ -25,3 +25,21 @@ export interface PortfolioAnalysisResponseDTO {
     endDate: String;
     instrumentList: String[];
   }
+
+  export interface UserTrade {
+    id: number;
+    date: string;
+    operationType: OperationType;
+    market: string;
+    maturity?: string;
+    instrument: string;
+    specification?: string; 
+    amount: number;
+    value: number; 
+    totalValue: number;
+  }
+  
+  export enum OperationType {
+    c = 'COMPRA',
+    v = 'VENDA'
+  }

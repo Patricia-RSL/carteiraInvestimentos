@@ -4,8 +4,8 @@ import com.backend.application.dto.BrapiResponseDTO;
 import com.backend.application.entities.InstrumentQuote;
 import com.backend.application.repository.InstrumentQuoteRepository;
 import lombok.extern.log4j.Log4j2;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClientException;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -37,25 +37,19 @@ public class InstrumentQuoteService {
     return instrumentQuoteRepository.findBySymbolAndDate(symbol, date);
   }
 
-  //TODO criar teste
-  public List<InstrumentQuote> createByBrapiRequest(String symbol) {
+  public List<InstrumentQuote> createByBrapiRequest(String symbol) throws BadRequestException {
     List<InstrumentQuote> response = new ArrayList<>();
     if (symbol == null || symbol.isEmpty()) {
       return response;
     }
-    try {
-      BrapiResponseDTO instrumentsQuoteResponse = this.brapiApiService.getInstrumentQuote(symbol);
+    BrapiResponseDTO instrumentsQuoteResponse = this.brapiApiService.getInstrumentQuote(symbol);
 
-      List<BrapiResponseDTO.BrapiHistoricalData> newQuotes = filterNewHistoricalData(symbol, instrumentsQuoteResponse);
+    List<BrapiResponseDTO.BrapiHistoricalData> newQuotes = filterNewHistoricalData(symbol, instrumentsQuoteResponse);
 
-      for (BrapiResponseDTO.BrapiHistoricalData quote : newQuotes) {
+    for (BrapiResponseDTO.BrapiHistoricalData quote : newQuotes) {
 
-        response.add(createInstrumentQuoteByBrapiHistoryItem(symbol, quote));
+      response.add(createInstrumentQuoteByBrapiHistoryItem(symbol, quote));
 
-      }
-    } catch (WebClientException e) {
-      log.error("e: ", e);
-      return response;
     }
     return response;
   }

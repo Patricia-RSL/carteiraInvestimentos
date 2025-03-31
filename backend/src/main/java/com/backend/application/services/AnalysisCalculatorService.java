@@ -24,14 +24,13 @@ public class AnalysisCalculatorService implements PortfolioCalculatorInterface {
   }
 
   @Override
-  public BigDecimal calculateMarketPrice(PortfolioAnalysisDetailItemDTO item, PortfolioAnalysisRequestDTO request) {
+  public BigDecimal calculateMarketPrice(PortfolioAnalysisDetailItemDTO item, PortfolioAnalysisRequestDTO request) throws BadRequestException {
 		if (item.getInstrumentAmount() == 0) return BigDecimal.valueOf(0);
 		Optional<InstrumentQuote> bySymbolAndDate = instrumentQuoteService.findBySymbolAndDate(
       item.getInstrument(), request.getEndDate());
 
 		if (bySymbolAndDate.isEmpty()) {
-			//TODO criar teste para quando acessa api externa
-			List<InstrumentQuote> novosInstrumentsQuotes = this.instrumentQuoteService.createByBrapiRequest(item.getInstrument());
+      List<InstrumentQuote> novosInstrumentsQuotes = this.instrumentQuoteService.createByBrapiRequest(item.getInstrument());
 			if(novosInstrumentsQuotes.isEmpty()) return  null;
 
 			bySymbolAndDate = novosInstrumentsQuotes.stream().filter(instrumentQuote -> instrumentQuote.getDate().equals(request.getEndDate())).findFirst();

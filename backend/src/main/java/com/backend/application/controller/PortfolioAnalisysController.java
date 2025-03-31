@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.coyote.BadRequestException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +34,13 @@ public class PortfolioAnalisysController {
             content = { @Content(mediaType = "application/json",
             schema = @Schema(implementation = PortfolioAnalysisResponseDTO.class)) })
     @GetMapping("/analisar")
-    public ResponseEntity<PortfolioAnalysisResponseDTO> analyzePortfolio() throws BadRequestException {
-        return ResponseEntity.ok().body(portfolioAnalisysService.analyzePortfolio());
+    public ResponseEntity<?> analyzePortfolio() throws BadRequestException {
+      try {
+        PortfolioAnalysisResponseDTO response = portfolioAnalisysService.analyzePortfolio();
+        return ResponseEntity.ok(response);
+      } catch (BadRequestException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+      }
     }
 
     @Operation(summary = "Analisar carteira de ativos com filtro", description = "Retorna análises da carteira de ativos de acordo com filtros fornecidos")
@@ -42,8 +48,13 @@ public class PortfolioAnalisysController {
             content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = PortfolioAnalysisResponseDTO.class)) })
     @PostMapping("/analisar")
-    public ResponseEntity<PortfolioAnalysisResponseDTO> analyzePortfolioWithFilter(@Parameter(description = "filtros") @RequestBody PortfolioAnalysisRequestDTO request) throws BadRequestException {
-        return ResponseEntity.ok().body(portfolioAnalisysService.analyzePortfolio(request.init()));
+    public ResponseEntity<?> analyzePortfolioWithFilter(@Parameter(description = "filtros") @RequestBody PortfolioAnalysisRequestDTO request) {
+      try {
+        PortfolioAnalysisResponseDTO response = portfolioAnalisysService.analyzePortfolio(request.init());
+        return ResponseEntity.ok(response);
+      } catch (BadRequestException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+      }
     }
 
   @Operation(summary = "Obter ações", description = "Retorna uma lista de todas as ações presentes na carteira")

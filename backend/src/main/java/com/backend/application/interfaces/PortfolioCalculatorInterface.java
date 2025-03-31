@@ -10,7 +10,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.coyote.BadRequestException;
 
 public interface PortfolioCalculatorInterface {
-    BigDecimal calculateMarketPrice(PortfolioAnalysisDetailItemDTO item, PortfolioAnalysisRequestDTO request) throws JsonProcessingException;
+    BigDecimal calculateMarketPrice(PortfolioAnalysisDetailItemDTO item, PortfolioAnalysisRequestDTO request) throws BadRequestException;
     BigDecimal calculatePercentageYield(PortfolioAnalysisDetailItemDTO item) throws BadRequestException;
     PortfolioAnalysisSummaryDTO calculateSummary(List<PortfolioAnalysisDetailItemDTO> itens) throws BadRequestException;
 }

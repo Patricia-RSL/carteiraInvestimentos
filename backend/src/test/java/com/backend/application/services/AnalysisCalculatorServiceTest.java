@@ -36,7 +36,7 @@ class AnalysisCalculatorServiceTest {
     }
 
     @Test
-    void calculateMarketPrice_validInstrumentQuote_returnsCorrectValue() throws JsonProcessingException {
+    void calculateMarketPrice_validInstrumentQuote_returnsCorrectValue() throws BadRequestException {
         PortfolioAnalysisDetailItemDTO item = new PortfolioAnalysisDetailItemDTO();
         item.setInstrument("AAPL");
         item.setInstrumentAmount(10);
@@ -53,7 +53,7 @@ class AnalysisCalculatorServiceTest {
     }
 
     @Test
-    void calculatePercentageYield_validInputs_returnsCorrectPercentage() throws BadRequestException {
+    void calculatePercentageYield_validInputs_returnsCorrectPercentage() {
         PortfolioAnalysisDetailItemDTO item = new PortfolioAnalysisDetailItemDTO();
         item.setMarketValue(BigDecimal.valueOf(1500));
         item.setInvestedValue(BigDecimal.valueOf(1000));

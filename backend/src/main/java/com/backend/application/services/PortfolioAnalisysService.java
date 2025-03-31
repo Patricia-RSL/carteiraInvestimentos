@@ -57,23 +57,19 @@ public class PortfolioAnalisysService {
     }
 
     public List<PortfolioAnalysisDetailItemDTO> setYield(PortfolioAnalysisRequestDTO portfolioAnalysisRequestDTO, List<PortfolioAnalysisDetailItemDTO> portfolioAnalysisDetailItem) {
-    return portfolioAnalysisDetailItem.stream()
-                .map(item -> {
-                    try {
-                        return setYield(item, portfolioAnalysisRequestDTO);
-                    } catch (BadRequestException e) {
-                        e.printStackTrace();
-                        return item;
-                    } catch (JsonProcessingException e) {
-                      throw new RuntimeException(e);
-                    }
-                })
-                .toList();
+      return portfolioAnalysisDetailItem.stream()
+        .map(item -> setYield(item, portfolioAnalysisRequestDTO))
+        .toList();
     }
 
-    public PortfolioAnalysisDetailItemDTO setYield(PortfolioAnalysisDetailItemDTO item, PortfolioAnalysisRequestDTO request) throws BadRequestException, JsonProcessingException {
-        BigDecimal marketValue = analysisCalculatorService.calculateMarketPrice(item, request);
-        item.setMarketValue(marketValue);
+    public PortfolioAnalysisDetailItemDTO setYield(PortfolioAnalysisDetailItemDTO item, PortfolioAnalysisRequestDTO request) {
+      BigDecimal marketValue = null;
+      try {
+        marketValue = analysisCalculatorService.calculateMarketPrice(item, request);
+      } catch (BadRequestException e) {
+        throw new IllegalArgumentException(e.getMessage());
+      }
+      item.setMarketValue(marketValue);
 
         BigDecimal percentageYield = analysisCalculatorService.calculatePercentageYield(item);
         item.setPercentageYield(percentageYield);

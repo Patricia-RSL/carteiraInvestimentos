@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.backend.application.dto.BrapiResponseDTO;
+import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -159,19 +160,19 @@ class InstrumentQuoteServiceTest {
   }
 
   @Test
-  void createByBrapiRequest_ReturnsEmptyListWhenSymbolIsNull() {
+  void createByBrapiRequest_ReturnsEmptyListWhenSymbolIsNull() throws BadRequestException {
     List<InstrumentQuote> result = instrumentQuoteService.createByBrapiRequest(null);
     assertTrue(result.isEmpty());
   }
 
   @Test
-  void createByBrapiRequest_ReturnsEmptyListWhenSymbolIsEmpty() {
+  void createByBrapiRequest_ReturnsEmptyListWhenSymbolIsEmpty() throws BadRequestException {
     List<InstrumentQuote> result = instrumentQuoteService.createByBrapiRequest("");
     assertTrue(result.isEmpty());
   }
 
   @Test
-  void createByBrapiRequest_ReturnsQuotesWhenNewDataExists() {
+  void createByBrapiRequest_ReturnsQuotesWhenNewDataExists() throws BadRequestException {
     BrapiResponseDTO.BrapiHistoricalData data1 = new BrapiResponseDTO.BrapiHistoricalData();
     data1.setDate(Instant.now().getEpochSecond());
     data1.setClose(100.0);
@@ -195,7 +196,7 @@ class InstrumentQuoteServiceTest {
   }
 
   @Test
-  void createByBrapiRequest_ReturnsEmptyListWhenNoNewData() {
+  void createByBrapiRequest_ReturnsEmptyListWhenNoNewData() throws BadRequestException {
     BrapiResponseDTO.BrapiHistoricalData data1 = new BrapiResponseDTO.BrapiHistoricalData();
     data1.setDate(Instant.now().getEpochSecond());
     data1.setClose(100.0);
@@ -219,7 +220,7 @@ class InstrumentQuoteServiceTest {
   }
 
   @Test
-  void createByBrapiRequest_ReturnsEmptyListWhenExceptionOccurs() {
+  void createByBrapiRequest_ReturnsEmptyListWhenExceptionOccurs() throws BadRequestException {
     when(brapiApiService.getInstrumentQuote("BOVA11")).thenThrow(new WebClientRequestException(new Throwable("Error"),
       HttpMethod.GET, URI.create("http://example.com"), new HttpHeaders()));
 

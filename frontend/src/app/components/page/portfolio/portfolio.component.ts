@@ -46,6 +46,8 @@ export class PortfolioComponent implements OnInit{
 
   clearFilter(){
     this.filtro = {} as PortfolioAnalysisRequestDTO;
+    this.endDate = null;
+    this.beginDate = null;
     this.instrumentsControl.setValue(null);
   }
 

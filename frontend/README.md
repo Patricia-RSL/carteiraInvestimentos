@@ -22,7 +22,7 @@ O projeto possui as seguintes funcionalidades esperadas:
   
 4. **Visualização do histórico de transações**:
    - É possível ver todas as operações de compra e venda presentes no banco.
-   - **Status**: Será implementada futuramente ⏳
+   - **Status**:  Implementada ✅
 
 5. **Adicionar e remover transações do histórico**:
    - É possível adicionar e remover operações de compra e venda presentes no banco.

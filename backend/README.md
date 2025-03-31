@@ -27,11 +27,15 @@ O projeto possui as seguintes funcionalidades esperadas:
    - É possível filtrar, de forma a exibir o rendimento acumulado em R$ e % de uma ação em um dia específico, independente de ter ocorrido uma operação nesse dia.
    - **Status**: Implementada ✅
 
-4. **Atualização da cotação da ação**:
+4. **Atualização da cotação da ação através de consulta à API Externa**:
    - Ao analizar rendimentos até uma data fim específica, se a cotação da ação não estiver no banco, busca-se essa informação na API do Brapi. Ações que não tiverem a informação na Brapi API são desconsideradas do resumo da carteira.
-   - **Status**: Parcialmente implementada (Atualmente esta atualizando os ultimos três meses para evitar requisições, melhorias irão ser feitas ao verificar qual a ultima data de cotação salva no banco para determinada ação).
+   - **Status**: Implementada ✅ (Atualmente esta atualizando os ultimos três meses para evitar requisições, melhorias irão ser feitas ao verificar qual a ultima data de cotação salva no banco para determinada ação).
 
-5. **Gráficos de Rendimento**:
+5. **Endpoint para obtenção paginada do histórico de transações**:  
+   - Implementa paginação no retorno das transações, permitindo consultas mais eficientes e escaláveis.  
+   - **Status**: Implementada ✅
+
+6. **Gráficos de Rendimento**:
    - Exibe gráficos que facilitam a visualização do rendimento acumulado, tanto por ação quanto pelo total da carteira.
    - **Status**: Será implementada futuramente ⏳
 

@@ -26,11 +26,15 @@ The project has the following expected features:
    - Allows filtering to display the accumulated return in R$ and % of a stock on a specific day, regardless of whether a transaction occurred that period.
    - **Status**: Implemented ✅
 
-4. **Stock Price Update**:
-   - When analyzing returns up to a specific end date, if the stock price is not in the database, the information is fetched from the Brapi API. Stocks that do not have information in the Brapi API are disregarded from the portfolio summary.
-   - **Status**: Partially implemented (Currently updating the last three months to avoid requests; improvements will be made by checking the last saved intrument quote date in the database for a given stock).
+4. **Stock price update through external API query**:  
+   - When analyzing returns up to a specific end date, if the stock price is not available in the database, the information is retrieved from the Brapi API. Stocks without available data in the Brapi API are excluded from the portfolio summary.  
+   - **Status**: Implemented ✅ (Currently updating the last three months to reduce requests; improvements will be made to check the last saved stock price date in the database for a given stock).  
 
-5. **Return Graphs**:
+5. **Endpoint for paginated retrieval of transaction history**:  
+   - Implements pagination in the transaction history response, enabling more efficient and scalable queries.  
+   - **Status**: Implemented ✅
+
+6. **Return Graphs**:
    - Displays graphs that facilitate the visualization of accumulated returns, both by stock and by the total portfolio.
    - **Status**: Will be implemented in the future ⏳
 

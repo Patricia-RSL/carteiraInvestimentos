@@ -31,7 +31,10 @@ O projeto possui as seguintes funcionalidades esperadas:
    - Apresenta o detalhamento do rendimento acumulado, diferenciando ações com ganhos e ações com prejuízo no período.
    - **Status**: Implementada ✅
 
-5. **Gráficos de Rendimento**:
+5. **Visualização paginada do histórico de transações**:
+   - **Status**: Implementada ✅
+
+6. **Gráficos de Rendimento**:
    - Exibe gráficos que facilitam a visualização do rendimento acumulado, tanto por ação quanto pelo total da carteira.
    - **Status**: Será implementada futuramente ⏳
 

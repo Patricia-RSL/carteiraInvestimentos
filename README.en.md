@@ -32,7 +32,10 @@ The project has the following expected features:
    - Presents the detailed accumulated return, distinguishing stocks with gains and stocks with losses over the period.
    - **Status**: Implemented ✅
 
-5. **Return Graphs**:
+5. **Paginated view of user trade history**:  
+   - **Status**: Implemented ✅
+
+6. **Return Graphs**:
    - Displays graphs that facilitate the visualization of accumulated returns, both by stock and by the total portfolio.
    - **Status**: Will be implemented in the future ⏳
 

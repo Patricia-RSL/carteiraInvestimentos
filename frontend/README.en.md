@@ -22,8 +22,8 @@ The project has the following expected features:
   
 4. **Transaction history view**:
    - Allows viewing all the purchase and sale operations present in the database.
-   - **Status**: Will be implemented in the future ⏳
-
+   - **Status**: Implemented ✅
+   
 5. **Add and remove transactions from history**:
    - Allows adding and removing purchase and sale operations present in the database.
    - **Status**: Will be implemented in the future ⏳

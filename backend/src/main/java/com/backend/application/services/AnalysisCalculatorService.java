@@ -25,7 +25,7 @@ public class AnalysisCalculatorService implements PortfolioCalculatorInterface {
 
   @Override
   public BigDecimal calculateMarketPrice(PortfolioAnalysisDetailItemDTO item, PortfolioAnalysisRequestDTO request) throws BadRequestException {
-		if (item.getInstrumentAmount() == 0) return BigDecimal.valueOf(0);
+		if (outOfStock(item)) return BigDecimal.valueOf(0);
 		Optional<InstrumentQuote> bySymbolAndDate = instrumentQuoteService.findBySymbolAndDate(
       item.getInstrument(), request.getEndDate());
 
@@ -63,11 +63,11 @@ public class AnalysisCalculatorService implements PortfolioCalculatorInterface {
     int totalAcoes = 0;
 
     for (PortfolioAnalysisDetailItemDTO instrument : itens) {
-      if (instrument.getInstrumentAmount() != 0 && instrument.getMarketValue()!=null) {
+      if (!outOfStock(instrument) && !noMarketvalueData(instrument)) {
         valorInvestido = valorInvestido.add(instrument.getInvestedValue());
         valorMercado = valorMercado.add(instrument.getMarketValue());
         totalAcoes += instrument.getInstrumentAmount();
-      } else if (instrument.getInstrumentAmount() == 0 ) {
+      } else if (outOfStock(instrument)) {
         totalGainLoss = totalGainLoss.subtract(instrument.getInvestedValue());
       }
 
@@ -82,5 +82,13 @@ public class AnalysisCalculatorService implements PortfolioCalculatorInterface {
     response.setTotalGainLoss(totalGainLoss);
     response.setPercentageYield(rendimentoPorcentual);
     return response;
+  }
+
+  private static boolean noMarketvalueData(PortfolioAnalysisDetailItemDTO instrument) {
+    return instrument.getMarketValue() == null;
+  }
+
+  private static boolean outOfStock(PortfolioAnalysisDetailItemDTO instrument) {
+    return instrument.getInstrumentAmount() == 0;
   }
 }

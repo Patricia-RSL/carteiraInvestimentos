@@ -51,12 +51,20 @@
 
     <div class="summary-content">
       <div class="summary-item">
-        <div class="label">Valor Atual</div>
+        <div class="label">
+          <span matTooltip="Quando negativo, provavelmente significa a necessidade de comprar açoes para zerar a posição.">
+          Valor Atual <mat-icon>info</mat-icon>
+        </span>
+        </div>
         <div class="value large"> {{resumoPortfolio.marketValue | currency:'BRL' }} </div>
       </div>
 
       <div class="summary-item">
-        <div class="label">Total Investido</div>
+        <div class="label">
+          <span matTooltip="Quando negativo, representa recebimento de valores.(ex.:venda de ações antes da compra)">
+            Total Investido <mat-icon>info</mat-icon>
+          </span>
+        </div>
         <div class="value">{{resumoPortfolio.investedValue | currency:'BRL' }}</div>
       </div>
     </div>
@@ -114,7 +122,11 @@
         </ng-container>
 
         <ng-container matColumnDef="valorMercado">
-          <th mat-header-cell  class="label" *matHeaderCellDef> Valor de Mercado </th>
+          <th mat-header-cell  class="label" *matHeaderCellDef> 
+            <span matTooltip="Quando negativo, provavelmente significa a necessidade de comprar açoes para zerar a posição.">
+              Valor de Mercado <mat-icon>info</mat-icon>
+            </span>
+          </th>
           <td mat-cell *matCellDef="let element">
 						<span *ngIf="element.marketValue !== null && element.marketValue !== undefined; else noData">
 							{{ element.marketValue | currency:'BRL' }}

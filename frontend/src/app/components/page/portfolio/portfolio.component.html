@@ -63,12 +63,20 @@
 
     <div class="summary-content">
       <div class="summary-item">
-        <div class="label">Total Ganho/Perda Especulado</div>
+        <div class="label">
+          <span matTooltip="Total ganho/perda considerando a venda de todas as ações compradas e a compra de todas as ações vendidas em {{endDate ? (endDate | date:'dd/MM/yyyy') : (maxDate | date:'dd/MM/yyyy')}}">
+            Total Ganho/Perda Especulado <mat-icon>info</mat-icon>
+          </span>
+        </div>
         <div class="value" [ngClass]="{'positive': resumoPortfolio.percentageYield > 0, 'negative': resumoPortfolio.percentageYield < 0}">
           <lucide-icon size="15px" [name]="resumoPortfolio.percentageYield>0 ? 'arrow-up' : 'arrow-down'"></lucide-icon>{{resumoPortfolio.marketValue - resumoPortfolio.investedValue | currency:'BRL' }}</div>
       </div>
       <div class="summary-item">
-        <div class="label">Total Ganho/Perda Real</div>
+        <div class="label">
+          <span matTooltip="Total ganho/perda considerando as ações zeradas">
+            Total Ganho/Perda Real <mat-icon>info</mat-icon>
+          </span>
+        </div>
         <div class="value" [ngClass]="{'positive': resumoPortfolio.totalGainLoss > 0, 'negative': resumoPortfolio.totalGainLoss < 0}">
           <lucide-icon size="15px" [name]="resumoPortfolio.totalGainLoss>0 ? 'arrow-up' : 'arrow-down'"></lucide-icon>{{resumoPortfolio.totalGainLoss | currency:'BRL' }}</div>
       </div>
@@ -111,7 +119,11 @@
 						<span *ngIf="element.marketValue !== null && element.marketValue !== undefined; else noData">
 							{{ element.marketValue | currency:'BRL' }}
 						</span>
-            <ng-template #noData>Não há dados em {{endDate ? (endDate | date:'dd-MM-yyyy') : (maxDate | date:'dd-MM-yyyy')}} no Brapi </ng-template>
+            <ng-template matTooltip="Este é um tooltip" #noData>
+              <span matTooltip="Essa ação não será considerada para calculo do resumo do seu portfólio">
+                Não há dados de {{endDate ? (endDate | date:'dd/MM/yyyy') : (maxDate | date:'dd/MM/yyyy')}} no Brapi <mat-icon>info</mat-icon>
+              </span>
+            </ng-template>
 					</td>
         </ng-container>
 

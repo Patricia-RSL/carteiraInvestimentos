@@ -67,7 +67,7 @@ public class AnalysisCalculatorService implements PortfolioCalculatorInterface {
         valorInvestido = valorInvestido.add(instrument.getInvestedValue());
         valorMercado = valorMercado.add(instrument.getMarketValue());
         totalAcoes += instrument.getInstrumentAmount();
-      } else {
+      } else if (instrument.getInstrumentAmount() == 0 ) {
         totalGainLoss = totalGainLoss.subtract(instrument.getInvestedValue());
       }
 

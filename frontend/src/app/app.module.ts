@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PortfolioComponent } from './page/portfolio/portfolio.component';
+import { PortfolioComponent } from './components/page/portfolio/portfolio.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatCardModule} from '@angular/material/card';
@@ -12,8 +12,8 @@ import {MatTableModule} from '@angular/material/table';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { LucideAngularModule, ArrowDown, ArrowUp } from 'lucide-angular';
-import { HistoricoTransacoesComponent } from './page/historico-transacoes/historico-transacoes.component';
-import { HeaderComponent } from './header/header.component';
+import { HistoricoTransacoesComponent } from './components/page/historico-transacoes/historico-transacoes.component';
+import { HeaderComponent } from './components/header/header.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -22,6 +22,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { ErrorModalComponent } from './components/error-modal/error-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -29,7 +32,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     AppComponent,
     PortfolioComponent,
     HistoricoTransacoesComponent,
-    HeaderComponent
+    HeaderComponent,
+    ErrorModalComponent
   ],
   imports: [
     BrowserModule,
@@ -49,6 +53,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     FormsModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
+    MatDialogModule,
+    MatTooltipModule,
     LucideAngularModule.pick({ArrowDown, ArrowUp})
   ],
   providers: [],

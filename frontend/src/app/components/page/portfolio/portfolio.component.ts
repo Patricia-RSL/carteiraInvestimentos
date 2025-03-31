@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { PortfolioAnalysisRequestDTO, PortfolioAnalysisResponseDTO, PortfolioAnalysisSummaryDTO } from "../../@core/BackendModel";
+import { PortfolioAnalysisRequestDTO, PortfolioAnalysisResponseDTO, PortfolioAnalysisSummaryDTO } from "../../../@core/BackendModel";
 import { PortfolioService } from 'src/app/@core/services/portfolio.service';
 import {FormControl} from '@angular/forms';
-
+import { ErrorModalComponent } from '../../error-modal/error-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'portfolio',
@@ -24,7 +25,9 @@ export class PortfolioComponent implements OnInit{
   spinnerShow: boolean = true;
 
 
-  constructor( private portfolioService: PortfolioService){
+  constructor( private portfolioService: PortfolioService,
+    private dialog: MatDialog
+  ){
 
   }
   ngOnInit(): void {
@@ -63,12 +66,18 @@ export class PortfolioComponent implements OnInit{
 
   analyze(){
     this.spinnerShow = true;
-    this.portfolioService.getAnalisePortfolio(this.filtro).subscribe((result)=>{
+    this.portfolioService.getAnalisePortfolio(this.filtro).subscribe(
+      (result)=>{
       this.portfolio = result;
       this.resumoPortfolio = result.portfolioAnalysisSummaryDTO;
-      setTimeout(() => {
-        this.spinnerShow=false;
-      }, 3000);
-    });
-  }
+      this.spinnerShow=false;
+    },
+    (error)=>{
+      this.spinnerShow=false;
+      console.log(error)
+      this.dialog.open(ErrorModalComponent, {
+        data: error.error
+      });
+    })
+}
 }

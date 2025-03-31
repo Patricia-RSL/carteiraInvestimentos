@@ -23,23 +23,23 @@ public interface UserTradeRepository extends JpaRepository<UserTrade, Long>, Jpa
 
     public List<UserTrade> findAllByOperationType(OperationType tipo);
 
-    public List<UserTrade> findAllByOperationTypeAndInstrumentAndData(OperationType tipo, String instrument, LocalDateTime dataInicio);
+    public List<UserTrade> findAllByOperationTypeAndInstrumentAndDate(OperationType tipo, String instrument, LocalDateTime dataInicio);
 
     @Query("SELECT ut FROM UserTrade ut WHERE ut.operationType = :tipo " +
        "AND ut.instrument IN :instrument " +
-       "AND ut.data >= :dataInicio " +
-       "AND ut.data <= :dataFim")
-    List<UserTrade> findAllByOperationTypeAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(
+       "AND ut.date >= :dataInicio " +
+       "AND ut.date <= :dataFim")
+    List<UserTrade> findAllByOperationTypeAndInstrumentInAndDateGreaterThanEqualAndDateLessThanEqual(
         @Param("tipo") OperationType tipo,
         @Param("instrument") List<String> instrument,
         @Param("dataInicio") LocalDate dataInicio,
         @Param("dataFim") LocalDate dataFim
     );
 
-    @Query("SELECT SUM(ut.valorTotal) as soma FROM UserTrade ut WHERE ut.operationType = :tipo " +
+    @Query("SELECT SUM(ut.totalValue) as soma FROM UserTrade ut WHERE ut.operationType = :tipo " +
        "AND ut.instrument IN :instrument " +
-       "AND ut.data >= :dataInicio " +
-       "AND ut.data <= :dataFim")
+       "AND ut.date >= :dataInicio " +
+       "AND ut.date <= :dataFim")
     BigDecimal getSumTotalValueFilterBy(
         @Param("tipo") OperationType tipo,
         @Param("instrument") List<String> instrument,
@@ -47,12 +47,12 @@ public interface UserTradeRepository extends JpaRepository<UserTrade, Long>, Jpa
         @Param("dataFim") LocalDateTime dataFim
     );
 
-    @Query("SELECT SUM(ut.quantidade)   " +
+    @Query("SELECT SUM(ut.amount)   " +
             "FROM UserTrade ut " +
             "WHERE ut.operationType = :tipo " +
             "AND ut.instrument IN :instrument " +
-            "AND ut.data >= :dataInicio " +
-            "AND ut.data <= :dataFim " +
+            "AND ut.date >= :dataInicio " +
+            "AND ut.date <= :dataFim " +
             "GROUP BY ut.instrument")
     Integer getTotalAmountFilterBy(
         @Param("tipo") OperationType tipo,

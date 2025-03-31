@@ -75,14 +75,14 @@ class PortfolioAnalisysServiceTest {
     @ParameterizedTest
     @MethodSource("provideTestCasesForFindAllByTipoOperacaoAndInstrumentAndData")
     void findAllByTipoOperacaoAndInstrumentAndData_ok(OperationType tipo, List<UserTrade> expectedTrades) {
-        when(userTradeRepository.findAllByOperationTypeAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(
+        when(userTradeRepository.findAllByOperationTypeAndInstrumentInAndDateGreaterThanEqualAndDateLessThanEqual(
                 tipo, instruments, dataInicio, dataFim)).thenReturn(expectedTrades);
 
         List<UserTrade> result = portfolioAnalisysService.findAllByTipoOperacaoAndInstrumentAndData(
                 tipo, instruments, dataInicio, dataFim);
 
         assertEquals(expectedTrades, result);
-        verify(userTradeRepository).findAllByOperationTypeAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(
+        verify(userTradeRepository).findAllByOperationTypeAndInstrumentInAndDateGreaterThanEqualAndDateLessThanEqual(
                 tipo, instruments, dataInicio, dataFim);
 
     }
@@ -93,10 +93,10 @@ class PortfolioAnalisysServiceTest {
 
         return Stream.of(
                 Arguments.of(OperationType.v, UserTradeMockFactory.createMockUserTrades().stream()
-                        .filter(trade -> trade.getOperationType() == OperationType.v && trade.getData().isAfter(dataInicio) && trade.getData().isBefore(dataFim))
+                        .filter(trade -> trade.getOperationType() == OperationType.v && trade.getDate().isAfter(dataInicio) && trade.getDate().isBefore(dataFim))
                         .toList()),
                 Arguments.of(OperationType.c, UserTradeMockFactory.createMockUserTrades().stream()
-                        .filter(trade -> trade.getOperationType() == OperationType.c && trade.getData().isAfter(dataInicio) && trade.getData().isBefore(dataFim))
+                        .filter(trade -> trade.getOperationType() == OperationType.c && trade.getDate().isAfter(dataInicio) && trade.getDate().isBefore(dataFim))
                         .toList())
         );
     }
@@ -293,8 +293,8 @@ class PortfolioAnalisysServiceTest {
     private PortfolioAnalysisDetailItemDTO createItemDetalheFromTrade(UserTrade trade) {
         return createItemDetalhe(
                 trade.getInstrument(),
-                trade.getQuantidade(),
-                trade.getValorTotal()
+                trade.getAmount(),
+                trade.getTotalValue()
         );
     }
 

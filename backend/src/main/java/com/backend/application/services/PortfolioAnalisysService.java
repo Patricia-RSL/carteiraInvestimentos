@@ -27,7 +27,7 @@ public class PortfolioAnalisysService {
 
     public List<UserTrade> findAllByTipoOperacaoAndInstrumentAndData(
 			OperationType type, List<String> instrument, LocalDate beginDate, LocalDate endDate ){
-        return userTradeRepository.findAllByOperationTypeAndInstrumentInAndDataGreaterThanEqualAndDataLessThanEqual(type, instrument, beginDate, endDate);
+        return userTradeRepository.findAllByOperationTypeAndInstrumentInAndDateGreaterThanEqualAndDateLessThanEqual(type, instrument, beginDate, endDate);
     }
 
     public List<PortfolioAnalysisDetailItemDTO> findPortfolioAnalysisDetailItems(PortfolioAnalysisRequestDTO portfolioAnalysisRequestDTO) {

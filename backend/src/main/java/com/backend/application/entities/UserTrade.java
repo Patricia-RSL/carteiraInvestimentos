@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user_trade")
-@Data 
+@Data
 public class UserTrade {
 
     @Id
@@ -17,31 +17,31 @@ public class UserTrade {
     private Long id;
 
     @Column(name = "data", nullable = false)
-    private LocalDateTime data;
+    private LocalDateTime date;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_operacao", nullable = false)
     private OperationType operationType;
 
     @Column(name = "mercado", nullable = false, length = 50)
-    private String mercado;
+    private String market;
 
     @Column(name = "prazo", length = 50)
-    private String prazo;
+    private String maturity;
 
     @Column(name = "instrument", nullable = false, length = 100)
     private String instrument;
 
     @Column(name = "especificacao", length = 100)
-    private String especificacao;
+    private String specification;
 
     @Column(name = "quantidade", nullable = false)
-    private Integer quantidade;
+    private Integer amount;
 
     @Column(name = "preco", nullable = false, precision = 10, scale = 2)
-    private BigDecimal preco;
+    private BigDecimal value;
 
     @Column(name = "valor_total", nullable = false, precision = 15, scale = 2)
-    private BigDecimal valorTotal;
+    private BigDecimal totalValue;
 
 }

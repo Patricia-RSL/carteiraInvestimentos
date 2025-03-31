@@ -193,16 +193,16 @@ public class UserTradeMockFactory {
 
         UserTrade trade = new UserTrade();
         trade.setId(id);
-        trade.setData(data);
+        trade.setDate(data);
         // No banco aparentemente o tipo de operação é armazenado como "c" para compra
         trade.setOperationType(operationType);
-        trade.setMercado(mercado);
-        trade.setPrazo(prazo);
+        trade.setMarket(mercado);
+        trade.setMaturity(prazo);
         trade.setInstrument(instrument);
-        trade.setEspecificacao(especificacao);
-        trade.setQuantidade(quantidade);
-        trade.setPreco(preco);
-        trade.setValorTotal(valorTotal);
+        trade.setSpecification(especificacao);
+        trade.setAmount(quantidade);
+        trade.setValue(preco);
+        trade.setTotalValue(valorTotal);
 
         return trade;
     }

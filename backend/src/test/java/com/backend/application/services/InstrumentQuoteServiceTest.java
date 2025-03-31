@@ -220,12 +220,10 @@ class InstrumentQuoteServiceTest {
   }
 
   @Test
-  void createByBrapiRequest_ReturnsEmptyListWhenExceptionOccurs() throws BadRequestException {
+  void createByBrapiRequest_ThrowsExceptionWhenExceptionOccurs() throws BadRequestException {
     when(brapiApiService.getInstrumentQuote("BOVA11")).thenThrow(new WebClientRequestException(new Throwable("Error"),
       HttpMethod.GET, URI.create("http://example.com"), new HttpHeaders()));
 
-    List<InstrumentQuote> resultQuotes = instrumentQuoteService.createByBrapiRequest("BOVA11");
-
-    assertTrue(resultQuotes.isEmpty());
+    assertThrows(WebClientRequestException.class, () -> instrumentQuoteService.createByBrapiRequest("BOVA11"));
   }
 }

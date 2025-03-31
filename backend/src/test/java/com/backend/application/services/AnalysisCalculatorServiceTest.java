@@ -4,7 +4,6 @@ import com.backend.application.dto.PortfolioAnalysisRequestDTO;
 import com.backend.application.dto.PortfolioAnalysisDetailItemDTO;
 import com.backend.application.dto.PortfolioAnalysisSummaryDTO;
 import com.backend.application.entities.InstrumentQuote;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,7 +76,7 @@ class AnalysisCalculatorServiceTest {
     }
 
     @Test
-    void calculatePercentageYield_zeroQtdAcoes_returnsNull() throws BadRequestException {
+    void calculatePercentageYield_zeroQtdAcoes_returnsNull(){
         PortfolioAnalysisDetailItemDTO item = new PortfolioAnalysisDetailItemDTO();
         item.setMarketValue(BigDecimal.valueOf(1500));
         item.setInvestedValue(BigDecimal.valueOf(-500));

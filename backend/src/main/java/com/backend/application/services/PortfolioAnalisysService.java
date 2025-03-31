@@ -6,7 +6,6 @@ import com.backend.application.entities.UserTrade;
 import com.backend.application.enums.OperationType;
 import com.backend.application.interfaces.PortfolioAnalysisDetailItemProjection;
 import com.backend.application.repository.UserTradeRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 

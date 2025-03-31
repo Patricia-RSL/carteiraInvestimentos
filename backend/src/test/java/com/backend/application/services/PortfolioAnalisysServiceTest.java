@@ -9,7 +9,6 @@ import com.backend.application.enums.OperationType;
 import com.backend.application.factory.UserTradeMockFactory;
 import com.backend.application.interfaces.PortfolioAnalysisDetailItemProjection;
 import com.backend.application.repository.UserTradeRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -134,7 +133,7 @@ class PortfolioAnalisysServiceTest {
     }
 
     @Test
-    void analyzePortfolio_ok() throws BadRequestException, JsonProcessingException {
+    void analyzePortfolio_ok() throws BadRequestException {
         PortfolioAnalysisRequestDTO portfolioAnalysisRequestDTO = new PortfolioAnalysisRequestDTO().init();
         PortfolioAnalysisResponseDTO expectedResponse = new PortfolioAnalysisResponseDTO();
 
@@ -208,7 +207,7 @@ class PortfolioAnalisysServiceTest {
 
 
     @Test
-    void analyzePortfolioComFiltro_ok() throws BadRequestException, JsonProcessingException {
+    void analyzePortfolioComFiltro_ok() throws BadRequestException {
         PortfolioAnalysisResponseDTO expectedResponse = new PortfolioAnalysisResponseDTO();
 
         List<PortfolioAnalysisDetailItemProjection> projections = criarProjectionParaAnaliseCarteiraComFiltro();
@@ -260,7 +259,7 @@ class PortfolioAnalisysServiceTest {
 
 
     @Test
-    void setYield_ok() throws BadRequestException, JsonProcessingException {
+    void setYield_ok() throws BadRequestException {
 
         UserTrade firstTrade = mockUserTrades.get(0);
         PortfolioAnalysisDetailItemDTO item = createItemDetalheFromTrade(firstTrade);

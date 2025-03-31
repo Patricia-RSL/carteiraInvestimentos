@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,17 @@ public class UserTradeController {
     public ResponseEntity<List<UserTrade>> getAll() {
         return ResponseEntity.ok().body(userTradeService.getAll());
     }
+
+    @Operation(summary = "Obter todas as transações com paginação", description = "Retorna uma lista paginada de todas as transações de usuários")
+    @ApiResponse(responseCode = "200", description = "Lista de transações obtida com sucesso",
+      content = {@Content(mediaType = "application/json",
+        schema = @Schema(implementation = UserTrade.class))})
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<UserTrade>> getAllPaginated(
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
+      return ResponseEntity.ok().body(userTradeService.getAllPaginated(page, size));
+  }
 
     @Operation(summary = "Obter transação por ID", description = "Retorna uma transação específica pelo ID")
     @ApiResponse(responseCode = "200", description = "Transação obtida com sucesso",

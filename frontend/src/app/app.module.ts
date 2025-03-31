@@ -25,6 +25,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ErrorModalComponent } from './components/error-modal/error-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 @NgModule({
@@ -55,6 +56,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatProgressSpinnerModule,
     MatDialogModule,
     MatTooltipModule,
+    MatPaginatorModule,
     LucideAngularModule.pick({ArrowDown, ArrowUp})
   ],
   providers: [],

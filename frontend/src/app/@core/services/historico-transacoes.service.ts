@@ -12,9 +12,15 @@ import { PortfolioAnalysisRequestDTO, PortfolioAnalysisResponseDTO, UserTrade } 
   
     constructor(private http: HttpClient) {}
   
-    getAll(): Observable<UserTrade[]> {
-        return this.http.get<UserTrade[]>(`${this.url}/`, {
-            headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-        });
+    getAll(page: number, size: number): Observable<any> {
+      const params = {
+        page: page.toString(),
+        size: size.toString()
+      };
+  
+      return this.http.get<any>(`${this.url}/paginated`, {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        params: params
+      });
     }
   }

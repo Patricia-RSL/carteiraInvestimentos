@@ -3,7 +3,47 @@
     <h3> &nbsp;</h3>
   
   </div>
-<div class="container">
+  <div class="container filter-container mt-4">
+    <div class="filter-row">
+      <!-- Filtro de Ativo -->
+      <div class="custom-dropdown">
+        <mat-select [formControl]="instrumentsControl" multiple placeholder="Todas as Ações">
+          <mat-option *ngFor="let instrument of instrumentsOptions" [value]="instrument">{{instrument}}</mat-option>
+        </mat-select>
+      </div>
+  
+      <!-- Seletor de Data Inicio-->
+      <mat-form-field class="hidden-datepicker">
+        <input matInput [matDatepicker]="pickerDataInicio" [(ngModel)]="beginDate">
+        <mat-datepicker #pickerDataInicio></mat-datepicker>
+      </mat-form-field>
+      <button class="date-range-button" (click)="pickerDataInicio.open()">
+        <mat-icon>calendar_today</mat-icon> {{ beginDate ? (beginDate | date:'dd/MM/yyyy') : 'Data Início' }}
+      </button>
+  
+      <!-- Seletor de Data Fim-->
+      <mat-form-field class="hidden-datepicker">
+        <input matInput [matDatepicker]="pickerDataFim" [(ngModel)]="endDate">
+        <mat-datepicker #pickerDataFim></mat-datepicker>
+      </mat-form-field>
+      <button class="date-range-button" (click)="pickerDataFim.open()">
+        <mat-icon>calendar_today</mat-icon> {{ endDate ? (endDate | date:'dd/MM/yyyy') : 'Data Fim' }}
+      </button>
+  
+      <!-- Botão de Limpar Filtro -->
+      <button class="clear-filter-button" (click)="clearFilter()">
+        <span class="default-text">x</span>
+        <span class="small-screen-text">Limpar</span>
+      </button>
+  
+      <!-- Botão Aplicar Filtros -->
+      <button class="filter-button" (click)="applyFilter()">
+        <mat-icon>filter_alt</mat-icon> Aplicar Filtros
+      </button>
+  
+    </div>
+  </div>
+<div class="container mt-4">
     <!--<input type="text" [(ngModel)]="filtro" placeholder="Buscar transações..." />-->
     <mat-card appearance="outlined" class="custom-card">
         <mat-card-content [style.overflow]="'auto'" >  

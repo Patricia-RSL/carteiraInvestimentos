@@ -1,5 +1,6 @@
 package com.backend.application.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +10,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,9 +47,12 @@ public class UserTradeController {
     @GetMapping("/paginated")
     public ResponseEntity<Page<UserTrade>> getAllPaginated(
       @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "10") int size) {
-      return ResponseEntity.ok().body(userTradeService.getAllPaginated(page, size));
-  }
+      @RequestParam(defaultValue = "10") int size,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate begindate,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+      @RequestParam(required = false) List<String> instruments) {
+      return ResponseEntity.ok().body(userTradeService.getAllPaginatedAndFiltered(page, size, begindate, endDate, instruments));
+    }
 
     @Operation(summary = "Obter transação por ID", description = "Retorna uma transação específica pelo ID")
     @ApiResponse(responseCode = "200", description = "Transação obtida com sucesso",

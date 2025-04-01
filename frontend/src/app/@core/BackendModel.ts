@@ -43,3 +43,10 @@ export interface PortfolioAnalysisResponseDTO {
     c = 'COMPRA',
     v = 'VENDA'
   }
+
+  export interface HistoricoFilter {
+    beginDate?: string | null;
+    endDate?: string | null;
+    instruments?: string[];
+  }
+  

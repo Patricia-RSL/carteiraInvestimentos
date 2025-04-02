@@ -26,6 +26,8 @@ import { ErrorModalComponent } from './components/error-modal/error-modal.compon
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { LoginComponent } from './components/page/login/login.component';
+import { RegisterComponent } from './components/page/register/register.component';
 
 
 @NgModule({
@@ -34,7 +36,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     PortfolioComponent,
     HistoricoTransacoesComponent,
     HeaderComponent,
-    ErrorModalComponent
+    ErrorModalComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

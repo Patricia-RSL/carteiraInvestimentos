@@ -2,6 +2,7 @@ package com.backend.application.controller;
 
 import com.backend.application.dto.RegistrationRequestDTO;
 import com.backend.application.services.AuthService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class AuthController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<?> register(@RequestBody RegistrationRequestDTO request) {
+  public ResponseEntity<?> register(@RequestBody @Valid RegistrationRequestDTO request) {
     try {
       authService.registerUser(request);
       return ResponseEntity.ok().build();

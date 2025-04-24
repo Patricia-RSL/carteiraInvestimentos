@@ -4,23 +4,23 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.function.Function;
 
-@Service
+@Component
 public class JwtUtil {
 
   private final SecretKey secretKey;
+  private static final long EXPIRATION_TIME = 1000L * 60L * 60L; // 1 hour
+
 
   public JwtUtil(@Value("${jwt.secret}") String secret) {
     this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
   }
-
-  private static final long EXPIRATION_TIME = 2592000000L;
 
   public String extractUsername(String token) {
     return extractClaim(token, Claims::getSubject);
@@ -37,42 +37,34 @@ public class JwtUtil {
   }
 
   private Claims extractAllClaims(String token) {
-    return Jwts.parser()
-      .verifyWith(secretKey)
-      .build()
-      .parseSignedClaims(token)
-      .getPayload();
+    try {
+      return Jwts.parserBuilder()
+        .setSigningKey(secretKey)
+        .build()
+        .parseClaimsJws(token)
+        .getBody();
+    } catch (JwtException e) {
+      throw new IllegalArgumentException("Invalid JWT token", e);
+    }
   }
 
   public String generateToken(UserDetails userDetails) {
     return Jwts.builder()
-      .subject(userDetails.getUsername())
-      .issuer("carteiraInvestimeto")
-      .issuedAt(new Date())
-      .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+      .setSubject(userDetails.getUsername())
+      .setIssuer("carteiraInvestimeto")
+      .setIssuedAt(new Date())
+      .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
       .signWith(secretKey)
       .compact();
   }
 
   public Boolean validateToken(String token, UserDetails userDetails) {
-    try {
-      final String username = extractUsername(token);
-      return isTokenValid(token) && username.equals(userDetails.getUsername()) && !isTokenExpired(token);
-    } catch (JwtException | IllegalArgumentException e) {
-      return false;
-    }
-  }
+    final String username = extractUsername(token);
+    final String issuer = extractClaim(token, Claims::getIssuer);
 
-  public Boolean isTokenValid(String token) {
-    try {
-      Jwts.parser()
-        .verifyWith(secretKey)
-        .build()
-        .parseSignedClaims(token);
-      return true;
-    } catch (JwtException e) {
-      return false;
-    }
+    return username.equals(userDetails.getUsername()) &&
+      issuer.equals("carteiraInvestimeto") &&
+      !isTokenExpired(token);
   }
 
   private Boolean isTokenExpired(String token) {

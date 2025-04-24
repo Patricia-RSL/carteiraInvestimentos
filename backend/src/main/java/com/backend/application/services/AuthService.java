@@ -27,8 +27,10 @@ public class AuthService {
     if(Boolean.TRUE.equals(this.userRepository.existsByEmail((request.getEmail())))){
       throw new IllegalStateException("User already exists");
     }
+    String hashedPassword = bCryptPasswordEncoder.encode(request.getPassword());
+
     User user = new User(
-      request.getFirstname(),request.getLastname(),request.getEmail(),request.getPassword(), UserRole.USER
+      request.getFirstname(),request.getLastname(),request.getEmail(),hashedPassword, UserRole.USER
     );
 
     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));

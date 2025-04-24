@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.backend.application.entities.InstrumentQuote;
 
 @Repository
-public interface InstrumentQuoteRepository extends JpaRepository<InstrumentQuote, Long>, JpaSpecificationExecutor<InstrumentQuote>{
+public interface InstrumentQuoteRepository extends JpaRepository<InstrumentQuote, String>, JpaSpecificationExecutor<InstrumentQuote>{
 
     Optional<InstrumentQuote> findBySymbolAndDate(String symbol, LocalDate date);
 

@@ -32,6 +32,7 @@ export class PortfolioComponent implements OnInit{
   }
   ngOnInit(): void {
     this.minDate.setMonth(this.maxDate.getMonth()-3);
+    this.endDate = this.maxDate;
 
 		this.portfolioService.getInstrumentList().subscribe((result)=>{
       this.instrumentsOptions = result;

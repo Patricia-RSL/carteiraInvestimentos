@@ -33,8 +33,12 @@ The project has the following expected features:
 5. **Endpoint for paginated retrieval of transaction history**:  
    - Implements pagination in the transaction history response, enabling more efficient and scalable queries.  
    - **Status**: Implemented ✅
+   - 
+6.  **UserTrade CRUD**:
+   - Create, edit, and delete buy and sell transactions for stocks.
+   - **Status**: To be implemented in the future ⏳
 
-6. **Return Graphs**:
+7.  **Return Graphs**:
    - Displays graphs that facilitate the visualization of accumulated returns, both by stock and by the total portfolio.
    - **Status**: Will be implemented in the future ⏳
 
@@ -43,7 +47,9 @@ The project has the following expected features:
 If you want to have some initial data in the database, you can copy the content of `bolsa.bkp` to your PostgreSQL by running the following commands:
 
 ```sh
-psql -U postgres -d bolsa -f <your path>/banco.bkp
+psql -U postgres -c "CREATE DATABASE bolsa;"
+
+psql -U postgres -d bolsa -f <seu caminho>/bolsa.bkp
 ```
 
 **How to run the project with Docker**

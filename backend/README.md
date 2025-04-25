@@ -34,8 +34,12 @@ O projeto possui as seguintes funcionalidades esperadas:
 5. **Endpoint para obtenção paginada do histórico de transações**:  
    - Implementa paginação no retorno das transações, permitindo consultas mais eficientes e escaláveis.  
    - **Status**: Implementada ✅
+   - 
+6.  **CRUD de transações**:
+  - Criar, editar e deletar transações de compra e venda de ações.
+  - **Status**: Será implementada futuramente ⏳
 
-6. **Gráficos de Rendimento**:
+7.  **Gráficos de Rendimento**:
    - Exibe gráficos que facilitam a visualização do rendimento acumulado, tanto por ação quanto pelo total da carteira.
    - **Status**: Será implementada futuramente ⏳
 

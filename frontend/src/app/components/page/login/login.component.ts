@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../@core/services/auth.service';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { TemplateRef, ViewChild } from '@angular/core';
 
 
 @Component({
@@ -12,10 +14,12 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   loginForm: FormGroup;
   hidePassword = true;
+  @ViewChild('errorDialog') errorDialog!: TemplateRef<any>;
 
   constructor(private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router) {
+    private router: Router,
+    private dialog: MatDialog) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
@@ -31,7 +35,14 @@ export class LoginComponent {
               this.router.navigate(['/portfolio']);
              },
              error: (err) => {
-               console.error('Login failed:', err);
+               this.dialog.open(this.errorDialog, {
+                 data: {
+                   title: 'Login Error',
+                   text: 'Email or password is incorrect. Please try again.'
+                 },
+                 width: '400px',
+                 disableClose: true
+               });
              }
            });
     } else {

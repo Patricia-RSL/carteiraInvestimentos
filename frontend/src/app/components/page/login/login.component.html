@@ -24,10 +24,10 @@
             <mat-error *ngIf="loginForm.get('password')?.invalid">{{getPasswordErrorMessage()}}</mat-error>
           </mat-form-field>
 
-          <div class="remember-forgot-row">
+          <!--<div class="remember-forgot-row">
             <mat-checkbox formControlName="rememberMe" color="primary">Remember me</mat-checkbox>
             <a href="#" class="forgot-password">Forgot password?</a>
-          </div>
+          </div>-->
 
           <button mat-raised-button color="primary" type="submit" class="login-button button">Login</button>
 
@@ -38,3 +38,11 @@
       </mat-card-content>
     </mat-card>
   </div>
+
+<ng-template #errorDialog let-data>
+  <h2 mat-dialog-title>{{ data.title }}</h2>
+  <mat-dialog-content>{{ data.text }}</mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Close</button>
+  </mat-dialog-actions>
+</ng-template>

@@ -1,6 +1,5 @@
 header {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
   }
 
 i{
@@ -11,9 +10,11 @@ i{
     max-width: 1280px;
   }
 
-.btn-primary {
-border-radius: 5px;
-}
+
+.btn {
+  margin-left:10px;
+  font-size: 0.8rem;
+  }
 
 .active-btn {
     background-color: #673ab7 !important;

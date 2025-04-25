@@ -44,8 +44,9 @@ O projeto possui as seguintes funcionalidades esperadas:
 Se desejar ter alguns dados iniciais no banco, é possível copiar o conteúdo de bolsa.bkp para o seu PostgreSQL executando os sequintes comandos
 
 ```sh
+psql -U postgres -c "CREATE DATABASE bolsa;"
 
-psql -U postgres -d bolsa -f <seu caminho>/banco.bkp
+psql -U postgres -d bolsa -f <seu caminho>/bolsa.bkp
 
 ```
 

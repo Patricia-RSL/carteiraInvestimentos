@@ -16,6 +16,9 @@ public class UserTrade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    private User user;
+
     @Column(name = "data", nullable = false)
     private LocalDateTime date;
 

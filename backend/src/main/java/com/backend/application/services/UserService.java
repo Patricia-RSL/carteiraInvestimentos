@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -28,12 +30,16 @@ public class UserService implements UserDetailsService {
 
   @PostConstruct
   public void init() {
-    if (Boolean.FALSE.equals(userRepository.existsByEmail("admin@admin.com"))) {
+    Optional<User> adminOpt = userRepository.findByEmail("admin@admin.com");
+    if (adminOpt.isEmpty()) {
       User admin = new User("Admin",
         "Admin", "admin@admin.com",
         passwordEncoder.encode(adminPassword),
         UserRole.ADMIN);
-      admin.setEnabled(true);
+      userRepository.save(admin);
+    } else {
+      User admin = adminOpt.get();
+      admin.setPassword(passwordEncoder.encode(adminPassword));
       userRepository.save(admin);
     }
   }

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,71 +22,75 @@ import com.backend.application.repository.UserTradeRepository;
 @ExtendWith(MockitoExtension.class)
 class UserTradeServiceTest {
 
-    @Mock
-    private UserTradeRepository userTradeRepository;
+  @Mock
+  private UserTradeRepository userTradeRepository;
 
-    @InjectMocks
-    private UserTradeService userTradeService;
+  @Mock
+  private AuthService authService;
 
-    private UserTrade trade1;
-    private UserTrade trade2;
+  @InjectMocks
+  private UserTradeService userTradeService;
 
-    @BeforeEach
-    void setUp() {
-        trade1 = new UserTrade();
-        trade1.setId(1L);
-        trade1.setInstrument("AAPL");
-        trade1.setOperationType(OperationType.c);
+  private UserTrade trade1;
+  private UserTrade trade2;
 
-        trade2 = new UserTrade();
-        trade2.setId(2L);
-        trade2.setInstrument("GOOGL");
-        trade2.setOperationType(OperationType.v);
-    }
+  @BeforeEach
+  void setUp() {
+    trade1 = new UserTrade();
+    trade1.setId(1L);
+    trade1.setInstrument("AAPL");
+    trade1.setOperationType(OperationType.c);
 
-    @Test
-    void testGetAll() {
-        when(userTradeRepository.findAll()).thenReturn(Arrays.asList(trade1, trade2));
-        List<UserTrade> result = userTradeService.getAll();
-        assertEquals(2, result.size());
-        verify(userTradeRepository, times(1)).findAll();
-    }
+    trade2 = new UserTrade();
+    trade2.setId(2L);
+    trade2.setInstrument("GOOGL");
+    trade2.setOperationType(OperationType.v);
 
-    @Test
-    void testGetById() {
-        when(userTradeRepository.findById(1L)).thenReturn(Optional.of(trade1));
-        Optional<UserTrade> result = userTradeService.getById(1L);
-        assertTrue(result.isPresent());
-        assertEquals(1L, result.get().getId());
-        verify(userTradeRepository, times(1)).findById(1L);
-    }
+    // Mock AuthService to return a specific user ID
+    lenient().when(authService.getCurrentUser()).thenReturn(1L);  }
 
-    @Test
-    void testGetById_NotFound() {
-        when(userTradeRepository.findById(99L)).thenReturn(Optional.empty());
+  @Test
+  void testGetAll() {
+    when(userTradeRepository.findAllByUserId(1L)).thenReturn(Arrays.asList(trade1, trade2));
+    List<UserTrade> result = userTradeService.getAll();
+    assertEquals(2, result.size());
+    verify(userTradeRepository, times(1)).findAllByUserId(1L);
+  }
 
-        Optional<UserTrade> result = userTradeService.getById(99L);
+  @Test
+  void testGetById() {
+    when(userTradeRepository.findById(1L)).thenReturn(Optional.of(trade1));
+    Optional<UserTrade> result = userTradeService.getById(1L);
+    assertTrue(result.isPresent());
+    assertEquals(1L, result.get().getId());
+    verify(userTradeRepository, times(1)).findById(1L);
+  }
 
-        assertFalse(result.isPresent());
-        verify(userTradeRepository, times(1)).findById(99L);
-    }
+  @Test
+  void testGetById_NotFound() {
+    when(userTradeRepository.findById(99L)).thenReturn(Optional.empty());
 
+    Optional<UserTrade> result = userTradeService.getById(99L);
 
-    @Test
-    void testFindAllByInstrument() {
-        when(userTradeRepository.findAllByInstrument("AAPL")).thenReturn(Arrays.asList(trade1));
-        List<UserTrade> result = userTradeService.findAllByInstrument("AAPL");
-        assertEquals(1, result.size());
-        assertEquals("AAPL", result.get(0).getInstrument());
-        verify(userTradeRepository, times(1)).findAllByInstrument("AAPL");
-    }
+    assertFalse(result.isPresent());
+    verify(userTradeRepository, times(1)).findById(99L);
+  }
 
-    @Test
-    void testFindAllByOperationType() {
-        when(userTradeRepository.findAllByOperationType(OperationType.c)).thenReturn(Arrays.asList(trade1));
-        List<UserTrade> result = userTradeService.findAllByOperationType(OperationType.c);
-        assertEquals(1, result.size());
-        assertEquals(OperationType.c, result.get(0).getOperationType());
-        verify(userTradeRepository, times(1)).findAllByOperationType(OperationType.c);
-    }
+  @Test
+  void testFindAllByInstrument() {
+    when(userTradeRepository.findAllByInstrumentAndUserId("AAPL", 1L)).thenReturn(Collections.singletonList(trade1));
+    List<UserTrade> result = userTradeService.findAllByInstrument("AAPL");
+    assertEquals(1, result.size());
+    assertEquals("AAPL", result.get(0).getInstrument());
+    verify(userTradeRepository, times(1)).findAllByInstrumentAndUserId("AAPL", 1L);
+  }
+
+  @Test
+  void testFindAllByOperationType() {
+    when(userTradeRepository.findAllByOperationTypeAndUserId(OperationType.c, 1L)).thenReturn(Collections.singletonList(trade1));
+    List<UserTrade> result = userTradeService.findAllByOperationType(OperationType.c);
+    assertEquals(1, result.size());
+    assertEquals(OperationType.c, result.get(0).getOperationType());
+    verify(userTradeRepository, times(1)).findAllByOperationTypeAndUserId(OperationType.c, 1L);
+  }
 }

@@ -24,4 +24,8 @@ public class UserTradeSpecifications {
   public static Specification<UserTrade> hasDateLessThanOrEqualTo(LocalDate endDate) {
     return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("date"), endDate);
   }
+
+  public static Specification<UserTrade> hasUserId(Long userId) {
+    return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user").get("id"), userId);
+  }
 }

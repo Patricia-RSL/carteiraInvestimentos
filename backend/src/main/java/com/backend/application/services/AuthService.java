@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,15 @@ public class AuthService {
 
     final UserDetails userDetails = userService.loadUserByUsername(email);
     return jwtUtil.generateToken(userDetails);
+  }
+
+  public Long getCurrentUser() {
+    User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    if (principal instanceof User) {
+      return principal.getId();
+    } else {
+      throw new IllegalStateException("User is not authenticated");
+    }
   }
 
 }

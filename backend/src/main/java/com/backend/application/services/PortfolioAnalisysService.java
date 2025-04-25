@@ -1,16 +1,15 @@
 package com.backend.application.services;
 
 import com.backend.application.converter.PortfolioAnalysisDetailItemDTOConverter;
-import com.backend.application.dto.*;
-import com.backend.application.entities.UserTrade;
-import com.backend.application.enums.OperationType;
+import com.backend.application.dto.PortfolioAnalysisDetailItemDTO;
+import com.backend.application.dto.PortfolioAnalysisRequestDTO;
+import com.backend.application.dto.PortfolioAnalysisResponseDTO;
 import com.backend.application.interfaces.PortfolioAnalysisDetailItemProjection;
 import com.backend.application.repository.UserTradeRepository;
 import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -18,22 +17,24 @@ public class PortfolioAnalisysService {
 
     private final UserTradeRepository userTradeRepository;
     private final AnalysisCalculatorService analysisCalculatorService;
+    private final AuthService authService;
 
     public PortfolioAnalisysService(UserTradeRepository userTradeRepository,
-                                    AnalysisCalculatorService analysisCalculatorService){
+                                    AnalysisCalculatorService analysisCalculatorService, AuthService authService){
         this.userTradeRepository = userTradeRepository;
         this.analysisCalculatorService = analysisCalculatorService;
+      this.authService = authService;
     }
 
-    public List<UserTrade> findAllByTipoOperacaoAndInstrumentAndData(
-			OperationType type, List<String> instrument, LocalDate beginDate, LocalDate endDate ){
-        return userTradeRepository.findAllByOperationTypeAndInstrumentInAndDateGreaterThanEqualAndDateLessThanEqual(type, instrument, beginDate, endDate);
-    }
+  private Long getCurrentUserId() {
+    return this.authService.getCurrentUser();
+  }
 
     public List<PortfolioAnalysisDetailItemDTO> findPortfolioAnalysisDetailItems(PortfolioAnalysisRequestDTO portfolioAnalysisRequestDTO) {
         List<PortfolioAnalysisDetailItemProjection> projections = userTradeRepository.getAmountAndValueByInstrument(portfolioAnalysisRequestDTO.getInstrumentList(),
                 portfolioAnalysisRequestDTO.getBeginDate(),
-                portfolioAnalysisRequestDTO.getEndDate());
+                portfolioAnalysisRequestDTO.getEndDate(),
+                this.getCurrentUserId());
 
         return PortfolioAnalysisDetailItemDTOConverter.toDTOList(projections);
     }
@@ -76,6 +77,6 @@ public class PortfolioAnalisysService {
     }
 
     public List<String> getInstrumentsFromPortfolio() {
-      return userTradeRepository.findDistinctInstrument();
+      return userTradeRepository.findDistinctInstrument(getCurrentUserId());
     }
 }

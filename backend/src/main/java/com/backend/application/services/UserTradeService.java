@@ -1,9 +1,8 @@
 package com.backend.application.services;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
+import com.backend.application.entities.UserTrade;
+import com.backend.application.enums.OperationType;
+import com.backend.application.repository.UserTradeRepository;
 import com.backend.application.repository.UserTradeSpecifications;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,59 +10,65 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import com.backend.application.entities.UserTrade;
-import com.backend.application.repository.UserTradeRepository;
-import com.backend.application.enums.OperationType;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserTradeService {
 
-    private final UserTradeRepository userTradeRepository;
+  private final UserTradeRepository userTradeRepository;
+  private final AuthService authService;
 
-    public UserTradeService(UserTradeRepository userTradeRepository) {
-        this.userTradeRepository = userTradeRepository;
-    }
+  public UserTradeService(UserTradeRepository userTradeRepository, AuthService authService) {
+    this.userTradeRepository = userTradeRepository;
+    this.authService = authService;
+  }
 
-    public List<UserTrade> getAll() {
-       return userTradeRepository.findAll();
-    }
+  private Long getCurrentUserId() {
+    return this.authService.getCurrentUser();
+  }
 
-    public Optional<UserTrade> getById(Long id) {
-        return userTradeRepository.findById(id);
-    }
+  public List<UserTrade> getAll() {
+    return userTradeRepository.findAllByUserId(getCurrentUserId());
+  }
 
-    public List<UserTrade> findAllByInstrument(String instrument){
-        return userTradeRepository.findAllByInstrument(instrument);
-    }
+  public Optional<UserTrade> getById(Long id) {
+    return userTradeRepository.findById(id);
+  }
 
-    public List<UserTrade> findAllByOperationType(OperationType tipo){
-        return userTradeRepository.findAllByOperationType(tipo);
-    }
+  public List<UserTrade> findAllByInstrument(String instrument) {
+    return userTradeRepository.findAllByInstrumentAndUserId(instrument, getCurrentUserId());
+  }
 
-    public void delete(Long id) {
-        this.userTradeRepository.deleteById(id);
-    }
-
-    public UserTrade save(UserTrade userTrade) {
-        return this.userTradeRepository.save(userTrade);
-    }
+  public List<UserTrade> findAllByOperationType(OperationType tipo) {
+    return userTradeRepository.findAllByOperationTypeAndUserId(tipo, getCurrentUserId());
+  }
 
   public Page<UserTrade> getAllPaginatedAndFiltered(int page, int size, LocalDate beginDate, LocalDate endDate, List<String> instruments) {
-      PageRequest pageRequest = PageRequest.of(page, size,  Sort.by("date").descending());
+    PageRequest pageRequest = PageRequest.of(page, size, Sort.by("date").descending());
+    Specification<UserTrade> specification = Specification.where(UserTradeSpecifications.hasUserId(getCurrentUserId()));
 
-      Specification<UserTrade> specification = Specification.where(null);
+    if (beginDate != null) {
+      specification = specification.and(UserTradeSpecifications.hasDateGreaterThanOrEqualTo(beginDate));
+    }
 
-      if (beginDate != null) {
-        specification = specification.and(UserTradeSpecifications.hasDateGreaterThanOrEqualTo(beginDate));
-      }
+    if (endDate != null) {
+      specification = specification.and(UserTradeSpecifications.hasDateLessThanOrEqualTo(endDate));
+    }
 
-      if (endDate != null) {
-        specification = specification.and(UserTradeSpecifications.hasDateLessThanOrEqualTo(endDate));
-      }
+    if (instruments != null && !instruments.isEmpty()) {
+      specification = specification.and(UserTradeSpecifications.hasInstrumentIn(instruments));
+    }
 
-      if (instruments != null && !instruments.isEmpty()) {
-        specification = specification.and(UserTradeSpecifications.hasInstrumentIn(instruments));
-      }
-      return userTradeRepository.findAll(specification, pageRequest);
+    return userTradeRepository.findAll(specification, pageRequest);
+  }
+
+  public void delete(Long id) {
+    userTradeRepository.deleteById(id);
+  }
+
+  public UserTrade save(UserTrade userTrade) {
+    return userTradeRepository.save(userTrade);
   }
 }

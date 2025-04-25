@@ -13,8 +13,10 @@ export class HeaderComponent {
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-      this.isAuthenticated = this.authService.isAuthenticated();
-    }
+       this.authService.isAuthenticated$.subscribe((authState) => {
+            this.isAuthenticated = authState;
+          })
+        }
 
   logout(): void {
     this.authService.logout();

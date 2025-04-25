@@ -37,8 +37,8 @@ public class User implements UserDetails {
   @Column(nullable = false)
   private String lastname;
 
-  private Boolean locked = false;
-  private Boolean enabled = false;
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<UserTrade> userTrades = new ArrayList<>();
 
 
   public User(String firstname, String lastname, String email, String password, UserRole role) {

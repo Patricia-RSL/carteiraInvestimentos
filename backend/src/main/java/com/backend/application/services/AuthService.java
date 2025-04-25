@@ -34,7 +34,6 @@ public class AuthService {
     );
 
     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-    user.setEnabled(true);
     user.setRole(UserRole.USER);
 
     return userRepository.save(user);

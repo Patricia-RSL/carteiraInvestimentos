@@ -7,7 +7,6 @@ import java.util.Optional;
 import com.backend.application.repository.UserTradeSpecifications;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -49,13 +48,13 @@ public class UserTradeService {
         return this.userTradeRepository.save(userTrade);
     }
 
-  public Page<UserTrade> getAllPaginatedAndFiltered(int page, int size, LocalDate begindate, LocalDate endDate, List<String> instruments) {
+  public Page<UserTrade> getAllPaginatedAndFiltered(int page, int size, LocalDate beginDate, LocalDate endDate, List<String> instruments) {
       PageRequest pageRequest = PageRequest.of(page, size,  Sort.by("date").descending());
 
       Specification<UserTrade> specification = Specification.where(null);
 
-      if (begindate != null) {
-        specification = specification.and(UserTradeSpecifications.hasDateGreaterThanOrEqualTo(begindate));
+      if (beginDate != null) {
+        specification = specification.and(UserTradeSpecifications.hasDateGreaterThanOrEqualTo(beginDate));
       }
 
       if (endDate != null) {

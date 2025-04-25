@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../@core/services/auth.service';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ErrorModalComponent } from '../../error-modal/error-modal.component';
+
 
 @Component({
   selector: 'app-register',
@@ -11,7 +15,10 @@ export class RegisterComponent {
   registerForm: FormGroup;
   hidePassword = true;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder,
+    private authService: AuthService,
+    private dialog: MatDialog,
+    private router: Router) {
     this.registerForm = this.fb.group({
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
@@ -25,13 +32,19 @@ export class RegisterComponent {
      const user = this.registerForm.value;
            this.authService.register(user).subscribe({
              next: () => {
-               console.log('User registered successfully');
-               // Handle success (e.g., navigate to login page or show a success message)
+                this.router.navigate(['/login']);
              },
              error: (err) => {
-               console.error('Registration failed', err);
-               // Handle error (e.g., show an error message)
-             }
+               console.log(err)
+                this.dialog.open(ErrorModalComponent, {
+                  data: {
+                    title: 'Registration Error',
+                    text: err.error || 'An error occurred during registration. Please try again.'
+                  },
+                  width: '400px',
+                  disableClose: true
+                });
+              }
            });
     } else {
       Object.keys(this.registerForm.controls).forEach(field => {

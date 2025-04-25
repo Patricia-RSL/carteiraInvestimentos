@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../@core/services/auth.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { TemplateRef, ViewChild } from '@angular/core';
+import {ErrorModalComponent} from '../../error-modal/error-modal.component';
 
 
 @Component({
@@ -14,7 +14,6 @@ import { TemplateRef, ViewChild } from '@angular/core';
 export class LoginComponent {
   loginForm: FormGroup;
   hidePassword = true;
-  @ViewChild('errorDialog') errorDialog!: TemplateRef<any>;
 
   constructor(private fb: FormBuilder,
     private authService: AuthService,
@@ -35,7 +34,7 @@ export class LoginComponent {
               this.router.navigate(['/portfolio']);
              },
              error: (err) => {
-               this.dialog.open(this.errorDialog, {
+               this.dialog.open(ErrorModalComponent, {
                  data: {
                    title: 'Login Error',
                    text: 'Email or password is incorrect. Please try again.'

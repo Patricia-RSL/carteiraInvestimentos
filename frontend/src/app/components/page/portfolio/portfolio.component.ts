@@ -63,7 +63,7 @@ export class PortfolioComponent implements OnInit{
 		}
 
     this.analyze();
-    
+
   }
 
   analyze(){
@@ -78,7 +78,10 @@ export class PortfolioComponent implements OnInit{
       this.spinnerShow=false;
       console.log(error)
       this.dialog.open(ErrorModalComponent, {
-        data: error.error
+        data: {
+          title: 'Erro ao analisar o portfólio',
+          text: error.error || 'Ocorreu um erro ao analisar o portfólio. Tente novamente.'
+          },
       });
     })
 }

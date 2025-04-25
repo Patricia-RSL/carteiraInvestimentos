@@ -32,8 +32,6 @@ public class AuthService {
     User user = new User(
       request.getFirstName(),request.getLastName(),request.getEmail(),hashedPassword, UserRole.USER
     );
-
-    user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
     user.setRole(UserRole.USER);
 
     return userRepository.save(user);

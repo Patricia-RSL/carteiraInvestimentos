@@ -57,6 +57,9 @@ CREATE TABLE public.users (
 INSERT INTO public.users (id, password, email, role, firstname, lastname)
 VALUES (1, 'securepassword', 'admin@admin.com', 'ADMIN', 'Admin', 'Admin');
 
+SELECT setval('users_id_seq', (SELECT MAX(id) FROM public.users));
+
+
 --
 -- TOC entry 205 (class 1259 OID 15114875)
 -- Name: instrument_quote; Type: TABLE; Schema: public;

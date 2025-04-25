@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../../@core/services/auth.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -10,7 +13,9 @@ export class LoginComponent {
   loginForm: FormGroup;
   hidePassword = true;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
@@ -20,10 +25,16 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      console.log('Form submitted:', this.loginForm.value);
-      //todo
+     const credentials = this.loginForm.value;
+           this.authService.login(credentials).subscribe({
+             next: (response) => {
+              this.router.navigate(['/portfolio']);
+             },
+             error: (err) => {
+               console.error('Login failed:', err);
+             }
+           });
     } else {
-      // todo
       Object.keys(this.loginForm.controls).forEach(field => {
         const control = this.loginForm.get(field);
         control?.markAsTouched({ onlySelf: true });

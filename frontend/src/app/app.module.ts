@@ -28,7 +28,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { LoginComponent } from './components/page/login/login.component';
 import { RegisterComponent } from './components/page/register/register.component';
-
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './@core/interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,7 @@ import { RegisterComponent } from './components/page/register/register.component
     MatPaginatorModule,
     LucideAngularModule.pick({ArrowDown, ArrowUp})
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

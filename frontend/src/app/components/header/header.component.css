@@ -10,12 +10,12 @@ i{
     width: 100%;
     max-width: 1280px;
   }
-  
+
 .btn-primary {
 border-radius: 5px;
 }
 
 .active-btn {
-    background-color: #007bff !important;
+    background-color: #673ab7 !important;
     color: white !important;
   }

@@ -4,57 +4,57 @@
     align-items: center;
     height: 80vh;
   }
-  
+
   .register-card {
     width: 100%;
     max-width: 500px;
     padding: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
-  
+
   mat-card-header {
     margin-bottom: 20px;
     justify-content: center;
   }
-  
+
   mat-card-title {
     font-size: 24px;
     font-weight: 500;
   }
-  
+
   .name-row {
     display: flex;
     gap: 16px;
-    
+
     mat-form-field {
       flex: 1;
     }
-  
+
     @media (max-width: 600px) {
       flex-direction: column;
       gap: 0;
     }
   }
-  
+
   .full-width {
     width: 100%;
     margin-bottom: 16px;
   }
-  
+
   .register-button {
     width: 100%;
     padding: 8px;
     font-size: 16px;
     margin: 16px 0;
   }
-  
+
   .login-link {
     text-align: center;
     margin-top: 16px;
     font-size: 14px;
-    
+
     a {
-      color: #007bff;
+      color: #673ab7;
       text-decoration: none;
       font-weight: 500;
     }

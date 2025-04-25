@@ -8,14 +8,14 @@
 
     <!-- Navegação -->
     <nav class="d-flex align-items-center">
-      <button
+      <button *ngIf="isAuthenticated"
         routerLink="/portfolio"
         routerLinkActive="active-btn"
         class="btn d-flex align-items-center me-3">
         <i class="bi bi-wallet2 me-1"></i>
         Portfólio
       </button>
-      <button
+      <button *ngIf="isAuthenticated"
         routerLink="/historico-transacoes"
         routerLinkActive="active-btn"
         class="btn d-flex align-items-center me-3">

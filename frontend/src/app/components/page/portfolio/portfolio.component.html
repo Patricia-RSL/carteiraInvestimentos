@@ -104,7 +104,10 @@
   <mat-card appearance="outlined" class="custom-card">
     <mat-card-title> Posições </mat-card-title>
     <mat-card-content [style.overflow]="'auto'" >
-      <table mat-table [dataSource]="portfolio.portfolioAnalysisDetail">
+      <div *ngIf="portfolio.portfolioAnalysisDetail.length  === 0" class="no-data-message">
+        <p >Não há dados sobre transações para os filtros atuais.</p>
+      </div>
+      <table  *ngIf="portfolio.portfolioAnalysisDetail.length > 0" mat-table [dataSource]="portfolio.portfolioAnalysisDetail">
 
         <ng-container matColumnDef="instrument">
           <th mat-header-cell  class="label" *matHeaderCellDef> Ativo </th>
@@ -122,7 +125,7 @@
         </ng-container>
 
         <ng-container matColumnDef="valorMercado">
-          <th mat-header-cell  class="label" *matHeaderCellDef> 
+          <th mat-header-cell  class="label" *matHeaderCellDef>
             <span matTooltip="Quando negativo, provavelmente significa a necessidade de comprar açoes para zerar a posição.">
               Valor de Mercado <mat-icon>info</mat-icon>
             </span>

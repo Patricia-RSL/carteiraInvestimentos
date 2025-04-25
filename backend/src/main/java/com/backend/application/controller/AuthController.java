@@ -2,8 +2,7 @@ package com.backend.application.controller;
 
 import com.backend.application.dto.RegistrationRequestDTO;
 import com.backend.application.services.AuthService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -40,6 +39,11 @@ public class AuthController {
     } catch (BadCredentialsException e) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
     }
+  }
+
+  @PostMapping("/logout")
+  public ResponseEntity<?> logout(HttpServletRequest request ) {
+    return ResponseEntity.ok("Logged out successfully");
   }
 }
 record AuthResponse(String token) {}

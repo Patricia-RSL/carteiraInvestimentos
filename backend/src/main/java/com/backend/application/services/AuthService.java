@@ -40,10 +40,6 @@ public class AuthService {
     return userRepository.save(user);
   }
 
-  public void confirmToken(String token) {
-    // Lógica de confirmação
-  }
-
   public String authenticate(String email, String password) {
     authenticationManager.authenticate(
       new UsernamePasswordAuthenticationToken(email, password)

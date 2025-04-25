@@ -30,7 +30,7 @@ public class AuthService {
     String hashedPassword = bCryptPasswordEncoder.encode(request.getPassword());
 
     User user = new User(
-      request.getFirstname(),request.getLastname(),request.getEmail(),hashedPassword, UserRole.USER
+      request.getFirstName(),request.getLastName(),request.getEmail(),hashedPassword, UserRole.USER
     );
 
     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));

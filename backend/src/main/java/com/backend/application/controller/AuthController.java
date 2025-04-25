@@ -2,6 +2,8 @@ package com.backend.application.controller;
 
 import com.backend.application.dto.RegistrationRequestDTO;
 import com.backend.application.services.AuthService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -21,7 +23,7 @@ public class AuthController {
   private final AuthService authService;
 
   @PostMapping("/login")
-  public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+  public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest ) {
     try {
       String token = authService.authenticate(loginRequest.email(), loginRequest.password());
       return ResponseEntity.ok(new AuthResponse(token));

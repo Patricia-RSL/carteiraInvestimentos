@@ -10,11 +10,11 @@ public class RegistrationRequestDTO {
 
   @NotNull
   @Size(min = 3)
-  private String firstname;
+  private String firstName;
 
   @NotNull
   @Size(min = 4)
-  private String lastname;
+  private String lastName;
 
   @NotNull
   @Size(min = 8)
